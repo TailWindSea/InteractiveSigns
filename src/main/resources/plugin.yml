@@ -1,0 +1,4 @@
+name: InteractiveSigns
+version: '1.0.0'
+main: me.vovari2.interactivesigns.InteractiveSigns
+api-version: '1.20'

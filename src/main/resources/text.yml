@@ -1,0 +1,11 @@
+
+command:
+  help: "<gradient:#85A947:#3E7B27><strikethrough>        </strikethrough></gradient> <gradient:#E8E7AB:#F2AE66>InteractiveSigns (/is)</gradient> <gradient:#85A947:#3E7B27><strikethrough>        </strikethrough></gradient>
+  <newline>  <#85A947>- <gradient:#E8E7AB:#F2AE66> /is help - Message about the information of the plugin commands
+  <newline>  <#85A947>- <gradient:#E8E7AB:#F2AE66> /is reload - Reloading the plugin
+  <newline>  <#85A947>- <gradient:#E8E7AB:#F2AE66> /is clear [<radius>] - Clear all entities created by the plugin within a certain radius<newline>"
+  reload: "<gradient:#85A947:#3E7B27>The plugin has been reloaded!!"
+  clear: "<gradient:#85A947:#3E7B27>All displays within a <gold><%radius%>-block</gold> radius have been removed!"
+
+you_cant_use_that_here: "<bold><red>Hey!</bold> <gray>Sorry, but you can't use that here."
+you_cant_place_item_because_sign_has_text: "<bold><red>Hey!</bold> <gray>Sorry, but it is already occupied by the text."
