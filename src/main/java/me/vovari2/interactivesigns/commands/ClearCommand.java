@@ -24,6 +24,7 @@ public class ClearCommand {
             if (display.getItemStack() != null)
                 player.getInventory().addItem(display.getItemStack());
             display.remove();
+
         }
     }
 
