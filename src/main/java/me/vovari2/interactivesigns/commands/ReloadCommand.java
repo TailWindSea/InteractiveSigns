@@ -15,7 +15,6 @@ public class ReloadCommand {
         InteractiveSigns.getInstance().onEnable();
         sender.sendMessage(Text.get("command.reload"));
     }
-
     public static boolean hasPermission(CommandSender sender){
         return Permission.hasPermission(sender, PERMISSION);
     }
