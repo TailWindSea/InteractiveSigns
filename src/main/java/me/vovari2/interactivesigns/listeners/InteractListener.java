@@ -108,7 +108,8 @@ public class InteractListener implements Listener {
                 }
 
                 display.remove();
-                player.getInventory().addItem(display.getItemStack());
+                if (display.getItemStack() != null)
+                    signBlock.getWorld().dropItemNaturally(signBlock.getLocation(), display.getItemStack());
 
                 SoundUtils.playRemoveItemOnSign(displayLocation);
                 event.setCancelled(true);

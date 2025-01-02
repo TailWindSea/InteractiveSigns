@@ -1,5 +1,6 @@
 package me.vovari2.interactivesigns;
 
+import me.vovari2.interactivesigns.commands.ClearCommand;
 import me.vovari2.interactivesigns.commands.HelpCommand;
 import me.vovari2.interactivesigns.commands.ReloadCommand;
 import org.bukkit.command.CommandSender;
@@ -15,7 +16,8 @@ public class Permission {
         imp = new Permission();
         imp.put("interactive_signs.*", List.of(
                 HelpCommand.PERMISSION,
-                ReloadCommand.PERMISSION));
+                ReloadCommand.PERMISSION,
+                ClearCommand.PERMISSION));
     }
     public static boolean hasPermission(CommandSender player, String permission){
         if (!imp.permissions.containsKey(permission))

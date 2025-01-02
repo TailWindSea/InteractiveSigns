@@ -25,7 +25,8 @@ public class GrowListener implements Listener {
 
             for (ItemDisplay display : itemDisplays){
                 display.remove();
-                block.getWorld().dropItemNaturally(block.getLocation(), display.getItemStack());
+                if (display.getItemStack() != null)
+                    block.getWorld().dropItemNaturally(block.getLocation(), display.getItemStack());
             }
         }
     }

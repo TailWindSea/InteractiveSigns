@@ -30,6 +30,9 @@ public final class InteractiveSigns extends JavaPlugin {
             Delay.initialize();
             SignRotations.initialize();
 
+            Permission.initialize();
+            Executor.initialize(instance);
+
             getServer().getPluginManager().registerEvents(new InteractListener(), this);
             getServer().getPluginManager().registerEvents(new BreakListener(), this);
             getServer().getPluginManager().registerEvents(new ExplodeListener(), this);

@@ -10,8 +10,6 @@ import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.Collection;
-
 public class ClearCommand {
 
     public static String PERMISSION = "interactive_signs.clear";

@@ -28,7 +28,8 @@ public class BreakListener implements Listener {
 
         for (ItemDisplay display : list){
             display.remove();
-            block.getWorld().dropItemNaturally(block.getLocation(), display.getItemStack());
+            if (display.getItemStack() != null)
+                block.getWorld().dropItemNaturally(block.getLocation(), display.getItemStack());
         }
     }
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -46,7 +47,8 @@ public class BreakListener implements Listener {
 
         for (ItemDisplay display : list){
             display.remove();
-            block.getWorld().dropItemNaturally(block.getLocation(), display.getItemStack());
+            if (display.getItemStack() != null)
+                block.getWorld().dropItemNaturally(block.getLocation(), display.getItemStack());
         }
     }
 }

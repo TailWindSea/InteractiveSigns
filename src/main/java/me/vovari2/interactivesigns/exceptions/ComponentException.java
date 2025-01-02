@@ -10,10 +10,6 @@ public class ComponentException extends Exception{
         super(message);
         componentMessage = MiniMessage.miniMessage().deserialize("<red>" + message);
     }
-    public ComponentException(Component message) {
-        super(MiniMessage.miniMessage().serialize(message));
-        componentMessage = message;
-    }
 
     public Component getComponentMessage(){
         return componentMessage;
