@@ -1,8 +1,8 @@
 package me.vovari2.interactivesigns.commands;
 
-import dev.jorel.commandapi.commandsenders.BukkitPlayer;
-import dev.jorel.commandapi.executors.ExecutionInfo;
+import dev.jorel.commandapi.executors.CommandArguments;
 import me.vovari2.interactivesigns.Permission;
+import me.vovari2.interactivesigns.Text;
 import me.vovari2.interactivesigns.utils.NamespacedKeyUtils;
 import org.bukkit.block.sign.Side;
 import org.bukkit.command.CommandSender;
@@ -22,14 +22,14 @@ public class ClearCommand {
             if (display.getItemStack() != null)
                 player.getInventory().addItem(display.getItemStack());
             display.remove();
-
         }
+        player.sendMessage(Text.node("command.clear").replace("<%radius%>", String.valueOf(radius)).value());
     }
 
     public static boolean hasPermission(CommandSender sender){
         return Permission.hasPermission(sender, PERMISSION);
     }
-    public static void preExecute(ExecutionInfo<Player, BukkitPlayer> info){
-        execute(info.sender(), (Double) info.args().getOrDefault(ARGUMENT_RADIUS, 1));
+    public static void preExecute(Player player, CommandArguments arguments){
+        execute(player, (Double) arguments.getOrDefault(ARGUMENT_RADIUS, 1D));
     }
 }

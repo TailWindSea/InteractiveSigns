@@ -5,6 +5,8 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.BukkitWorldConfiguration;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
+import dev.jorel.commandapi.CommandAPI;
+import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import me.vovari2.interactivesigns.exceptions.ComponentException;
 import me.vovari2.interactivesigns.listeners.BreakListener;
 import me.vovari2.interactivesigns.listeners.ExplodeListener;
@@ -21,8 +23,15 @@ public final class InteractiveSigns extends JavaPlugin {
     private static WorldGuardPlugin instanceWG;
 
     @Override
-    public void onEnable() {
+    public void onLoad(){
         instance = this;
+
+        CommandAPI.onLoad(new CommandAPIBukkitConfig(this).verboseOutput(true));
+    }
+
+    @Override
+    public void onEnable() {
+        CommandAPI.onEnable();
         instanceWG = WorldGuardPlugin.inst();
 
         try{
@@ -47,6 +56,7 @@ public final class InteractiveSigns extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        CommandAPI.onDisable();
         HandlerList.unregisterAll(this);
         getScheduler().cancelTasks(this);
         Text.sendMessageToConsole("<red>Plugin %s %s disabled!".formatted(Text.PLUGIN_NAME, Text.VERSION), true);

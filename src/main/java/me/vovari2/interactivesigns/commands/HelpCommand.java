@@ -10,7 +10,7 @@ public class HelpCommand {
     public static String PERMISSION = "interactive_signs.help";
 
     private static void execute(CommandSender sender){
-        sender.sendMessage(Text.get("command.help"));
+        sender.sendMessage(Text.value("command.help"));
     }
 
     public static boolean hasPermission(CommandSender sender){

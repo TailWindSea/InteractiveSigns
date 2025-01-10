@@ -17,70 +17,70 @@ import java.util.List;
 public enum SignTypes {
     SIGN(
             List.of(new SignTransformation( // Item
-                            new Vector3f(0,0.34F, -0.044F),
-                            new Vector3f(0.4F,0.4F,0.0005F)),
+                            new Vector3f(0,0.34F, -0.046F),
+                            new Vector3f(0.4F,0.4F,0.001F)),
                     new SignTransformation( // Player head
-                            new Vector3f(0,0.52F, -0.044F),
-                            new Vector3f(0.7F,0.7F,0.0005F)),
+                            new Vector3f(0,0.52F, -0.046F),
+                            new Vector3f(0.7F,0.7F,0.001F)),
                     new SignTransformation( // Dragon head
-                            new Vector3f(0,0.38F, -0.044F),
-                            new Vector3f(0.4F,0.4F,0.0005F)),
+                            new Vector3f(0,0.38F, -0.046F),
+                            new Vector3f(0.4F,0.4F,0.001F)),
                     new SignTransformation( // Tall items
-                            new Vector3f(0,0.32F, -0.044F),
-                            new Vector3f(0.31F,0.31F,0.0005F)))),
+                            new Vector3f(0,0.32F, -0.046F),
+                            new Vector3f(0.31F,0.31F,0.001F)))),
 
     WALL_SIGN_BACK(
             List.of(new SignTransformation( // Item
-                            new Vector3f(0,0.03F,-0.481F),
-                            new Vector3f(0.4F,0.4F,0.0005F)),
+                            new Vector3f(0,0.03F,-0.483F),
+                            new Vector3f(0.4F,0.4F,0.001F)),
                     new SignTransformation( // Player head
-                            new Vector3f(0,0.2F,-0.481F),
-                            new Vector3f(0.7F,0.7F,0.0005F)),
+                            new Vector3f(0,0.2F,-0.483F),
+                            new Vector3f(0.7F,0.7F,0.001F)),
                     new SignTransformation( // Dragon head
-                            new Vector3f(0,0.07F,-0.481F),
-                            new Vector3f(0.4F,0.4F,0.0005F)),
+                            new Vector3f(0,0.07F,-0.483F),
+                            new Vector3f(0.4F,0.4F,0.001F)),
                     new SignTransformation( // Tall items
-                            new Vector3f(0,0.01F,-0.481F),
-                            new Vector3f(0.31F,0.31F,0.0005F)))),
+                            new Vector3f(0,0.01F,-0.483F),
+                            new Vector3f(0.31F,0.31F,0.001F)))),
     WALL_SIGN_FRONT(
             List.of(new SignTransformation( // Item
-                            new Vector3f(-0,0.03F,0.391F),
-                            new Vector3f(0.4F,0.4F,0.0005F)),
+                            new Vector3f(-0,0.03F,0.389F),
+                            new Vector3f(0.4F,0.4F,0.001F)),
                     new SignTransformation( // Player head
-                            new Vector3f(-0,0.2F,0.391F),
-                            new Vector3f(0.7F,0.7F,0.0005F)),
+                            new Vector3f(-0,0.2F,0.389F),
+                            new Vector3f(0.7F,0.7F,0.001F)),
                     new SignTransformation( // Dragon head
-                            new Vector3f(-0,0.07F,0.391F),
-                            new Vector3f(0.4F,0.4F,0.0005F)),
+                            new Vector3f(-0,0.07F,0.389F),
+                            new Vector3f(0.4F,0.4F,0.001F)),
                     new SignTransformation( // Tall items
-                            new Vector3f(-0,0.01F,0.391F),
-                            new Vector3f(0.31F,0.31F,0.0005F)))),
+                            new Vector3f(-0,0.01F,0.389F),
+                            new Vector3f(0.31F,0.31F,0.001F)))),
     HANGING_SIGN(
             List.of(new SignTransformation( // Item
-                            new Vector3f(0,-0.18F, -0.06251F),
-                            new Vector3f(0.5F,0.5F,0.0005F)),
+                            new Vector3f(0,-0.18F, -0.06451F),
+                            new Vector3f(0.5F,0.5F,0.001F)),
                     new SignTransformation( // Player head
-                            new Vector3f(0,0F, -0.06251F),
-                            new Vector3f(0.8F,0.8F,0.0005F)),
+                            new Vector3f(0,0F, -0.06451F),
+                            new Vector3f(0.8F,0.8F,0.001F)),
                     new SignTransformation( // Dragon head
-                            new Vector3f(0,-0.14F, -0.06251F),
-                            new Vector3f(0.5F,0.5F,0.0005F)),
+                            new Vector3f(0,-0.14F, -0.06451F),
+                            new Vector3f(0.5F,0.5F,0.001F)),
                     new SignTransformation( // Tall items
-                            new Vector3f(0,-0.21F, -0.06251F),
-                            new Vector3f(0.4F,0.4F,0.0005F)))),
+                            new Vector3f(0,-0.21F, -0.06451F),
+                            new Vector3f(0.4F,0.4F,0.001F)))),
     WALL_HANGING_SIGN(
             List.of(new SignTransformation( // Item
-                            new Vector3f(0,-0.18F, -0.06251F),
-                            new Vector3f(0.5F,0.5F,0.0005F)),
+                            new Vector3f(0,-0.18F, -0.06451F),
+                            new Vector3f(0.5F,0.5F,0.001F)),
                     new SignTransformation( // Player head
-                            new Vector3f(0,0F, -0.06251F),
-                            new Vector3f(0.8F,0.8F,0.0005F)),
+                            new Vector3f(0,0F, -0.06451F),
+                            new Vector3f(0.8F,0.8F,0.001F)),
                     new SignTransformation( // Dragon head
-                            new Vector3f(0,-0.14F, -0.06251F),
-                            new Vector3f(0.5F,0.5F,0.0005F)),
+                            new Vector3f(0,-0.14F, -0.06451F),
+                            new Vector3f(0.5F,0.5F,0.001F)),
                     new SignTransformation( // Tall items
-                            new Vector3f(0,-0.21F, -0.06251F),
-                            new Vector3f(0.4F,0.4F,0.0005F))));
+                            new Vector3f(0,-0.21F, -0.06451F),
+                            new Vector3f(0.4F,0.4F,0.001F))));
 
     public static final Component ART_MAP_LINE = MiniMessage.miniMessage().deserialize("*{=}*");
 

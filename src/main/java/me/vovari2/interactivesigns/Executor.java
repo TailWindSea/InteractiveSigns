@@ -20,7 +20,7 @@ public class Executor {
         command.withSubcommand(new CommandAPICommand("clear")
                 .withRequirement(ClearCommand::hasPermission)
                 .executesPlayer(ClearCommand::preExecute)
-                .withArguments(new DoubleArgument(ClearCommand.ARGUMENT_RADIUS))
+                .withOptionalArguments(new DoubleArgument(ClearCommand.ARGUMENT_RADIUS))
                 .executesPlayer(ClearCommand::preExecute));
         command.executes(HelpCommand::preExecute);
         command.register(instance);

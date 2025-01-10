@@ -12,8 +12,9 @@ public class ReloadCommand {
 
     private static void execute(CommandSender sender){
         InteractiveSigns.getInstance().onDisable();
+        InteractiveSigns.getInstance().onLoad();
         InteractiveSigns.getInstance().onEnable();
-        sender.sendMessage(Text.get("command.reload"));
+        sender.sendMessage(Text.value("command.reload"));
     }
     public static boolean hasPermission(CommandSender sender){
         return Permission.hasPermission(sender, PERMISSION);

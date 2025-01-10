@@ -66,7 +66,7 @@ public class InteractListener implements Listener {
                     return;
 
                 if (!WorldGuardUtils.canInteractWithSign(blockLocation, player)){
-                    Delay.run(() -> player.sendMessage(Text.get("you_cant_use_that_here")), player, "cant_use_this_here", 20);
+                    Delay.run(() -> player.sendMessage(Text.value("you_cant_use_that_here")), player, "cant_use_this_here", 20);
                     event.setCancelled(true);
                     return;
                 }
@@ -74,7 +74,7 @@ public class InteractListener implements Listener {
                 if (isOccupiedByText(signBlock.getSide(side).lines())){
                     if (isDye(item.getType()))
                         return;
-                    Delay.run(() -> player.sendMessage(Text.get("you_cant_place_item_because_sign_has_text")), player, "cant_use_this_here", 20);
+                    Delay.run(() -> player.sendMessage(Text.value("you_cant_place_item_because_sign_has_text")), player, "cant_use_this_here", 20);
                     event.setCancelled(true);
                     return;
                 }
@@ -102,7 +102,7 @@ public class InteractListener implements Listener {
                     return;
 
                 if (!WorldGuardUtils.canInteractWithSign(blockLocation, player)){
-                    Delay.run(() -> player.sendMessage(Text.get("you_cant_use_that_here")), player, "cant_use_this_here", 20);
+                    Delay.run(() -> player.sendMessage(Text.value("you_cant_use_that_here")), player, "cant_use_this_here", 20);
                     event.setCancelled(true);
                     return;
                 }
