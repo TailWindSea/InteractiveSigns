@@ -76,9 +76,6 @@ public class Text {
         }
         return node;
     }
-    protected static void clear(){
-        texts.clear();
-    }
 
     public static class TextNode{
         private final Component value;
