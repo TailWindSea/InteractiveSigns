@@ -110,7 +110,7 @@ public class InteractListener implements Listener {
 
                 display.remove();
                 if (display.getItemStack() != null)
-                    signBlock.getWorld().dropItemNaturally(signBlock.getLocation().add(0.5, 0.5, 0.5), display.getItemStack());
+                    signBlock.getWorld().dropItemNaturally(InteractiveSigns.getInstance().getServer().getMinecraftVersion().equals("1.21.4") ? signBlock.getLocation().add(0.5, 0.5, 0.5) : signBlock.getLocation(), display.getItemStack());
 
                 SoundUtils.playRemoveItemOnSign(displayLocation);
                 event.setCancelled(true);
