@@ -3,6 +3,7 @@ package me.vovari2.interactivesigns.listeners;
 import com.destroystokyo.paper.MaterialSetTag;
 import com.destroystokyo.paper.MaterialTags;
 import me.vovari2.interactivesigns.Delay;
+import me.vovari2.interactivesigns.InteractiveSigns;
 import me.vovari2.interactivesigns.Text;
 import me.vovari2.interactivesigns.sign.SignRotations;
 import me.vovari2.interactivesigns.sign.SignTypes;
@@ -65,7 +66,7 @@ public class InteractListener implements Listener {
                 if (item == null || item.isEmpty())
                     return;
 
-                if (!WorldGuardUtils.canInteractWithSign(blockLocation, player)){
+                if (InteractiveSigns.isWorldGuard() && !WorldGuardUtils.canInteractWithSign(blockLocation, player)){
                     Delay.run(() -> player.sendMessage(Text.value("you_cant_use_that_here")), player, "cant_use_this_here", 20);
                     event.setCancelled(true);
                     return;
@@ -101,7 +102,7 @@ public class InteractListener implements Listener {
                 if (display == null)
                     return;
 
-                if (!WorldGuardUtils.canInteractWithSign(blockLocation, player)){
+                if (InteractiveSigns.isWorldGuard() && !WorldGuardUtils.canInteractWithSign(blockLocation, player)){
                     Delay.run(() -> player.sendMessage(Text.value("you_cant_use_that_here")), player, "cant_use_this_here", 20);
                     event.setCancelled(true);
                     return;
@@ -109,7 +110,7 @@ public class InteractListener implements Listener {
 
                 display.remove();
                 if (display.getItemStack() != null)
-                    signBlock.getWorld().dropItemNaturally(signBlock.getLocation(), display.getItemStack());
+                    signBlock.getWorld().dropItemNaturally(signBlock.getLocation().add(0.5, 0.5, 0.5), display.getItemStack());
 
                 SoundUtils.playRemoveItemOnSign(displayLocation);
                 event.setCancelled(true);

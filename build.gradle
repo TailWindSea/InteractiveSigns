@@ -1,10 +1,10 @@
 plugins {
     id 'java'
-    id 'com.gradleup.shadow' version '8.3.3'
+    id 'com.gradleup.shadow' version '8.3.5'
 }
 
 group = 'me.vovari2'
-version = '1.0.2'
+version = '1.1.0'
 
 repositories {
     mavenCentral()
@@ -26,7 +26,7 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
-    implementation "dev.jorel:commandapi-bukkit-shade:9.6.0"
+    implementation("dev.jorel:commandapi-bukkit-shade:9.7.0")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.6")
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9")
 }
@@ -51,7 +51,7 @@ tasks.withType(JavaCompile).configureEach {
 
 shadowJar {
     relocate("dev.jorel.commandapi", "libs.commandapi")
-    getDestinationDirectory().set(new File("D:\\Minecraft\\Servers\\Purpur 1.21\\plugins\\"))
+    getDestinationDirectory().set(new File("D:\\Minecraft\\Servers\\Purpur 1.21.4\\plugins\\"))
     archiveFileName = "${project.name}-${project.version}.jar"
 }
 

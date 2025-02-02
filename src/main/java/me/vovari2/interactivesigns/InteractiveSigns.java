@@ -20,6 +20,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 public final class InteractiveSigns extends JavaPlugin {
 
     private static InteractiveSigns instance;
+    private static boolean enabledWG;
     private static WorldGuardPlugin instanceWG;
 
     @Override
@@ -32,7 +33,9 @@ public final class InteractiveSigns extends JavaPlugin {
     @Override
     public void onEnable() {
         CommandAPI.onEnable();
-        instanceWG = WorldGuardPlugin.inst();
+        enabledWG = this.getServer().getPluginManager().isPluginEnabled("WorldGuard");
+        if (enabledWG)
+            instanceWG = WorldGuardPlugin.inst();
 
         try{
             Text.initialize(getServer().getConsoleSender());
@@ -69,6 +72,9 @@ public final class InteractiveSigns extends JavaPlugin {
         return instance.getServer().getScheduler();
     }
 
+    public static boolean isWorldGuard(){
+        return enabledWG;
+    }
     public static WorldGuardPlugin getWorldGuardPlugin(){
         return instanceWG;
     }
