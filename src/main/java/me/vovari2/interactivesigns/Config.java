@@ -1,18 +1,8 @@
 package me.vovari2.interactivesigns;
 
-import com.destroystokyo.paper.MaterialSetTag;
 import me.vovari2.interactivesigns.exceptions.ComponentException;
 import me.vovari2.interactivesigns.utils.FileUtils;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.EntityType;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 public class Config {
     public static boolean PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS;
