@@ -9,7 +9,7 @@ import me.vovari2.interactivesigns.commands.ReloadCommand;
 public class Executor {
     public static void initialize(InteractiveSigns instance) {
         CommandAPICommand command = new CommandAPICommand("interactivesigns");
-        command.setAliases(new String[]{"is"});
+        command.setAliases(new String[]{"ins"});
         command.withSubcommand(new CommandAPICommand("help")
                 .withRequirement(HelpCommand::hasPermission)
                 .executes(HelpCommand::preExecute));
