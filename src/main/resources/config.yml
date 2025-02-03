@@ -1,0 +1,7 @@
+
+# True - so players need the “permission_can_use_permission” permission to insert items into the signs.
+# False - so all players can insert items into signs
+player_need_to_have_permission_to_use_signs: false
+
+# Permission required to insert items into the signs
+permission_can_use_permission: "interactive_signs.use"

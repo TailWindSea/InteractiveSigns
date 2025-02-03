@@ -1,4 +1,5 @@
 
+# Messages, when using plugin commands
 command:
   help: "<gradient:#54B435:#82CD47><strikethrough>        </strikethrough></gradient> <gradient:#E8E7AB:#F2AE66>InteractiveSigns</gradient> <gradient:#82CD47:#54B435><strikethrough>        </strikethrough></gradient>
   <newline><newline>  <#54B435>- <gradient:#E8E7AB:#F2AE66> <hover:show_text:'<#E8E7AB>Message about the information of the plugin commands'>/is help</hover></gradient>
@@ -7,5 +8,11 @@ command:
   reload: "<gradient:#54B435:#82CD47>The plugin has been reloaded!"
   clear: "<gradient:#54B435:#82CD47>All displays within a <#F2AE66><%radius%></#F2AE66> radius have been removed!"
 
+# Warning, when a player does not have permission to perform an action
+you_dont_have_permission: "<bold><red>Hey!</bold> <gray>Sorry, but you don't have permission."
+
+# Warning, when a player uses a plaque in someone else's region
 you_cant_use_that_here: "<bold><red>Hey!</bold> <gray>Sorry, but you can't use that here."
+
+# Warning, when a player tries to insert an item into the sign with text
 you_cant_place_item_because_sign_has_text: "<bold><red>Hey!</bold> <gray>Sorry, but it is already occupied by the text."

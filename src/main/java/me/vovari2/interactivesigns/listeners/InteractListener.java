@@ -2,9 +2,7 @@ package me.vovari2.interactivesigns.listeners;
 
 import com.destroystokyo.paper.MaterialSetTag;
 import com.destroystokyo.paper.MaterialTags;
-import me.vovari2.interactivesigns.Delay;
-import me.vovari2.interactivesigns.InteractiveSigns;
-import me.vovari2.interactivesigns.Text;
+import me.vovari2.interactivesigns.*;
 import me.vovari2.interactivesigns.sign.SignRotations;
 import me.vovari2.interactivesigns.sign.SignTypes;
 import me.vovari2.interactivesigns.utils.ItemDisplayUtils;
@@ -82,6 +80,13 @@ public class InteractListener implements Listener {
 
                 if (event.getHand() == null)
                     return;
+
+                if (Config.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS) {
+                    if (!Permission.hasPermission(player, Config.PERMISSION_CAN_USE_SIGNS)) {
+                        Delay.run(() -> player.sendMessage(Text.value("you_dont_have_permission")), player, "cant_use_this_here", 20);
+                        return;
+                    }
+                }
 
                 ItemStack placedItem = item.clone();
                 placedItem.setAmount(1);

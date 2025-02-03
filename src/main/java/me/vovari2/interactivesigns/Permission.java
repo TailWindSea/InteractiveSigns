@@ -12,6 +12,7 @@ import java.util.List;
 
 public class Permission {
     private static Permission imp;
+    public static String PERMISSION_CANT_USE_SIGNS;
     public static void initialize(){
         imp = new Permission();
         imp.put("interactive_signs.*", List.of(
