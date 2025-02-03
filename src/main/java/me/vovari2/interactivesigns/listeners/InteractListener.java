@@ -81,12 +81,10 @@ public class InteractListener implements Listener {
                 if (event.getHand() == null)
                     return;
 
-                if (Config.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS) {
-                    if (!Permission.hasPermission(player, Config.PERMISSION_CAN_USE_SIGNS)) {
-                        Delay.run(() -> player.sendMessage(Text.value("you_dont_have_permission")), player, "cant_use_this_here", 20);
+                if (Config.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS)
+                    if (!player.hasPermission(Config.PERMISSION_CAN_USE_SIGNS))
                         return;
-                    }
-                }
+
 
                 ItemStack placedItem = item.clone();
                 placedItem.setAmount(1);
