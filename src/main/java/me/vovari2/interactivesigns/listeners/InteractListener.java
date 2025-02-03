@@ -17,6 +17,7 @@ import org.bukkit.block.sign.Side;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -30,8 +31,11 @@ import java.util.List;
 
 public class InteractListener implements Listener {
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onInteractPlayer(PlayerInteractEvent event){
+        if (event.isCancelled())
+            return;
+
         if (event.getClickedBlock() == null
                 || !(event.getClickedBlock().getState() instanceof Sign signBlock))
             return;
@@ -64,7 +68,7 @@ public class InteractListener implements Listener {
                 if (item == null || item.isEmpty())
                     return;
 
-                if (InteractiveSigns.isWorldGuard() && !WorldGuardUtils.canInteractWithSign(blockLocation, player)){
+                if (!ProtectionPlugins.canInteractWithSign(player, blockLocation)){
                     Delay.run(() -> player.sendMessage(Text.value("you_cant_use_that_here")), player, "cant_use_this_here", 20);
                     event.setCancelled(true);
                     return;
@@ -105,7 +109,7 @@ public class InteractListener implements Listener {
                 if (display == null)
                     return;
 
-                if (InteractiveSigns.isWorldGuard() && !WorldGuardUtils.canInteractWithSign(blockLocation, player)){
+                if (!ProtectionPlugins.canInteractWithSign(player, blockLocation)){
                     Delay.run(() -> player.sendMessage(Text.value("you_cant_use_that_here")), player, "cant_use_this_here", 20);
                     event.setCancelled(true);
                     return;

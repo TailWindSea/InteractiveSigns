@@ -1,9 +1,6 @@
 package me.vovari2.interactivesigns;
 
-import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.bukkit.BukkitWorldConfiguration;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
@@ -20,8 +17,6 @@ import org.bukkit.scheduler.BukkitScheduler;
 public final class InteractiveSigns extends JavaPlugin {
 
     private static InteractiveSigns instance;
-    private static boolean enabledWG;
-    private static WorldGuardPlugin instanceWG;
 
     @Override
     public void onLoad(){
@@ -33,14 +28,12 @@ public final class InteractiveSigns extends JavaPlugin {
     @Override
     public void onEnable() {
         CommandAPI.onEnable();
-        enabledWG = this.getServer().getPluginManager().isPluginEnabled("WorldGuard");
-        if (enabledWG)
-            instanceWG = WorldGuardPlugin.inst();
 
         try{
             Text.initialize(getServer().getConsoleSender());
             Delay.initialize();
             SignRotations.initialize();
+            ProtectionPlugins.initialize();
 
             Config.initialize();
 
@@ -74,17 +67,8 @@ public final class InteractiveSigns extends JavaPlugin {
         return instance.getServer().getScheduler();
     }
 
-    public static boolean isWorldGuard(){
-        return enabledWG;
-    }
-    public static WorldGuardPlugin getWorldGuardPlugin(){
-        return instanceWG;
-    }
     public static RegionContainer getRegionContainer(){
         return WorldGuard.getInstance().getPlatform().getRegionContainer();
     }
 
-    public static BukkitWorldConfiguration getWorldConfiguration(World world){
-        return getWorldGuardPlugin().getConfigManager().get(world);
-    }
 }

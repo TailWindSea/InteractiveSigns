@@ -18,6 +18,9 @@ public class Permission {
                 HelpCommand.PERMISSION,
                 ReloadCommand.PERMISSION,
                 ClearCommand.PERMISSION));
+        imp.put(HelpCommand.PERMISSION);
+        imp.put(ReloadCommand.PERMISSION);
+        imp.put(ClearCommand.PERMISSION);
     }
     public static boolean hasPermission(CommandSender player, String permission){
         if (!imp.permissions.containsKey(permission))

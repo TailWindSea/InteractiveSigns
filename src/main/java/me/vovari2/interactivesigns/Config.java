@@ -18,7 +18,7 @@ public class Config {
         fileConfig = FileUtils.getYamlConfiguration("config.yml");
 
         PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS = getBoolean("player_need_to_have_permission_to_use_signs");
-        PERMISSION_CAN_USE_SIGNS = getString("permission_can_use_permission");
+        PERMISSION_CAN_USE_SIGNS = getString("permission_can_use_signs");
     }
 
     private boolean getBoolean(String path) throws ComponentException{
