@@ -19,13 +19,9 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
-    maven {
-        url = "https://maven.enginehub.org/repo/"
-    }
-    maven {
-        name = "jitpack.io"
-        url = "https://jitpack.io"
-    }
+    maven { url = "https://maven.enginehub.org/repo/" }
+    maven { url = "https://jitpack.io" }
+    maven { url = "https://repo.william278.net/releases" }
 }
 
 dependencies {
@@ -34,6 +30,7 @@ dependencies {
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.6")
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9")
     compileOnly("com.github.GriefPrevention:GriefPrevention:16.18.2")
+    compileOnly("net.william278.huskclaims:huskclaims-bukkit:1.5")
 }
 
 def targetJavaVersion = 21

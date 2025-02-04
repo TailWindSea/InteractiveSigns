@@ -16,7 +16,7 @@ public class ClearCommand {
     public static String ARGUMENT_RADIUS = "radius";
 
     public static void executesPlayer(Player player, CommandArguments arguments){
-        double radius = (Double) arguments.getOrDefault(ARGUMENT_RADIUS, 1D));
+        double radius = (Double) arguments.getOrDefault(ARGUMENT_RADIUS, 1D);
         for(ItemDisplay display : player.getWorld().getNearbyEntitiesByType(ItemDisplay.class, player.getLocation(), radius, display -> display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign())
                     && (Side.FRONT.name().equals(display.getPersistentDataContainer().get(NamespacedKeyUtils.forItemOnSign(), PersistentDataType.STRING))
                     || Side.BACK.name().equals(display.getPersistentDataContainer().get(NamespacedKeyUtils.forItemOnSign(), PersistentDataType.STRING))))){
