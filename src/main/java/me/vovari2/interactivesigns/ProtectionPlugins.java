@@ -5,6 +5,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionType;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.vovari2.interactivesigns.utils.HuskClaimsUtils;
 import me.vovari2.interactivesigns.utils.WorldGuardUtils;
 import net.kyori.adventure.key.Key;
@@ -79,13 +80,12 @@ public class ProtectionPlugins {
         }
         @Override
         public boolean canInteractWithSign(Player player, Location block) {
-
-            return true;
+            return GriefPrevention.instance.allowBuild(player, block) == null;
         }
     }
     static class HuskClaimsProtectionPlugin extends ProtectionPlugin{
         HuskClaimsProtectionPlugin(){
-            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("GriefPrevention"));
+            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("HuskClaims"));
         }
         @Override
         public boolean canInteractWithSign(Player player, Location block) {

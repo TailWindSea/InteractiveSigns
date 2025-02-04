@@ -29,7 +29,7 @@ import java.util.List;
 
 public class InteractListener implements Listener {
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onInteractPlayer(PlayerInteractEvent event){
         if (event.isCancelled())
             return;
