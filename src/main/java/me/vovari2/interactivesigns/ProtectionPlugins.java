@@ -8,14 +8,10 @@ import com.sk89q.worldguard.protection.regions.RegionType;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.vovari2.interactivesigns.utils.HuskClaimsUtils;
 import me.vovari2.interactivesigns.utils.WorldGuardUtils;
-import net.kyori.adventure.key.Key;
-import net.william278.huskclaims.HuskClaims;
 import net.william278.huskclaims.api.BukkitHuskClaimsAPI;
 import net.william278.huskclaims.api.HuskClaimsAPI;
 import net.william278.huskclaims.claim.Claim;
 import net.william278.huskclaims.libraries.cloplib.operation.OperationType;
-import net.william278.huskclaims.trust.TrustLevel;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
