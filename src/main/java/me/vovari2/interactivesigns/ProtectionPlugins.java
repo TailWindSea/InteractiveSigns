@@ -5,6 +5,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionType;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.vovari2.interactivesigns.utils.WorldGuardUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -18,6 +19,7 @@ public class ProtectionPlugins {
     public static void initialize(){
         plugins = new LinkedList<>();
         plugins.add(new WorldGuardProtectionPlugin());
+        plugins.add(new GriefPreventionProtectionPlugin());
     }
     public static boolean canInteractWithSign(Player player, Location block){
         for (ProtectionPlugin plugin : plugins)
@@ -56,6 +58,17 @@ public class ProtectionPlugins {
             for (ProtectedRegion region : container.getApplicableRegions(WorldGuardUtils.adaptLocation(block)).getRegions())
                 if(!region.isMember(WorldGuardUtils.adaptPlayer(player)) && !region.getType().equals(RegionType.GLOBAL) && !player.isOp())
                     return false;
+
+            return true;
+        }
+    }
+
+    static class GriefPreventionProtectionPlugin extends ProtectionPlugin{
+        GriefPreventionProtectionPlugin(){
+            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("GriefPrevention"));
+        }
+        @Override
+        public boolean canInteractWithSign(Player player, Location block) {
 
             return true;
         }
