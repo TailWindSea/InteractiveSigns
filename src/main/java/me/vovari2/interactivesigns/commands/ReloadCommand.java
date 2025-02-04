@@ -10,7 +10,7 @@ public class ReloadCommand {
 
     public static String PERMISSION = "interactive_signs.reload";
 
-    private static void execute(CommandSender sender){
+    public static void executes(CommandSender sender, CommandArguments arguments){
         InteractiveSigns.getInstance().onDisable();
         InteractiveSigns.getInstance().onLoad();
         InteractiveSigns.getInstance().onEnable();
@@ -18,8 +18,5 @@ public class ReloadCommand {
     }
     public static boolean hasPermission(CommandSender sender){
         return Permission.hasPermission(sender, PERMISSION);
-    }
-    public static void preExecute(CommandSender sender, CommandArguments arguments){
-        execute(sender);
     }
 }

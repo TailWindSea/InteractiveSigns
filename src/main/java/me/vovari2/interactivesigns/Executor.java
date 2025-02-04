@@ -12,17 +12,17 @@ public class Executor {
         command.setAliases(new String[]{"ins"});
         command.withSubcommand(new CommandAPICommand("help")
                 .withRequirement(HelpCommand::hasPermission)
-                .executes(HelpCommand::preExecute));
+                .executes(HelpCommand::executes));
         command.withSubcommand(new CommandAPICommand("reload")
                 .withRequirement(ReloadCommand::hasPermission)
-                .executes(ReloadCommand::preExecute));
+                .executes(ReloadCommand::executes));
 
         command.withSubcommand(new CommandAPICommand("clear")
                 .withRequirement(ClearCommand::hasPermission)
-                .executesPlayer(ClearCommand::preExecute)
+                .executesPlayer(ClearCommand::executesPlayer)
                 .withOptionalArguments(new DoubleArgument(ClearCommand.ARGUMENT_RADIUS))
-                .executesPlayer(ClearCommand::preExecute));
-        command.executes(HelpCommand::preExecute);
+                .executesPlayer(ClearCommand::executesPlayer));
+        command.executes(HelpCommand::executes);
         command.register(instance);
     }
 }

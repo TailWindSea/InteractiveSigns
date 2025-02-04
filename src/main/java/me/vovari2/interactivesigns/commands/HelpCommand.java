@@ -9,14 +9,11 @@ public class HelpCommand {
 
     public static String PERMISSION = "interactive_signs.help";
 
-    private static void execute(CommandSender sender){
+    public static void executes(CommandSender sender, CommandArguments arguments){
         sender.sendMessage(Text.value("command.help"));
     }
 
     public static boolean hasPermission(CommandSender sender){
         return Permission.hasPermission(sender, PERMISSION);
-    }
-    public static void preExecute(CommandSender sender, CommandArguments arguments){
-        execute(sender);
     }
 }

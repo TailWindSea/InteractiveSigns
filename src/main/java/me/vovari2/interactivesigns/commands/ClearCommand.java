@@ -15,7 +15,8 @@ public class ClearCommand {
     public static String PERMISSION = "interactive_signs.clear";
     public static String ARGUMENT_RADIUS = "radius";
 
-    private static void execute(Player player, double radius){
+    public static void executesPlayer(Player player, CommandArguments arguments){
+        double radius = (Double) arguments.getOrDefault(ARGUMENT_RADIUS, 1D));
         for(ItemDisplay display : player.getWorld().getNearbyEntitiesByType(ItemDisplay.class, player.getLocation(), radius, display -> display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign())
                     && (Side.FRONT.name().equals(display.getPersistentDataContainer().get(NamespacedKeyUtils.forItemOnSign(), PersistentDataType.STRING))
                     || Side.BACK.name().equals(display.getPersistentDataContainer().get(NamespacedKeyUtils.forItemOnSign(), PersistentDataType.STRING))))){
@@ -28,8 +29,5 @@ public class ClearCommand {
 
     public static boolean hasPermission(CommandSender sender){
         return Permission.hasPermission(sender, PERMISSION);
-    }
-    public static void preExecute(Player player, CommandArguments arguments){
-        execute(player, (Double) arguments.getOrDefault(ARGUMENT_RADIUS, 1D));
     }
 }
