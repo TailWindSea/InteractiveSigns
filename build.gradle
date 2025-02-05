@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.vovari2'
-version = '1.2.0'
+version = '1.2.2'
 
 repositories {
     mavenCentral()
@@ -22,6 +22,7 @@ repositories {
     maven { url = "https://maven.enginehub.org/repo/" }
     maven { url = "https://jitpack.io" }
     maven { url = "https://repo.william278.net/releases" }
+    maven { url 'https://repo.bg-software.com/repository/api/' }
 }
 
 dependencies {
@@ -31,6 +32,7 @@ dependencies {
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9")
     compileOnly("com.github.GriefPrevention:GriefPrevention:16.18.2")
     compileOnly("net.william278.huskclaims:huskclaims-bukkit:1.5")
+    compileOnly("com.bgsoftware:SuperiorSkyblockAPI:2024.4")
 }
 
 def targetJavaVersion = 21

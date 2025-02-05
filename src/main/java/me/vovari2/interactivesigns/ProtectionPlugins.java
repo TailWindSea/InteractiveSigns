@@ -1,5 +1,7 @@
 package me.vovari2.interactivesigns;
 
+import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
+import com.bgsoftware.superiorskyblock.api.wrappers.SuperiorPlayer;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
@@ -27,16 +29,17 @@ public class ProtectionPlugins {
         addPlugin(new WorldGuardProtectionPlugin());
         addPlugin(new GriefPreventionProtectionPlugin());
         addPlugin(new HuskClaimsProtectionPlugin());
+        addPlugin(new SuperiorSkyblock2ProtectionPlugin());
     }
     public static void addPlugin(ProtectionPlugin plugin){
         if (!plugin.is())
             return;
         plugins.add(plugin);
     }
-    public static boolean canInteractWithSign(Player player, Location block){
+    public static boolean canInteractWithSign(Player player, Location location){
         boolean canInteract = true;
         for (ProtectionPlugin plugin : plugins)
-            if (!plugin.canInteractWithSign(player, block))
+            if (!plugin.canInteractWithSign(player, location))
                 canInteract = false;
         return canInteract;
     }
@@ -58,8 +61,8 @@ public class ProtectionPlugins {
             super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("WorldGuard"));
         }
         @Override
-        public boolean canInteractWithSign(Player player, Location block) {
-            World world = WorldGuardUtils.adaptWorld(block.getWorld());
+        public boolean canInteractWithSign(Player player, Location location) {
+            World world = WorldGuardUtils.adaptWorld(location.getWorld());
             if (!WorldGuardPlugin.inst().getConfigManager().get(world).useRegions)
                 return true;
 
@@ -67,7 +70,7 @@ public class ProtectionPlugins {
             if (container == null)
                 return true;
 
-            for (ProtectedRegion region : container.getApplicableRegions(WorldGuardUtils.adaptLocation(block)).getRegions())
+            for (ProtectedRegion region : container.getApplicableRegions(WorldGuardUtils.adaptLocation(location)).getRegions())
                 if(!region.isMember(WorldGuardUtils.adaptPlayer(player)) && !region.getType().equals(RegionType.GLOBAL) && !player.isOp())
                     return false;
 
@@ -79,8 +82,8 @@ public class ProtectionPlugins {
             super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("GriefPrevention"));
         }
         @Override
-        public boolean canInteractWithSign(Player player, Location block) {
-            return GriefPrevention.instance.allowBuild(player, block) == null;
+        public boolean canInteractWithSign(Player player, Location location) {
+            return GriefPrevention.instance.allowBuild(player, location) == null;
         }
     }
     static class HuskClaimsProtectionPlugin extends ProtectionPlugin{
@@ -88,16 +91,25 @@ public class ProtectionPlugins {
             super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("HuskClaims"));
         }
         @Override
-        public boolean canInteractWithSign(Player player, Location block) {
+        public boolean canInteractWithSign(Player player, Location location) {
             Claim claim;
             try {
-                claim = BukkitHuskClaimsAPI.getInstance().getClaimAt(HuskClaimsUtils.adaptPosition(block)).orElseThrow();
+                claim = BukkitHuskClaimsAPI.getInstance().getClaimAt(HuskClaimsUtils.adaptPosition(location)).orElseThrow();
                 for(OperationType operation : claim.getUserTrustLevel(HuskClaimsUtils.adaptPlayer(player), HuskClaimsAPI.getInstance().getPlugin()).orElseThrow().getFlags()){
                     if (HuskClaimsUtils.ITEMS_IN_SIGNS_PUT.equals(operation.getKey()))
                         return true;
                 }
             } catch(NoSuchElementException e){ return false; }
             return false;
+        }
+    }
+    static class SuperiorSkyblock2ProtectionPlugin extends ProtectionPlugin{
+        SuperiorSkyblock2ProtectionPlugin(){
+            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("SuperiorSkyblock2"));
+        }
+        @Override
+        public boolean canInteractWithSign(Player player, Location location) {
+            return SuperiorSkyblockAPI.getIslandAt(location).isMember(SuperiorPlayer.newBuilder().setUniqueId(player.getUniqueId()).build());
         }
     }
 }
