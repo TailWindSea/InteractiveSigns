@@ -109,7 +109,7 @@ public class ProtectionPlugins {
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
-            return SuperiorSkyblockAPI.getIslandAt(location).isMember(SuperiorPlayer.newBuilder().setUniqueId(player.getUniqueId()).build());
+            return SuperiorSkyblockAPI.getIslandAt(location).isMember(SuperiorSkyblockAPI.getPlayer(player));
         }
     }
 }
