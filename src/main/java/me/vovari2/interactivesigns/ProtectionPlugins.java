@@ -24,20 +24,26 @@ public class ProtectionPlugins {
 
     public static void initialize(){
         plugins = new LinkedList<>();
-        plugins.add(new WorldGuardProtectionPlugin());
-        plugins.add(new GriefPreventionProtectionPlugin());
-        plugins.add(new HuskClaimsProtectionPlugin());
+        addPlugin(new WorldGuardProtectionPlugin());
+        addPlugin(new GriefPreventionProtectionPlugin());
+        addPlugin(new HuskClaimsProtectionPlugin());
+    }
+    public static void addPlugin(ProtectionPlugin plugin){
+        if (!plugin.is())
+            return;
+        plugins.add(plugin);
     }
     public static boolean canInteractWithSign(Player player, Location block){
+        boolean canInteract = true;
         for (ProtectionPlugin plugin : plugins)
-            if (plugin.is() && plugin.canInteractWithSign(player, block))
-                return true;
-        return false;
+            if (!plugin.canInteractWithSign(player, block))
+                canInteract = false;
+        return canInteract;
     }
 
 
 
-    abstract static class ProtectionPlugin{
+    abstract static public class ProtectionPlugin{
         private final boolean enabled;
         ProtectionPlugin(boolean enabled){
             this.enabled = enabled;
@@ -47,7 +53,6 @@ public class ProtectionPlugins {
         }
         public abstract boolean canInteractWithSign(Player player, Location block);
     }
-
     static class WorldGuardProtectionPlugin extends ProtectionPlugin{
         WorldGuardProtectionPlugin(){
             super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("WorldGuard"));
@@ -69,7 +74,6 @@ public class ProtectionPlugins {
             return true;
         }
     }
-
     static class GriefPreventionProtectionPlugin extends ProtectionPlugin{
         GriefPreventionProtectionPlugin(){
             super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("GriefPrevention"));
