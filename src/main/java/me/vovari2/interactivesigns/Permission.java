@@ -22,10 +22,10 @@ public class Permission {
         imp.put(ReloadCommand.PERMISSION);
         imp.put(ClearCommand.PERMISSION);
     }
-    public static boolean hasPermission(CommandSender player, String permission){
+    public static boolean hasPermission(CommandSender sender, String permission){
         if (!imp.permissions.containsKey(permission))
-            return false;
-        return imp.permissions.get(permission).hasPermission(player);
+            return sender.hasPermission(permission);
+        return imp.permissions.get(permission).hasPermission(sender);
     }
 
     private final HashMap<String, PermissionNode> permissions;
