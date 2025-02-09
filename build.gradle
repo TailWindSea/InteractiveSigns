@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.vovari2'
-version = '1.2.2'
+version = '1.2.3'
 
 repositories {
     mavenCentral()
@@ -35,6 +35,12 @@ dependencies {
     compileOnly("com.bgsoftware:SuperiorSkyblockAPI:2024.4")
 }
 
+shadowJar {
+    relocate("dev.jorel.commandapi", "libs.commandapi")
+    getDestinationDirectory().set(new File("D:\\Minecraft\\Servers\\Purpur 1.21.4\\plugins\\"))
+    archiveFileName = "${project.name}-${project.version}.jar"
+}
+
 def targetJavaVersion = 21
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
@@ -51,12 +57,6 @@ tasks.withType(JavaCompile).configureEach {
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
         options.release.set(targetJavaVersion)
     }
-}
-
-shadowJar {
-    relocate("dev.jorel.commandapi", "libs.commandapi")
-    getDestinationDirectory().set(new File("D:\\Minecraft\\Servers\\Purpur 1.21.4\\plugins\\"))
-    archiveFileName = "${project.name}-${project.version}.jar"
 }
 
 processResources {
