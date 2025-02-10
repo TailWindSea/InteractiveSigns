@@ -1,5 +1,11 @@
 package me.vovari2.interactivesigns;
 
+import com.bekvon.bukkit.residence.Residence;
+import com.bekvon.bukkit.residence.api.ResidenceApi;
+import com.bekvon.bukkit.residence.containers.Flags;
+import com.bekvon.bukkit.residence.protection.ClaimedResidence;
+import com.bekvon.bukkit.residence.protection.FlagPermissions;
+import com.bekvon.bukkit.residence.protection.ResidencePermissions;
 import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -29,6 +35,7 @@ public class ProtectionPlugins {
         addPlugin(new GriefPreventionProtectionPlugin());
         addPlugin(new HuskClaimsProtectionPlugin());
         addPlugin(new SuperiorSkyblock2ProtectionPlugin());
+        addPlugin(new ResidenceProtectionPlugin());
     }
     public static void addPlugin(ProtectionPlugin plugin){
         if (!plugin.is())
@@ -112,6 +119,19 @@ public class ProtectionPlugins {
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
             return SuperiorSkyblockAPI.getIslandAt(location).isMember(SuperiorSkyblockAPI.getPlayer(player));
+        }
+    }
+    static class ResidenceProtectionPlugin extends ProtectionPlugin{
+        ResidenceProtectionPlugin(){
+            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("Residence"),"Residence");
+        }
+        @Override
+        public boolean canInteractWithSign(Player player, Location location) {
+            ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(location);
+            if (res == null)
+                return true;
+
+            return res.getPermissions().playerHas(player, Flags.build, true);
         }
     }
 }

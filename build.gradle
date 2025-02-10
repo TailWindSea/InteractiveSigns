@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.vovari2'
-version = '1.2.3.1'
+version = '1.2.4'
 
 repositories {
     mavenCentral()
@@ -35,6 +35,7 @@ dependencies {
     compileOnly("net.william278.huskclaims:huskclaims-bukkit:1.5")
     compileOnly("com.bgsoftware:SuperiorSkyblockAPI:2024.4")
     compileOnly("net.coreprotect:coreprotect:21.0")
+    implementation files('libs/Residence5.1.6.4.jar')
 }
 
 shadowJar {
