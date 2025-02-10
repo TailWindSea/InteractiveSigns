@@ -7,6 +7,13 @@ Hopefully this will improve and diversify **your gaming experience**.
 
 ![Example](https://cdn.modrinth.com/data/cached_images/6519b865f6481460bcd85753502f62776ae870e9.png)
 
+## Core Protect
+If you are using **CoreProtect** to view player actions.
+You can use the command to view the actions of putting and taking an item from the signs.
+> **/co lookup action:sign**
+
+![Example](https://cdn.modrinth.com/data/cached_images/15a50af8c2ee7d6096481a00777de923bf6eef6f.png)
+
 ## Commands:
 - **/ins help**  "Shows information on commands" (Permission: interactive_signs.help)
 - **/ins reload**  "Restarts the plugin (to configure "text.yml")" (Permission: interactive_signs.reload)
