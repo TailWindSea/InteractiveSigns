@@ -5,7 +5,7 @@ This plugin also supports sign protection from plugins: **WorldGuard**, **GriefP
 
 Hopefully this will improve and diversify **your gaming experience**.
 
-![Example](https://cdn.modrinth.com/data/cached_images/6519b865f6481460bcd85753502f62776ae870e9.png)
+![Example](https://cdn.modrinth.com/data/cached_images/61b87774d45d94048068886bac24686d599799de_0.webp)
 
 ## Core Protect
 If you are using **CoreProtect** to view player actions.
