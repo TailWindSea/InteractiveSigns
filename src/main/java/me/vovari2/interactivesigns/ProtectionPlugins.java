@@ -34,6 +34,7 @@ public class ProtectionPlugins {
         if (!plugin.is())
             return;
         plugins.add(plugin);
+        Text.sendMessageToConsole("<green>Found %s plugin, added support for it".formatted(plugin.name));
     }
     public static boolean canInteractWithSign(Player player, Location location){
         boolean canInteract = true;
@@ -47,8 +48,10 @@ public class ProtectionPlugins {
 
     abstract static public class ProtectionPlugin{
         private final boolean enabled;
-        ProtectionPlugin(boolean enabled){
+        private final String name;
+        ProtectionPlugin(boolean enabled, String name){
             this.enabled = enabled;
+            this.name = name;
         }
         public boolean is(){
             return enabled;
@@ -57,7 +60,7 @@ public class ProtectionPlugins {
     }
     static class WorldGuardProtectionPlugin extends ProtectionPlugin{
         WorldGuardProtectionPlugin(){
-            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("WorldGuard"));
+            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("WorldGuard"), "WorldGuard");
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
@@ -78,7 +81,7 @@ public class ProtectionPlugins {
     }
     static class GriefPreventionProtectionPlugin extends ProtectionPlugin{
         GriefPreventionProtectionPlugin(){
-            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("GriefPrevention"));
+            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("GriefPrevention"), "GriefPrevention");
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
@@ -87,7 +90,7 @@ public class ProtectionPlugins {
     }
     static class HuskClaimsProtectionPlugin extends ProtectionPlugin{
         HuskClaimsProtectionPlugin(){
-            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("HuskClaims"));
+            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("HuskClaims"),"HuskClaims");
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
@@ -104,7 +107,7 @@ public class ProtectionPlugins {
     }
     static class SuperiorSkyblock2ProtectionPlugin extends ProtectionPlugin{
         SuperiorSkyblock2ProtectionPlugin(){
-            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("SuperiorSkyblock2"));
+            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("SuperiorSkyblock2"),"SuperiorSkyblock2");
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
