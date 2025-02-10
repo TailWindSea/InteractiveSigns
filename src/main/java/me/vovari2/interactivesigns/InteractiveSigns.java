@@ -10,18 +10,21 @@ import me.vovari2.interactivesigns.listeners.ExplodeListener;
 import me.vovari2.interactivesigns.listeners.GrowListener;
 import me.vovari2.interactivesigns.listeners.InteractListener;
 import me.vovari2.interactivesigns.sign.SignRotations;
+import net.coreprotect.CoreProtect;
+import net.coreprotect.CoreProtectAPI;
 import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
 public final class InteractiveSigns extends JavaPlugin {
 
     private static InteractiveSigns instance;
+    private static CoreProtectAPI coreProtectAPI;
 
     @Override
     public void onLoad(){
         instance = this;
-
         CommandAPI.onLoad(new CommandAPIBukkitConfig(this).verboseOutput(true));
     }
 
@@ -34,6 +37,8 @@ public final class InteractiveSigns extends JavaPlugin {
             Delay.initialize();
             SignRotations.initialize();
             ProtectionPlugins.initialize();
+
+            coreProtectAPI = setupCoreProtect();
 
             Config.initialize();
 
@@ -60,8 +65,32 @@ public final class InteractiveSigns extends JavaPlugin {
         Text.sendMessageToConsole("<red>Plugin %s %s disabled!".formatted(Text.PLUGIN_NAME, Text.VERSION), true);
     }
 
+    public static CoreProtectAPI setupCoreProtect(){
+        Plugin plugin = instance.getServer().getPluginManager().getPlugin("CoreProtect");
+        if (!(plugin instanceof CoreProtect coreProtect))
+            return null;
+        Text.sendMessageToConsole("<green>Found CoreProtect plugin.");
+
+        CoreProtectAPI api = coreProtect.getAPI();
+        if (!api.isEnabled()) {
+            Text.sendMessageToConsole("<red>CoreProtect plugin API is not enabled!");
+            return null;
+        }
+
+        if (api.APIVersion() < 9) {
+            Text.sendMessageToConsole("<red>CoreProtect plugin unsupported version v%s (needed v21.0+)!".formatted(coreProtect.getDescription().getVersion()));
+            return null;
+        }
+        Text.sendMessageToConsole("<green>Full support for CoreProtect plugin!");
+
+        return api;
+    }
+
     public static InteractiveSigns getInstance(){
         return instance;
+    }
+    public static CoreProtectAPI getCoreProtectAPI(){
+        return coreProtectAPI;
     }
     public static BukkitScheduler getScheduler(){
         return instance.getServer().getScheduler();

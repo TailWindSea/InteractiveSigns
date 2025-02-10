@@ -5,6 +5,7 @@ import com.destroystokyo.paper.MaterialTags;
 import me.vovari2.interactivesigns.*;
 import me.vovari2.interactivesigns.sign.SignRotations;
 import me.vovari2.interactivesigns.sign.SignTypes;
+import me.vovari2.interactivesigns.utils.CoreProtectUtils;
 import me.vovari2.interactivesigns.utils.ItemDisplayUtils;
 import me.vovari2.interactivesigns.utils.NamespacedKeyUtils;
 import me.vovari2.interactivesigns.utils.SoundUtils;
@@ -52,8 +53,8 @@ public class InteractListener implements Listener {
         Vector playerDirection = new Vector(Math.sin(-Math.toRadians(player.getYaw())), signDirection.getY(), Math.cos(Math.toRadians(player.getYaw())));
         Side side = getClickedSide(signDirection, playerDirection);
 
-        Location blockLocation = signBlock.getLocation();
-        Location displayLocation = blockLocation.add(0.5F, 0.5F, 0.5F);
+        Location signLocation = signBlock.getLocation();
+        Location displayLocation = signLocation.add(0.5F, 0.5F, 0.5F);
         displayLocation.setDirection(side.equals(Side.FRONT) ? signDirection.clone().multiply(-1) : signDirection);
         switch(event.getAction()) {
             case RIGHT_CLICK_BLOCK: {
@@ -66,7 +67,7 @@ public class InteractListener implements Listener {
                 if (item == null || item.isEmpty())
                     return;
 
-                if (!ProtectionPlugins.canInteractWithSign(player, blockLocation)){
+                if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
                     Delay.run(() -> player.sendMessage(Text.value("warning.you_cant_use_that_here")), player, "cant_use_this_here", 20);
                     event.setCancelled(true);
                     return;
@@ -92,6 +93,9 @@ public class InteractListener implements Listener {
                 placedItem.setAmount(1);
                 player.getInventory().getItem(event.getHand()).subtract();
 
+                if (CoreProtectUtils.isCoreProtect())
+                    CoreProtectUtils.logPuttingAnItem(player, signLocation, placedItem);
+
                 ItemDisplay itemDisplay = (ItemDisplay) displayLocation.getWorld().spawnEntity(displayLocation, EntityType.ITEM_DISPLAY);
                 itemDisplay.getPersistentDataContainer().set(NamespacedKeyUtils.forItemOnSign(), PersistentDataType.STRING, side.name());
                 itemDisplay.setTransformation(SignTypes.getType(signMaterial, side).getTransformation(placedItem.getType()));
@@ -107,7 +111,7 @@ public class InteractListener implements Listener {
                 if (display == null)
                     return;
 
-                if (!ProtectionPlugins.canInteractWithSign(player, blockLocation)){
+                if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
                     Delay.run(() -> player.sendMessage(Text.value("warning.you_cant_use_that_here")), player, "cant_use_this_here", 20);
                     event.setCancelled(true);
                     return;

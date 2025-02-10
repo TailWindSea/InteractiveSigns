@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.vovari2'
-version = '1.2.2'
+version = '1.2.3'
 
 repositories {
     mavenCentral()
@@ -22,7 +22,8 @@ repositories {
     maven { url = "https://maven.enginehub.org/repo/" }
     maven { url = "https://jitpack.io" }
     maven { url = "https://repo.william278.net/releases" }
-    maven { url 'https://repo.bg-software.com/repository/api/' }
+    maven { url = "https://repo.bg-software.com/repository/api/" }
+    maven { url = "https://maven.playpro.com/"}
 }
 
 dependencies {
@@ -33,6 +34,7 @@ dependencies {
     compileOnly("com.github.GriefPrevention:GriefPrevention:16.18.2")
     compileOnly("net.william278.huskclaims:huskclaims-bukkit:1.5")
     compileOnly("com.bgsoftware:SuperiorSkyblockAPI:2024.4")
+    compileOnly("net.coreprotect:coreprotect:21.0")
 }
 
 shadowJar {
