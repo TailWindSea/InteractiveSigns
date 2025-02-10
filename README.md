@@ -8,7 +8,7 @@ Hopefully this will improve and diversify **your gaming experience**.
 ![Example](https://cdn.modrinth.com/data/cached_images/61b87774d45d94048068886bac24686d599799de_0.webp)
 
 ## Core Protect
-If you are using **CoreProtect** to view player actions.
+If you are using **CoreProtect (v21.0+)** to view player actions.
 You can use the command to view the actions of putting and taking an item from the signs.
 > **/co lookup action:sign**
 

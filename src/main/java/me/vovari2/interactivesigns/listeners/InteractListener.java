@@ -93,7 +93,7 @@ public class InteractListener implements Listener {
                 placedItem.setAmount(1);
                 player.getInventory().getItem(event.getHand()).subtract();
 
-                if (CoreProtectUtils.isCoreProtect())
+                if (InteractiveSigns.getCoreProtectAPI() != null)
                     CoreProtectUtils.logPuttingItemOnSign(player.getName(), signLocation, placedItem.getType());
 
                 ItemDisplay itemDisplay = (ItemDisplay) displayLocation.getWorld().spawnEntity(displayLocation, EntityType.ITEM_DISPLAY);
@@ -119,12 +119,13 @@ public class InteractListener implements Listener {
 
                 display.remove();
                 ItemStack droppedItem = display.getItemStack();
-                if (droppedItem != null)
-                    signBlock.getWorld().dropItemNaturally(InteractiveSigns.getInstance().getServer().getMinecraftVersion().equals("1.21.4") ? signBlock.getLocation().add(0.5, 0.5, 0.5) : signBlock.getLocation(), droppedItem);
+                if (droppedItem == null)
+                    return;
 
-                if (CoreProtectUtils.isCoreProtect())
+                if (InteractiveSigns.getCoreProtectAPI() != null)
                     CoreProtectUtils.logTakingItemOnSign(player.getName(), signLocation, droppedItem.getType());
-                
+
+                signBlock.getWorld().dropItemNaturally(InteractiveSigns.getInstance().getServer().getMinecraftVersion().equals("1.21.4") ? signBlock.getLocation().add(0.5, 0.5, 0.5) : signBlock.getLocation(), droppedItem);
                 SoundUtils.playRemoveItemOnSign(displayLocation);
                 event.setCancelled(true);
             }
