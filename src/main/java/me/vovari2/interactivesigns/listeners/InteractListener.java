@@ -94,7 +94,7 @@ public class InteractListener implements Listener {
                 player.getInventory().getItem(event.getHand()).subtract();
 
                 if (CoreProtectUtils.isCoreProtect())
-                    CoreProtectUtils.logPuttingAnItem(player, signLocation, placedItem);
+                    CoreProtectUtils.logPuttingItemOnSign(player.getName(), signLocation, placedItem.getType());
 
                 ItemDisplay itemDisplay = (ItemDisplay) displayLocation.getWorld().spawnEntity(displayLocation, EntityType.ITEM_DISPLAY);
                 itemDisplay.getPersistentDataContainer().set(NamespacedKeyUtils.forItemOnSign(), PersistentDataType.STRING, side.name());
@@ -118,9 +118,13 @@ public class InteractListener implements Listener {
                 }
 
                 display.remove();
-                if (display.getItemStack() != null)
-                    signBlock.getWorld().dropItemNaturally(InteractiveSigns.getInstance().getServer().getMinecraftVersion().equals("1.21.4") ? signBlock.getLocation().add(0.5, 0.5, 0.5) : signBlock.getLocation(), display.getItemStack());
+                ItemStack droppedItem = display.getItemStack();
+                if (droppedItem != null)
+                    signBlock.getWorld().dropItemNaturally(InteractiveSigns.getInstance().getServer().getMinecraftVersion().equals("1.21.4") ? signBlock.getLocation().add(0.5, 0.5, 0.5) : signBlock.getLocation(), droppedItem);
 
+                if (CoreProtectUtils.isCoreProtect())
+                    CoreProtectUtils.logTakingItemOnSign(player.getName(), signLocation, droppedItem.getType());
+                
                 SoundUtils.playRemoveItemOnSign(displayLocation);
                 event.setCancelled(true);
             }

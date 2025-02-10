@@ -25,7 +25,7 @@ public final class InteractiveSigns extends JavaPlugin {
     @Override
     public void onLoad(){
         instance = this;
-        CommandAPI.onLoad(new CommandAPIBukkitConfig(this).verboseOutput(true));
+        CommandAPI.onLoad(new CommandAPIBukkitConfig(this).verboseOutput(false));
     }
 
     @Override
