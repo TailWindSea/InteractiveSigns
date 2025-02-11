@@ -5,14 +5,14 @@ This plugin also supports sign protection from plugins: **WorldGuard**, **GriefP
 
 Hopefully this will improve and diversify **your gaming experience**.
 
-![Example](https://cdn.modrinth.com/data/cached_images/61b87774d45d94048068886bac24686d599799de_0.webp)
+![Example](/images/example.png)
 
 ## Core Protect
 If you are using **CoreProtect (v21.0+)** to view player actions.
 You can use the command to view the actions of putting and taking an item from the signs.
 > **/co lookup action:sign**
 
-![Example](https://cdn.modrinth.com/data/cached_images/15a50af8c2ee7d6096481a00777de923bf6eef6f.png)
+![Example](/images/example_coreprotect.png)
 
 ## Commands:
 - **/ins help**  "Shows information on commands" (Permission: interactive_signs.help)
