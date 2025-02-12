@@ -8,8 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class HuskClaimsUtils {
-    public static Key ITEMS_IN_SIGNS_PUT = Key.key("items_in_signs_put");
-
     public static User adaptPlayer(Player player){
         return BukkitHuskClaimsAPI.getInstance().getOnlineUser(player);
     }

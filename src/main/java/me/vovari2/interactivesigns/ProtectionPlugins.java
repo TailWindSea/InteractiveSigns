@@ -6,9 +6,16 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionType;
+import me.angeschossen.lands.api.LandsIntegration;
+import me.angeschossen.lands.api.flags.enums.FlagTarget;
+import me.angeschossen.lands.api.flags.enums.RoleFlagCategory;
+import me.angeschossen.lands.api.flags.type.Flags;
+import me.angeschossen.lands.api.flags.type.RoleFlag;
+import me.angeschossen.lands.api.land.LandWorld;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.vovari2.interactivesigns.utils.HuskClaimsUtils;
 import me.vovari2.interactivesigns.utils.WorldGuardUtils;
+import net.kyori.adventure.key.Key;
 import net.william278.huskclaims.api.BukkitHuskClaimsAPI;
 import net.william278.huskclaims.api.HuskClaimsAPI;
 import net.william278.huskclaims.claim.Claim;
@@ -29,6 +36,7 @@ public class ProtectionPlugins {
         addPlugin(new GriefPreventionProtectionPlugin());
         addPlugin(new HuskClaimsProtectionPlugin());
         addPlugin(new SuperiorSkyblock2ProtectionPlugin());
+        addPlugin(new LandsProtectionPlugin());
         // addPlugin(new ResidenceProtectionPlugin());
     }
     public static void addPlugin(ProtectionPlugin plugin){
@@ -90,8 +98,10 @@ public class ProtectionPlugins {
         }
     }
     static class HuskClaimsProtectionPlugin extends ProtectionPlugin{
+        private final Key ITEMS_ON_SIGNS;
         HuskClaimsProtectionPlugin(){
             super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("HuskClaims"),"HuskClaims");
+            ITEMS_ON_SIGNS = Key.key("items_on_signs");
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
@@ -99,7 +109,7 @@ public class ProtectionPlugins {
             try {
                 claim = BukkitHuskClaimsAPI.getInstance().getClaimAt(HuskClaimsUtils.adaptPosition(location)).orElseThrow();
                 for(OperationType operation : claim.getUserTrustLevel(HuskClaimsUtils.adaptPlayer(player), HuskClaimsAPI.getInstance().getPlugin()).orElseThrow().getFlags()){
-                    if (HuskClaimsUtils.ITEMS_IN_SIGNS_PUT.equals(operation.getKey()))
+                    if (ITEMS_ON_SIGNS.equals(operation.getKey()))
                         return true;
                 }
             } catch(NoSuchElementException e){ return false; }
@@ -113,6 +123,22 @@ public class ProtectionPlugins {
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
             return SuperiorSkyblockAPI.getIslandAt(location).isMember(SuperiorSkyblockAPI.getPlayer(player));
+        }
+    }
+    static class LandsProtectionPlugin extends ProtectionPlugin{
+        private final LandsIntegration instance;
+        private final RoleFlag flag;
+        LandsProtectionPlugin(){
+            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("Lands"),"Lands");
+            instance = LandsIntegration.of(InteractiveSigns.getInstance());
+            flag = RoleFlag.of(instance, FlagTarget.PLAYER, RoleFlagCategory.ACTION, "items_on_signs");
+        }
+        @Override
+        public boolean canInteractWithSign(Player player, Location location) {
+            LandWorld world = instance.getWorld(location.getWorld());
+            if (world == null)
+                return true;
+            return world.hasRoleFlag(player.getUniqueId(), location, flag);
         }
     }
 //    static class ResidenceProtectionPlugin extends ProtectionPlugin{
