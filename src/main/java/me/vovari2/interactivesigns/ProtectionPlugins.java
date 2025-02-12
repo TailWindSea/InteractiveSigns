@@ -20,7 +20,9 @@ import net.william278.huskclaims.api.HuskClaimsAPI;
 import net.william278.huskclaims.claim.Claim;
 import net.william278.huskclaims.libraries.cloplib.operation.OperationType;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -29,14 +31,13 @@ import java.util.NoSuchElementException;
 public class ProtectionPlugins {
     private static List<ProtectionPlugin> plugins;
 
-    public static void initialize(){
+    public static void load(){
         plugins = new LinkedList<>();
         addPlugin(new WorldGuardProtectionPlugin());
         addPlugin(new GriefPreventionProtectionPlugin());
         addPlugin(new HuskClaimsProtectionPlugin());
         addPlugin(new SuperiorSkyblock2ProtectionPlugin());
         addPlugin(new LandsProtectionPlugin());
-        // addPlugin(new ResidenceProtectionPlugin());
     }
     public static void addPlugin(ProtectionPlugin plugin){
         if (!plugin.is())
@@ -100,7 +101,7 @@ public class ProtectionPlugins {
         private final Key ITEMS_ON_SIGNS;
         HuskClaimsProtectionPlugin(){
             super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("HuskClaims"),"HuskClaims");
-            ITEMS_ON_SIGNS = Key.key("items_on_signs");
+            ITEMS_ON_SIGNS = Key.key(Config.HUSKCLAIMS_FLAG_ID);
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
@@ -130,7 +131,10 @@ public class ProtectionPlugins {
         LandsProtectionPlugin(){
             super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("Lands"),"Lands");
             instance = LandsIntegration.of(InteractiveSigns.getInstance());
-            flag = RoleFlag.of(instance, FlagTarget.PLAYER, RoleFlagCategory.ACTION, "items_on_signs");
+            flag = RoleFlag.of(instance, FlagTarget.PLAYER, RoleFlagCategory.ACTION, Config.LANDS_FLAG_ID);
+            flag.setDisplayName(Config.LANDS_FLAG_NAME)
+                    .setIcon(new ItemStack(Config.LANDS_FLAG_MATERIAL))
+                    .setDescription(Config.LANDS_FLAG_DESCRIPTION);
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {

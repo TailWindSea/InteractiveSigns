@@ -26,33 +26,32 @@ public final class InteractiveSigns extends JavaPlugin {
     public void onLoad(){
         instance = this;
         CommandAPI.onLoad(new CommandAPIBukkitConfig(this).verboseOutput(false));
+
+        try {
+            Text.initialize(getServer().getConsoleSender());
+            Config.initialize();
+
+            ProtectionPlugins.load();
+        }
+        catch (ComponentException e) { Text.sendMessageToConsole(e.getComponentMessage());}
     }
 
     @Override
     public void onEnable() {
         CommandAPI.onEnable();
 
-        try{
-            Text.initialize(getServer().getConsoleSender());
-            Delay.initialize();
-            SignRotations.initialize();
-            ProtectionPlugins.initialize();
+        Delay.initialize();
+        SignRotations.initialize();
 
-            coreProtectAPI = setupCoreProtect();
+        coreProtectAPI = setupCoreProtect();
 
-            Config.initialize();
+        Permission.initialize();
+        Executor.initialize(instance);
 
-            Permission.initialize();
-            Executor.initialize(instance);
-
-            getServer().getPluginManager().registerEvents(new InteractListener(), this);
-            getServer().getPluginManager().registerEvents(new BreakListener(), this);
-            getServer().getPluginManager().registerEvents(new ExplodeListener(), this);
-            getServer().getPluginManager().registerEvents(new GrowListener(), this);
-        }
-        catch (ComponentException e) {
-            Text.sendMessageToConsole(e.getComponentMessage());
-        }
+        getServer().getPluginManager().registerEvents(new InteractListener(), this);
+        getServer().getPluginManager().registerEvents(new BreakListener(), this);
+        getServer().getPluginManager().registerEvents(new ExplodeListener(), this);
+        getServer().getPluginManager().registerEvents(new GrowListener(), this);
 
         Text.sendMessageToConsole("<green>Plugin %s %s enabled!".formatted(Text.PLUGIN_NAME, Text.VERSION), true);
     }
