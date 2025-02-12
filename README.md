@@ -1,7 +1,7 @@
 # Interactive Signs (1.20.2 - 1.21.4)
 The plugin allows you to insert your items into the sign by clicking **the right mouse button**. To pick up an item, you need to hit the sign with **the left mouse button**.
 
-This plugin also supports sign protection from plugins: **WorldGuard**, **GriefPrevention**, **SuperiorSkyblock2** and **HuskClaims** (for HuskClaims added “items_in_signs_put” trust flag)
+This plugin also supports sign protection from plugins: **WorldGuard**, **GriefPrevention**, **SuperiorSkyblock2**, **Lands**, and **HuskClaims**
 
 Hopefully this will improve and diversify **your gaming experience**.
 
@@ -28,6 +28,19 @@ player_need_to_have_permission_to_use_signs: false
 
 # Permission required to insert items into the signs
 permission_can_use_signs: "interactive_signs.use"
+
+
+## Settings for protection plugins
+# HuskClaims
+huskclaims:
+  flag_id: "items_on_signs"
+
+# Lands
+lands:
+  flag_id: "items_on_signs"
+  flag_name: "Items on signs"
+  flag_material: "SPRUCE_HANGING_SIGN"
+  flag_description: "Flag that allows you to insert and take items from the tablets"
 ```
 
 ## File "text.yml":

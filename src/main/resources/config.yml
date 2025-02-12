@@ -7,7 +7,6 @@ player_need_to_have_permission_to_use_signs: false
 permission_can_use_signs: "interactive_signs.use"
 
 
-
 ## Settings for protection plugins
 # HuskClaims
 huskclaims:
