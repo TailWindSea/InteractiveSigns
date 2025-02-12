@@ -32,7 +32,7 @@ public class ProtectionPlugins {
         addPlugin(new GriefPreventionProtectionPlugin());
         addPlugin(new HuskClaimsProtectionPlugin());
         addPlugin(new SuperiorSkyblock2ProtectionPlugin());
-        addPlugin(new ResidenceProtectionPlugin());
+        // addPlugin(new ResidenceProtectionPlugin());
     }
     public static void addPlugin(ProtectionPlugin plugin){
         if (!plugin.is())
@@ -118,17 +118,17 @@ public class ProtectionPlugins {
             return SuperiorSkyblockAPI.getIslandAt(location).isMember(SuperiorSkyblockAPI.getPlayer(player));
         }
     }
-    static class ResidenceProtectionPlugin extends ProtectionPlugin{
-        ResidenceProtectionPlugin(){
-            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("Residence"),"Residence");
-        }
-        @Override
-        public boolean canInteractWithSign(Player player, Location location) {
-            ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(location);
-            if (res == null)
-                return true;
-
-            return res.getPermissions().playerHas(player, Flags.build, true);
-        }
-    }
+//    static class ResidenceProtectionPlugin extends ProtectionPlugin{
+//        ResidenceProtectionPlugin(){
+//            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("Residence"),"Residence");
+//        }
+//        @Override
+//        public boolean canInteractWithSign(Player player, Location location) {
+//            ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(location);
+//            if (res == null)
+//                return true;
+//
+//            return res.getPermissions().playerHas(player, Flags.build, true);
+//        }
+//    }
 }
