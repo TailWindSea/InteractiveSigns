@@ -9,7 +9,6 @@ import com.sk89q.worldguard.protection.regions.RegionType;
 import me.angeschossen.lands.api.LandsIntegration;
 import me.angeschossen.lands.api.flags.enums.FlagTarget;
 import me.angeschossen.lands.api.flags.enums.RoleFlagCategory;
-import me.angeschossen.lands.api.flags.type.Flags;
 import me.angeschossen.lands.api.flags.type.RoleFlag;
 import me.angeschossen.lands.api.land.LandWorld;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;

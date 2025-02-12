@@ -1,6 +1,5 @@
 package me.vovari2.interactivesigns.utils;
 
-import net.kyori.adventure.key.Key;
 import net.william278.huskclaims.api.BukkitHuskClaimsAPI;
 import net.william278.huskclaims.position.Position;
 import net.william278.huskclaims.user.User;
