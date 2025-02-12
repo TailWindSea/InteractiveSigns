@@ -20,7 +20,6 @@ import net.william278.huskclaims.api.HuskClaimsAPI;
 import net.william278.huskclaims.claim.Claim;
 import net.william278.huskclaims.libraries.cloplib.operation.OperationType;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -40,7 +39,7 @@ public class ProtectionPlugins {
         addPlugin(new LandsProtectionPlugin());
     }
     public static void addPlugin(ProtectionPlugin plugin){
-        if (!plugin.is())
+        if (!plugin.enabled())
             return;
         plugins.add(plugin);
         Text.sendMessageToConsole("<green>Found %s plugin, added support for it".formatted(plugin.name));
@@ -56,20 +55,18 @@ public class ProtectionPlugins {
 
 
     abstract static public class ProtectionPlugin{
-        private final boolean enabled;
         private final String name;
-        ProtectionPlugin(boolean enabled, String name){
-            this.enabled = enabled;
+        ProtectionPlugin(String name){
             this.name = name;
         }
-        public boolean is(){
-            return enabled;
+        public boolean enabled(){
+            return InteractiveSigns.getInstance().getServer().getPluginManager().getPlugin(name) != null;
         }
         public abstract boolean canInteractWithSign(Player player, Location block);
     }
     static class WorldGuardProtectionPlugin extends ProtectionPlugin{
         WorldGuardProtectionPlugin(){
-            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("WorldGuard"), "WorldGuard");
+            super("WorldGuard");
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
@@ -90,7 +87,7 @@ public class ProtectionPlugins {
     }
     static class GriefPreventionProtectionPlugin extends ProtectionPlugin{
         GriefPreventionProtectionPlugin(){
-            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("GriefPrevention"), "GriefPrevention");
+            super("GriefPrevention");
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
@@ -100,7 +97,7 @@ public class ProtectionPlugins {
     static class HuskClaimsProtectionPlugin extends ProtectionPlugin{
         private final Key ITEMS_ON_SIGNS;
         HuskClaimsProtectionPlugin(){
-            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("HuskClaims"),"HuskClaims");
+            super("HuskClaims");
             ITEMS_ON_SIGNS = Key.key(Config.HUSKCLAIMS_FLAG_ID);
         }
         @Override
@@ -118,7 +115,7 @@ public class ProtectionPlugins {
     }
     static class SuperiorSkyblock2ProtectionPlugin extends ProtectionPlugin{
         SuperiorSkyblock2ProtectionPlugin(){
-            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("SuperiorSkyblock2"),"SuperiorSkyblock2");
+            super("SuperiorSkyblock2");
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
@@ -126,15 +123,16 @@ public class ProtectionPlugins {
         }
     }
     static class LandsProtectionPlugin extends ProtectionPlugin{
-        private final LandsIntegration instance;
-        private final RoleFlag flag;
+        private LandsIntegration instance;
+        private RoleFlag flag;
         LandsProtectionPlugin(){
-            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("Lands"),"Lands");
+            super("Lands");
+            if (!enabled())
+                return;
+
             instance = LandsIntegration.of(InteractiveSigns.getInstance());
             flag = RoleFlag.of(instance, FlagTarget.PLAYER, RoleFlagCategory.ACTION, Config.LANDS_FLAG_ID);
-            flag.setDisplayName(Config.LANDS_FLAG_NAME)
-                    .setIcon(new ItemStack(Config.LANDS_FLAG_MATERIAL))
-                    .setDescription(Config.LANDS_FLAG_DESCRIPTION);
+            flag.setDisplayName(Config.LANDS_FLAG_NAME).setIcon(new ItemStack(Config.LANDS_FLAG_MATERIAL)).setDescription(Config.LANDS_FLAG_DESCRIPTION);
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
