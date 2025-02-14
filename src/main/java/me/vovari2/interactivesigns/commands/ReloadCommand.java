@@ -3,7 +3,6 @@ package me.vovari2.interactivesigns.commands;
 import dev.jorel.commandapi.executors.CommandArguments;
 import me.vovari2.interactivesigns.InteractiveSigns;
 import me.vovari2.interactivesigns.Permission;
-import me.vovari2.interactivesigns.Text;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 

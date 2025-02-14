@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.vovari2'
-version = '1.2.5a'
+version = '1.2.6'
 
 repositories {
     mavenCentral()
