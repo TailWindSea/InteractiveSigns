@@ -6,6 +6,9 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionType;
+import me.angeschossen.chestprotect.api.ChestProtectAPI;
+import me.angeschossen.chestprotect.api.protection.block.BlockProtection;
+import me.angeschossen.chestprotect.api.protection.world.ProtectionWorld;
 import me.angeschossen.lands.api.LandsIntegration;
 import me.angeschossen.lands.api.flags.enums.FlagTarget;
 import me.angeschossen.lands.api.flags.enums.RoleFlagCategory;
@@ -37,6 +40,7 @@ public class ProtectionPlugins {
         addPlugin(new HuskClaimsProtectionPlugin());
         addPlugin(new SuperiorSkyblock2ProtectionPlugin());
         addPlugin(new LandsProtectionPlugin());
+        addPlugin(new ChestProtectProtectionPlugin());
     }
     public static void addPlugin(ProtectionPlugin plugin){
         if (!plugin.enabled())
@@ -140,6 +144,28 @@ public class ProtectionPlugins {
             if (world == null)
                 return true;
             return world.hasRoleFlag(player.getUniqueId(), location, flag);
+        }
+    }
+    static class ChestProtectProtectionPlugin extends ProtectionPlugin{
+        ChestProtectAPI instance;
+        ChestProtectProtectionPlugin(){
+            super("ChestProtect");
+            if (!enabled())
+                return;
+
+            instance = ChestProtectAPI.getInstance();
+        }
+        @Override
+        public boolean canInteractWithSign(Player player, Location location) {
+            ProtectionWorld world = instance.getProtectionWorld(location.getWorld());
+            if (world == null)
+                return true;
+
+            BlockProtection block = world.getBlockProtection(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+            if (block == null)
+                return true;
+
+            return block.getTrusted().contains(player.getUniqueId());
         }
     }
 //    static class ResidenceProtectionPlugin extends ProtectionPlugin{

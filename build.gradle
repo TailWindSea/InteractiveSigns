@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.vovari2'
-version = '1.2.4'
+version = '1.2.5'
 
 repositories {
     mavenCentral()
@@ -34,8 +34,9 @@ dependencies {
     compileOnly("com.github.GriefPrevention:GriefPrevention:16.18.2")
     compileOnly("net.william278.huskclaims:huskclaims-bukkit:1.5")
     compileOnly("com.bgsoftware:SuperiorSkyblockAPI:2024.4")
-    compileOnly("net.coreprotect:coreprotect:21.0")
+    compileOnly("net.coreprotect:coreprotect:22.0")
     compileOnly "com.github.angeschossen:LandsAPI:7.11.10"
+    compileOnly "com.github.angeschossen:ChestProtectAPI:5.19.16"
     // implementation files('libs/Residence5.1.6.4.jar')
 }
 

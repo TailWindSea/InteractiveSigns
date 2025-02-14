@@ -77,7 +77,7 @@ public final class InteractiveSigns extends JavaPlugin {
         }
 
         if (api.APIVersion() < 9) {
-            Text.sendMessageToConsole("<red>CoreProtect plugin unsupported version v%s (needed v21.0+)!".formatted(coreProtect.getDescription().getVersion()));
+            Text.sendMessageToConsole("<red>CoreProtect plugin unsupported version v%s (needed v22.0+)!".formatted(coreProtect.getDescription().getVersion()));
             return null;
         }
         Text.sendMessageToConsole("<green>Full support for CoreProtect plugin!");
