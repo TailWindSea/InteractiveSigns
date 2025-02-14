@@ -1,7 +1,7 @@
 # Interactive Signs (1.20.2 - 1.21.4)
 The plugin allows you to insert your items into the sign by clicking **the right mouse button**. To pick up an item, you need to hit the sign with **the left mouse button**.
 
-This plugin also supports sign protection from plugins: **WorldGuard**, **GriefPrevention**, **SuperiorSkyblock2**, **ChestProtect** (*not fully tested), **Lands**, and **HuskClaims**
+This plugin also supports sign protection from plugins: **WorldGuard**, **GriefPrevention**, **SuperiorSkyblock2**, **ChestProtect**, **Lands**, and **HuskClaims**
 
 Hopefully this will improve and diversify **your gaming experience**.
 
