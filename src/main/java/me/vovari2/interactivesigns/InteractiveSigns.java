@@ -22,8 +22,13 @@ public final class InteractiveSigns extends JavaPlugin {
     private static InteractiveSigns instance;
     private static CoreProtectAPI coreProtectAPI;
 
+    public boolean isLoaded;
+    public boolean isEnabled;
+
     @Override
-    public void onLoad(){
+    public void onLoad() {
+        isLoaded = true;
+
         instance = this;
         CommandAPI.onLoad(new CommandAPIBukkitConfig(this).verboseOutput(false));
 
@@ -32,28 +37,39 @@ public final class InteractiveSigns extends JavaPlugin {
             Config.initialize();
 
             ProtectionPlugins.load();
+        } catch (ComponentException e) {
+            Text.sendMessageToConsole(e.getComponentMessage());
+            isLoaded = false;
         }
-        catch (ComponentException e) { Text.sendMessageToConsole(e.getComponentMessage());}
+
+        if (isLoaded)
+            Text.sendMessageToConsole("<green>Plugin %s %s loaded!".formatted(Text.PLUGIN_NAME, Text.VERSION), true);
+        else Text.sendMessageToConsole("<yellow>Plugin %s %s is not loaded!".formatted(Text.PLUGIN_NAME, Text.VERSION), true);
     }
 
     @Override
     public void onEnable() {
+        isEnabled = true;
         CommandAPI.onEnable();
 
-        Delay.initialize();
-        SignRotations.initialize();
-
-        coreProtectAPI = setupCoreProtect();
-
         Permission.initialize();
-        Executor.initialize(instance);
+        Executor.preInitialize(instance);
 
-        getServer().getPluginManager().registerEvents(new InteractListener(), this);
-        getServer().getPluginManager().registerEvents(new BreakListener(), this);
-        getServer().getPluginManager().registerEvents(new ExplodeListener(), this);
-        getServer().getPluginManager().registerEvents(new GrowListener(), this);
+        if (isLoaded){
+            Delay.initialize();
+            SignRotations.initialize();
 
-        Text.sendMessageToConsole("<green>Plugin %s %s enabled!".formatted(Text.PLUGIN_NAME, Text.VERSION), true);
+            coreProtectAPI = setupCoreProtect();
+            Executor.initialize(instance);
+
+            getServer().getPluginManager().registerEvents(new InteractListener(), this);
+            getServer().getPluginManager().registerEvents(new BreakListener(), this);
+            getServer().getPluginManager().registerEvents(new ExplodeListener(), this);
+            getServer().getPluginManager().registerEvents(new GrowListener(), this);
+        }
+        if (isLoaded && isEnabled)
+            Text.sendMessageToConsole("<green>Plugin %s %s enabled!".formatted(Text.PLUGIN_NAME, Text.VERSION), true);
+        else Text.sendMessageToConsole("<yellow>Plugin %s %s is not enabled! There was an error in the console above!".formatted(Text.PLUGIN_NAME, Text.VERSION), true);
     }
 
     @Override
@@ -76,8 +92,8 @@ public final class InteractiveSigns extends JavaPlugin {
             return null;
         }
 
-        if (api.APIVersion() < 9) {
-            Text.sendMessageToConsole("<red>CoreProtect plugin unsupported version v%s (needed v22.0+)!".formatted(coreProtect.getDescription().getVersion()));
+        if (api.APIVersion() < 10) {
+            Text.sendMessageToConsole("<red>CoreProtect plugin unsupported version v%s (needed v22.4+)!".formatted(coreProtect.getDescription().getVersion()));
             return null;
         }
         Text.sendMessageToConsole("<green>Full support for CoreProtect plugin!");
