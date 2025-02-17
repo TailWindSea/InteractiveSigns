@@ -1,5 +1,9 @@
 package me.vovari2.interactivesigns;
 
+import com.bekvon.bukkit.residence.api.ResidenceApi;
+import com.bekvon.bukkit.residence.containers.Flags;
+import com.bekvon.bukkit.residence.protection.ClaimedResidence;
+import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -41,6 +45,7 @@ public class ProtectionPlugins {
         addPlugin(new SuperiorSkyblock2ProtectionPlugin());
         addPlugin(new LandsProtectionPlugin());
         addPlugin(new ChestProtectProtectionPlugin());
+        addPlugin(new ResidenceProtectionPlugin());
     }
     public static void addPlugin(ProtectionPlugin plugin){
         if (!plugin.enabled())
@@ -168,17 +173,17 @@ public class ProtectionPlugins {
             return block.getTrusted().contains(player.getUniqueId());
         }
     }
-//    static class ResidenceProtectionPlugin extends ProtectionPlugin{
-//        ResidenceProtectionPlugin(){
-//            super(InteractiveSigns.getInstance().getServer().getPluginManager().isPluginEnabled("Residence"),"Residence");
-//        }
-//        @Override
-//        public boolean canInteractWithSign(Player player, Location location) {
-//            ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(location);
-//            if (res == null)
-//                return true;
-//
-//            return res.getPermissions().playerHas(player, Flags.build, true);
-//        }
-//    }
+    static class ResidenceProtectionPlugin extends ProtectionPlugin{
+        ResidenceProtectionPlugin(){
+            super("Residence");
+        }
+        @Override
+        public boolean canInteractWithSign(Player player, Location location) {
+            ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(location);
+            if (res == null)
+                return true;
+
+            return res.getPermissions().playerHas(player, Flags.container, true);
+        }
+    }
 }
