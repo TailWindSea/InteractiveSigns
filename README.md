@@ -1,7 +1,7 @@
 # Interactive Signs (1.20.2 - 1.21.4)
 The plugin allows you to insert your items into the sign by clicking **the right mouse button**. To pick up an item, you need to hit the sign with **the left mouse button**.
 
-This plugin also supports sign protection from plugins: **WorldGuard**, **GriefPrevention**, **SuperiorSkyblock2**, **ChestProtect**, **Lands**, and **HuskClaims**
+This plugin also supports sign protection from plugins: **WorldGuard**, **Lands**, **Residence**, **HuskClaims**, **GriefPrevention**, **SuperiorSkyblock2** and **ChestProtect**
 
 Hopefully this will improve and diversify **your gaming experience**.
 
@@ -51,12 +51,12 @@ command:
   <newline><newline>  <#54B435>- <gradient:#E8E7AB:#F2AE66> <hover:show_text:'<#E8E7AB>Message about the information of the plugin commands'>/is help</hover></gradient>
   <newline>  <#54B435>- <gradient:#E8E7AB:#F2AE66> <hover:show_text:'<#E8E7AB>Reloading the plugin'>/is reload</hover></gradient>
   <newline>  <#54B435>- <gradient:#E8E7AB:#F2AE66> <hover:show_text:'<#E8E7AB>Clear all entities created by the plugin within a certain radius'>/is clear <radius></hover></gradient><newline>"
-  reload: "<gradient:#54B435:#82CD47>The plugin has been reloaded!"
   clear: "<gradient:#54B435:#82CD47>All displays within a <#F2AE66><%radius%></#F2AE66> radius have been removed!"
 
-# Warning, when a player uses a plaque in someone else's region
-you_cant_use_that_here: "<bold><red>Hey!</bold> <gray>Sorry, but you can't use that here."
+warning:
+  # Warning, when a player uses a plaque in someone else's region (if you make the field empty (“”) , the message will not be sent)
+  you_cant_use_that_here: "<bold><red>Hey!</bold> <gray>Sorry, but you can't use that here."
 
-# Warning, when a player tries to insert an item into the sign with text
-you_cant_place_item_because_sign_has_text: "<bold><red>Hey!</bold> <gray>Sorry, but it is already occupied by the text."
+  # Warning, when a player tries to insert an item into the sign with text (if you make the field empty (“”) , the message will not be sent)
+  you_cant_place_item_because_sign_has_text: "<bold><red>Hey!</bold> <gray>Sorry, but it is already occupied by the text."
 ```
