@@ -80,7 +80,6 @@ public class InteractListener implements Listener {
                         return;
                     if (!Text.isEmpty("warning.you_cant_place_item_because_sign_has_text"))
                         Delay.run(() -> player.sendMessage(Text.value("warning.you_cant_place_item_because_sign_has_text")), player, "cant_use_this_here", 20);
-                    event.setCancelled(true);
                     return;
                 }
 
