@@ -39,10 +39,6 @@ public class InteractListener implements Listener {
                 || !(event.getClickedBlock().getState() instanceof Sign signBlock))
             return;
 
-        Player player = event.getPlayer();
-        if (player.isSneaking())
-            return;
-
         if (signBlock.getSide(Side.FRONT).lines().get(3).equals(SignTypes.ART_MAP_LINE))
             return;
 
@@ -50,6 +46,8 @@ public class InteractListener implements Listener {
         Vector signDirection = SignRotations.get(SignTypes.getSignFace(signBlock.getBlockData()));
         if (isWallSign(signMaterial))
             signDirection = signDirection.clone().multiply(-1);
+
+        Player player = event.getPlayer();
         Vector playerDirection = new Vector(Math.sin(-Math.toRadians(player.getYaw())), signDirection.getY(), Math.cos(Math.toRadians(player.getYaw())));
         Side side = getClickedSide(signDirection, playerDirection);
 
@@ -62,6 +60,9 @@ public class InteractListener implements Listener {
                     event.setCancelled(true);
                     return;
                 }
+
+                if (player.isSneaking())
+                    return;
 
                 ItemStack item = event.getItem();
                 if (item == null || item.isEmpty())
