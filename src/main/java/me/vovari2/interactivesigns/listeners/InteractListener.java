@@ -5,10 +5,7 @@ import com.destroystokyo.paper.MaterialTags;
 import me.vovari2.interactivesigns.*;
 import me.vovari2.interactivesigns.sign.SignRotations;
 import me.vovari2.interactivesigns.sign.SignTypes;
-import me.vovari2.interactivesigns.utils.CoreProtectUtils;
-import me.vovari2.interactivesigns.utils.ItemDisplayUtils;
-import me.vovari2.interactivesigns.utils.NamespacedKeyUtils;
-import me.vovari2.interactivesigns.utils.SoundUtils;
+import me.vovari2.interactivesigns.utils.*;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,6 +19,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -56,7 +54,40 @@ public class InteractListener implements Listener {
         displayLocation.setDirection(side.equals(Side.FRONT) ? signDirection.clone().multiply(-1) : signDirection);
         switch(event.getAction()) {
             case RIGHT_CLICK_BLOCK: {
-                if (ItemDisplayUtils.getItemDisplayOnSign(displayLocation, side) != null){
+                ItemDisplay display = ItemDisplayUtils.getItemDisplayOnSign(displayLocation, side);
+                if (display != null){
+                    if (event.getHand() == null){
+                        event.setCancelled(true); return; }
+
+                    ItemStack item = player.getInventory().getItem(event.getHand());
+                    if (item.isEmpty()){
+                        event.setCancelled(true); return; }
+
+                    Material material = item.getType();
+                    if (!material.equals(Material.HONEYCOMB) && !MaterialTags.AXES.isTagged(material)){
+                        event.setCancelled(true); return; }
+
+                    if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
+                        if (!Text.isEmpty("warning.you_cant_use_that_here"))
+                            Delay.run(() -> player.sendMessage(Text.value("warning.you_cant_use_that_here")), player, "cant_use_this_here", 20);
+                        event.setCancelled(true);
+                        return;
+                    }
+
+                    Location center = VersionUtils.getBlockCenter(signBlock.getLocation());
+                    if (!ItemDisplayUtils.isWaxedItemDisplay(display, side) && material.equals(Material.HONEYCOMB)){
+                        item.subtract();
+                        ItemDisplayUtils.setWaxedItemDisplay(display, side, true);
+                        SoundUtils.playWaxOnItemOnSign(center);
+                        ParticleUtils.spawnWaxOn(center);
+                    }
+                    if (ItemDisplayUtils.isWaxedItemDisplay(display, side) && MaterialTags.AXES.isTagged(material)){
+                        ItemUtils.addDurability(player, item, -1);
+                        ItemDisplayUtils.setWaxedItemDisplay(display, side, false);
+                        SoundUtils.playWaxOffItemOnSign(center);
+                        ParticleUtils.spawnWaxOff(center);
+                    }
+
                     event.setCancelled(true);
                     return;
                 }
@@ -99,7 +130,7 @@ public class InteractListener implements Listener {
                     CoreProtectUtils.logPuttingItemOnSign(player.getName(), signLocation, placedItem.getType());
 
                 ItemDisplay itemDisplay = (ItemDisplay) displayLocation.getWorld().spawnEntity(displayLocation, EntityType.ITEM_DISPLAY);
-                itemDisplay.getPersistentDataContainer().set(NamespacedKeyUtils.forItemOnSign(), PersistentDataType.STRING, side.name());
+                itemDisplay.getPersistentDataContainer().set(NamespacedKeyUtils.forItemOnSign(side), PersistentDataType.BOOLEAN, false);
                 itemDisplay.setTransformation(SignTypes.getType(signMaterial, side).getTransformation(placedItem.getType()));
                 itemDisplay.setItemStack(placedItem);
 
@@ -111,6 +142,9 @@ public class InteractListener implements Listener {
             case LEFT_CLICK_BLOCK: {
                 ItemDisplay display = ItemDisplayUtils.getItemDisplayOnSign(displayLocation, side);
                 if (display == null)
+                    return;
+
+                if (ItemDisplayUtils.isWaxedItemDisplay(display, side))
                     return;
 
                 if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
@@ -136,7 +170,7 @@ public class InteractListener implements Listener {
                 if (InteractiveSigns.getCoreProtectAPI() != null)
                     CoreProtectUtils.logTakingItemOnSign(player.getName(), signLocation, droppedItem.getType());
 
-                signBlock.getWorld().dropItemNaturally(InteractiveSigns.getInstance().getServer().getMinecraftVersion().equals("1.21.4") ? signBlock.getLocation().add(0.5, 0.5, 0.5) : signBlock.getLocation(), droppedItem);
+                signBlock.getWorld().dropItemNaturally(VersionUtils.getBlockCenter(signBlock.getLocation()), droppedItem);
                 SoundUtils.playRemoveItemOnSign(displayLocation);
                 event.setCancelled(true);
             }

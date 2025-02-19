@@ -9,13 +9,19 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 
 public class ItemDisplayUtils {
+    public static boolean isWaxedItemDisplay(ItemDisplay display, Side side){
+        return Boolean.TRUE.equals(display.getPersistentDataContainer().get(NamespacedKeyUtils.forItemOnSign(side), PersistentDataType.BOOLEAN));
+    }
+    public static void setWaxedItemDisplay(ItemDisplay display, Side side, boolean value){
+        display.getPersistentDataContainer().set(NamespacedKeyUtils.forItemOnSign(side), PersistentDataType.BOOLEAN, value);
+    }
+
     public static ItemDisplay getItemDisplayOnSign(Location location, Side side){
         Collection<ItemDisplay> list = location.getWorld().getNearbyEntitiesByType(
                 ItemDisplay.class,
                 location,
                 0.1,
-                display -> display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign())
-                        && side.name().equals(display.getPersistentDataContainer().get(NamespacedKeyUtils.forItemOnSign(), PersistentDataType.STRING)));
+                display -> display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign(side)));
 
         if (list.isEmpty())
             return null;
@@ -27,8 +33,6 @@ public class ItemDisplayUtils {
                 ItemDisplay.class,
                 location,
                 0.1,
-                display -> display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign())
-                        && (Side.FRONT.name().equals(display.getPersistentDataContainer().get(NamespacedKeyUtils.forItemOnSign(), PersistentDataType.STRING))
-                        || Side.BACK.name().equals(display.getPersistentDataContainer().get(NamespacedKeyUtils.forItemOnSign(), PersistentDataType.STRING))));
+                display -> display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign(Side.FRONT)) || display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign(Side.BACK)));
     }
 }

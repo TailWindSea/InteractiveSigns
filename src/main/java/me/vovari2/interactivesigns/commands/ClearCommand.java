@@ -8,7 +8,6 @@ import org.bukkit.block.sign.Side;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataType;
 
 public class ClearCommand {
 
@@ -17,9 +16,9 @@ public class ClearCommand {
 
     public static void executesPlayer(Player player, CommandArguments arguments){
         double radius = (Double) arguments.getOrDefault(ARGUMENT_RADIUS, 1D);
-        for(ItemDisplay display : player.getWorld().getNearbyEntitiesByType(ItemDisplay.class, player.getLocation(), radius, display -> display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign())
-                    && (Side.FRONT.name().equals(display.getPersistentDataContainer().get(NamespacedKeyUtils.forItemOnSign(), PersistentDataType.STRING))
-                    || Side.BACK.name().equals(display.getPersistentDataContainer().get(NamespacedKeyUtils.forItemOnSign(), PersistentDataType.STRING))))){
+        for(ItemDisplay display : player.getWorld().getNearbyEntitiesByType(ItemDisplay.class, player.getLocation(), radius,
+                display -> display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign(Side.FRONT))
+                        || display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign(Side.BACK)))){
             if (display.getItemStack() != null)
                 player.getInventory().addItem(display.getItemStack());
             display.remove();
