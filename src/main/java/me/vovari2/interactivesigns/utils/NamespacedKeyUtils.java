@@ -5,7 +5,10 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.block.sign.Side;
 
 public class NamespacedKeyUtils {
-    public static NamespacedKey forItemOnSign(Side side){
-        return NamespacedKey.fromString("%s.%s".formatted(Text.PLUGIN_NAME.toLowerCase(), side.name().toLowerCase()));
+    public static NamespacedKey forItemOnSign(String side){
+        return NamespacedKey.fromString("%s.%s".formatted(Text.PLUGIN_NAME.toLowerCase(), side.toLowerCase()));
+    }
+    public static NamespacedKey forItemOnSignOld(){
+        return NamespacedKey.fromString("%s.%s".formatted(Text.PLUGIN_NAME.toLowerCase(), "item"));
     }
 }

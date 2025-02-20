@@ -54,6 +54,13 @@ public class InteractListener implements Listener {
         switch(event.getAction()) {
             case RIGHT_CLICK_BLOCK: {
                 ItemDisplay display = ItemDisplayUtils.getItemDisplayOnSign(displayLocation, side);
+
+                if (ItemDisplayUtils.getItemDisplayOnSignOld(displayLocation) != null){
+                    player.sendMessage(TextUtils.toComponent("<red>The old signs format is used here <newline>Use the <click:run_command:'/ins refactor'><hover:show_text:'<gray>Нажмите'><yellow>/ins refactor</yellow></hover></click> to update the item format in the signs<newline> "));
+                    event.setCancelled(true);
+                    return;
+                }
+
                 if (display != null){
                     if (event.getHand() == null){
                         event.setCancelled(true); return; }
@@ -129,7 +136,7 @@ public class InteractListener implements Listener {
                     CoreProtectUtils.logPuttingItemOnSign(player.getName(), signLocation, placedItem.getType());
 
                 ItemDisplay itemDisplay = (ItemDisplay) displayLocation.getWorld().spawnEntity(displayLocation, EntityType.ITEM_DISPLAY);
-                itemDisplay.getPersistentDataContainer().set(NamespacedKeyUtils.forItemOnSign(side), PersistentDataType.BOOLEAN, false);
+                itemDisplay.getPersistentDataContainer().set(NamespacedKeyUtils.forItemOnSign(side.name()), PersistentDataType.BOOLEAN, false);
                 itemDisplay.setTransformation(SignTypes.getType(signMaterial, side).getTransformation(placedItem.getType()));
                 itemDisplay.setItemStack(placedItem);
 

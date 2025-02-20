@@ -17,8 +17,8 @@ public class ClearCommand {
     public static void executesPlayer(Player player, CommandArguments arguments){
         double radius = (Double) arguments.getOrDefault(ARGUMENT_RADIUS, 1D);
         for(ItemDisplay display : player.getWorld().getNearbyEntitiesByType(ItemDisplay.class, player.getLocation(), radius,
-                display -> display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign(Side.FRONT))
-                        || display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign(Side.BACK)))){
+                display -> display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign(Side.FRONT.name()))
+                        || display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign(Side.BACK.name())))){
             if (display.getItemStack() != null)
                 player.getInventory().addItem(display.getItemStack());
             display.remove();

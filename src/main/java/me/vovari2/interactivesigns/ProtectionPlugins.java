@@ -25,9 +25,12 @@ import net.william278.huskclaims.api.BukkitHuskClaimsAPI;
 import net.william278.huskclaims.api.HuskClaimsAPI;
 import net.william278.huskclaims.claim.Claim;
 import net.william278.huskclaims.libraries.cloplib.operation.OperationType;
+import net.william278.huskclaims.trust.TrustTag;
+import net.william278.huskclaims.user.User;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -107,6 +110,7 @@ public class ProtectionPlugins {
         HuskClaimsProtectionPlugin(){
             super("HuskClaims");
             ITEMS_ON_SIGNS = Key.key(Config.HUSKCLAIMS_FLAG_ID);
+            BukkitHuskClaimsAPI.getInstance().registerTrustTag(new ItemOnSignsFlag(Config.HUSKCLAIMS_FLAG_ID, ""));
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
@@ -117,8 +121,19 @@ public class ProtectionPlugins {
                     if (ITEMS_ON_SIGNS.equals(operation.getKey()))
                         return true;
                 }
+                Text.sendMessageToConsole(OperationType.BLOCK_BREAK.getKey().value());
             } catch(NoSuchElementException e){ return false; }
             return false;
+        }
+        private class ItemOnSignsFlag extends TrustTag {
+            public ItemOnSignsFlag(@NotNull String name, @NotNull String description) {
+                super(name, description);
+            }
+
+            @Override
+            public boolean includes(@NotNull User user) {
+                return false;
+            }
         }
     }
     static class SuperiorSkyblock2ProtectionPlugin extends ProtectionPlugin{

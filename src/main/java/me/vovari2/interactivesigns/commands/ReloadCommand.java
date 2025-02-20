@@ -3,7 +3,7 @@ package me.vovari2.interactivesigns.commands;
 import dev.jorel.commandapi.executors.CommandArguments;
 import me.vovari2.interactivesigns.InteractiveSigns;
 import me.vovari2.interactivesigns.Permission;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import me.vovari2.interactivesigns.utils.TextUtils;
 import org.bukkit.command.CommandSender;
 
 public class ReloadCommand {
@@ -14,7 +14,7 @@ public class ReloadCommand {
         InteractiveSigns.getInstance().onDisable();
         InteractiveSigns.getInstance().onLoad();
         InteractiveSigns.getInstance().onEnable();
-        sender.sendMessage(MiniMessage.miniMessage().deserialize("<gradient:#54B435:#82CD47>The plugin has been reloaded!"));
+        sender.sendMessage(TextUtils.toComponent("<gradient:#54B435:#82CD47>The plugin has been reloaded!"));
     }
     public static boolean hasPermission(CommandSender sender){
         return Permission.hasPermission(sender, PERMISSION);
