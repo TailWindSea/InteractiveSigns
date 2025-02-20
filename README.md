@@ -19,7 +19,7 @@ You can use the command to view the actions of putting and taking an item from t
 - **/ins help**  "Shows information on commands" (Permission: interactive_signs.help)
 - **/ins reload**  "Restarts the plugin (to configure "text.yml")" (Permission: interactive_signs.reload)
 - **/ins clear**  "Clears the item in signs within the specified radius" (Permission: interactive_signs.clear)
-
+- **/ins refactor**  "Conversion of the old table format from version 1.2.6, to the new one within a radius of 10 blocks" (Permission: interactive_signs.refactor)
 
 ## File "config.yml":
 ```
