@@ -2,7 +2,6 @@ package me.vovari2.interactivesigns.utils;
 
 import me.vovari2.interactivesigns.Text;
 import org.bukkit.NamespacedKey;
-import org.bukkit.block.sign.Side;
 
 public class NamespacedKeyUtils {
     public static NamespacedKey forItemOnSign(String side){

@@ -125,7 +125,7 @@ public class ProtectionPlugins {
             } catch(NoSuchElementException e){ return false; }
             return false;
         }
-        private class ItemOnSignsFlag extends TrustTag {
+        private static class ItemOnSignsFlag extends TrustTag {
             public ItemOnSignsFlag(@NotNull String name, @NotNull String description) {
                 super(name, description);
             }

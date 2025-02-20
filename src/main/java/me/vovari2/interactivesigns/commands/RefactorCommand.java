@@ -14,7 +14,7 @@ import org.bukkit.persistence.PersistentDataType;
 public class RefactorCommand {
     public static String PERMISSION = "interactive_signs.refactor";
 
-    public static void executesPlayer(Player player, CommandArguments arguments){
+    public static void executesPlayer(Player player, CommandArguments ignored){
         int amount = 0;
         for (ItemDisplay display : ItemDisplayUtils.getItemDisplaysOnSignOld(player.getLocation(), 10)){
             PersistentDataContainer container = display.getPersistentDataContainer();
