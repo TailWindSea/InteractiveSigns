@@ -20,21 +20,16 @@ import me.angeschossen.lands.api.land.LandWorld;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.vovari2.interactivesigns.utils.HuskClaimsUtils;
 import me.vovari2.interactivesigns.utils.WorldGuardUtils;
-import net.kyori.adventure.key.Key;
 import net.william278.huskclaims.api.BukkitHuskClaimsAPI;
 import net.william278.huskclaims.api.HuskClaimsAPI;
 import net.william278.huskclaims.claim.Claim;
 import net.william278.huskclaims.libraries.cloplib.operation.OperationType;
-import net.william278.huskclaims.trust.TrustTag;
-import net.william278.huskclaims.user.User;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class ProtectionPlugins {
     private static List<ProtectionPlugin> plugins;
@@ -43,11 +38,13 @@ public class ProtectionPlugins {
         plugins = new LinkedList<>();
         addPlugin(new WorldGuardProtectionPlugin());
         addPlugin(new GriefPreventionProtectionPlugin());
-        addPlugin(new HuskClaimsProtectionPlugin());
         addPlugin(new SuperiorSkyblock2ProtectionPlugin());
         addPlugin(new LandsProtectionPlugin());
         addPlugin(new ChestProtectProtectionPlugin());
         addPlugin(new ResidenceProtectionPlugin());
+    }
+    public static void initialize(){
+        addPlugin(new HuskClaimsProtectionPlugin());
     }
     public static void addPlugin(ProtectionPlugin plugin){
         if (!plugin.enabled())
@@ -106,34 +103,22 @@ public class ProtectionPlugins {
         }
     }
     static class HuskClaimsProtectionPlugin extends ProtectionPlugin{
-        private final Key ITEMS_ON_SIGNS;
+        private final String ITEMS_ON_SIGNS;
         HuskClaimsProtectionPlugin(){
             super("HuskClaims");
-            ITEMS_ON_SIGNS = Key.key(Config.HUSKCLAIMS_FLAG_ID);
-            BukkitHuskClaimsAPI.getInstance().registerTrustTag(new ItemOnSignsFlag(Config.HUSKCLAIMS_FLAG_ID, ""));
+            ITEMS_ON_SIGNS = Config.HUSKCLAIMS_FLAG_ID;
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
             Claim claim;
-            try {
+            try{
                 claim = BukkitHuskClaimsAPI.getInstance().getClaimAt(HuskClaimsUtils.adaptPosition(location)).orElseThrow();
-                for(OperationType operation : claim.getUserTrustLevel(HuskClaimsUtils.adaptPlayer(player), HuskClaimsAPI.getInstance().getPlugin()).orElseThrow().getFlags()){
-                    if (ITEMS_ON_SIGNS.equals(operation.getKey()))
+                for(OperationType operation : claim.getUserTrustLevel(HuskClaimsUtils.adaptPlayer(player), HuskClaimsAPI.getInstance().getPlugin()).orElseThrow().getFlags())
+                    if (ITEMS_ON_SIGNS.equals(operation.getKey().value()))
                         return true;
-                }
-                Text.sendMessageToConsole(OperationType.BLOCK_BREAK.getKey().value());
-            } catch(NoSuchElementException e){ return false; }
+            }
+            catch (Exception e){return false;}
             return false;
-        }
-        private static class ItemOnSignsFlag extends TrustTag {
-            public ItemOnSignsFlag(@NotNull String name, @NotNull String description) {
-                super(name, description);
-            }
-
-            @Override
-            public boolean includes(@NotNull User user) {
-                return false;
-            }
         }
     }
     static class SuperiorSkyblock2ProtectionPlugin extends ProtectionPlugin{

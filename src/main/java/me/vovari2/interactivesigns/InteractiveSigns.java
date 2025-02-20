@@ -56,6 +56,8 @@ public final class InteractiveSigns extends JavaPlugin {
         Executor.preInitialize(instance);
 
         if (isLoaded){
+            ProtectionPlugins.initialize();
+
             Delay.initialize();
             SignRotations.initialize();
 
