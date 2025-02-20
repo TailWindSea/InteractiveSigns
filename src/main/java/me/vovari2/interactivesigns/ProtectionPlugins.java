@@ -30,6 +30,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class ProtectionPlugins {
     private static List<ProtectionPlugin> plugins;
@@ -113,11 +114,14 @@ public class ProtectionPlugins {
             Claim claim;
             try{
                 claim = BukkitHuskClaimsAPI.getInstance().getClaimAt(HuskClaimsUtils.adaptPosition(location)).orElseThrow();
-                for(OperationType operation : claim.getUserTrustLevel(HuskClaimsUtils.adaptPlayer(player), HuskClaimsAPI.getInstance().getPlugin()).orElseThrow().getFlags())
-                    if (ITEMS_ON_SIGNS.equals(operation.getKey().value()))
-                        return true;
+                try{
+                    for(OperationType operation : claim.getUserTrustLevel(HuskClaimsUtils.adaptPlayer(player), HuskClaimsAPI.getInstance().getPlugin()).orElseThrow().getFlags())
+                        if (ITEMS_ON_SIGNS.equals(operation.getKey().value()))
+                            return true;
+                }
+                catch(NoSuchElementException e){ return false; }
             }
-            catch (Exception e){return false;}
+            catch (NoSuchElementException e){return true;}
             return false;
         }
     }
