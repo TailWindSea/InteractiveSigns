@@ -5,6 +5,8 @@ import org.bukkit.Location;
 
 public class VersionUtils {
     public static Location getBlockCenter(Location blockLocation){
-        return InteractiveSigns.getInstance().getServer().getMinecraftVersion().equals("1.21.4") ? blockLocation.clone().add(0.5, 0.5, 0.5) : blockLocation;
+        String currentVersion = InteractiveSigns.getInstance().getServer().getMinecraftVersion();
+        return currentVersion.equals("1.21.4") || currentVersion.equals("1.21.3")
+                ? blockLocation.clone().add(0.5, 0.5, 0.5) : blockLocation;
     }
 }
