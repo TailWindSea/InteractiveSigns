@@ -9,7 +9,4 @@ command:
 
 warning:
   # Warning, when a player uses a plaque in someone else's region (if you make the field empty (“”) , the message will not be sent)
-  you_cant_use_that_here: "<bold><red>Hey!</bold> <gray>Sorry, but you can't use that here."
-
-  # Warning, when a player tries to insert an item into the sign with text (if you make the field empty (“”) , the message will not be sent)
-  you_cant_place_item_because_sign_has_text: "<bold><red>Hey!</bold> <gray>Sorry, but it is already occupied by the text."
+  you_cant_use_that_here: "<bold><red>He2y!</bold> <gray>Sorry, but you can't use that here."

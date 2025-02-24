@@ -14,10 +14,12 @@ import org.bukkit.block.sign.Side;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
@@ -29,14 +31,8 @@ public class InteractListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteractPlayer(PlayerInteractEvent event){
-        if (event.isCancelled())
-            return;
-
         if (event.getClickedBlock() == null
                 || !(event.getClickedBlock().getState() instanceof Sign signBlock))
-            return;
-
-        if (signBlock.getSide(Side.FRONT).lines().get(3).equals(SignTypes.ART_MAP_LINE))
             return;
 
         Material signMaterial = signBlock.getType();
@@ -53,57 +49,11 @@ public class InteractListener implements Listener {
         displayLocation.setDirection(side.equals(Side.FRONT) ? signDirection.clone().multiply(-1) : signDirection);
         switch(event.getAction()) {
             case RIGHT_CLICK_BLOCK: {
-                ItemDisplay display = ItemDisplayUtils.getItemDisplayOnSign(displayLocation, side);
-
                 if (ItemDisplayUtils.getItemDisplayOnSignOld(displayLocation) != null){
                     player.sendMessage(TextUtils.toComponent("<red>The old signs format is used here <newline>Use the <click:run_command:'/ins refactor'><hover:show_text:'<gray>Нажмите'><yellow>/ins refactor</yellow></hover></click> to update the item format in the signs<newline> "));
                     event.setCancelled(true);
                     return;
                 }
-
-                if (display != null){
-                    if (event.getHand() == null){
-                        event.setCancelled(true); return; }
-
-                    ItemStack item = player.getInventory().getItem(event.getHand());
-                    if (item.isEmpty()){
-                        event.setCancelled(true); return; }
-
-                    Material material = item.getType();
-                    if (!material.equals(Material.HONEYCOMB) && !MaterialTags.AXES.isTagged(material)){
-                        event.setCancelled(true); return; }
-
-                    if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
-                        if (!Text.isEmpty("warning.you_cant_use_that_here"))
-                            Delay.run(() -> player.sendMessage(Text.value("warning.you_cant_use_that_here")), player, "cant_use_this_here", 20);
-                        event.setCancelled(true);
-                        return;
-                    }
-
-                    Location center = VersionUtils.getBlockCenter(signBlock.getLocation());
-                    if (!ItemDisplayUtils.isWaxedItemDisplay(display, side) && material.equals(Material.HONEYCOMB)){
-                        item.subtract();
-                        ItemDisplayUtils.setWaxedItemDisplay(display, side, true);
-                        SoundUtils.playWaxOnItemOnSign(center);
-                        ParticleUtils.spawnWaxOn(center);
-                    }
-                    if (ItemDisplayUtils.isWaxedItemDisplay(display, side) && MaterialTags.AXES.isTagged(material)){
-                        ItemUtils.addDurability(player, item, -1);
-                        ItemDisplayUtils.setWaxedItemDisplay(display, side, false);
-                        SoundUtils.playWaxOffItemOnSign(center);
-                        ParticleUtils.spawnWaxOff(center);
-                    }
-
-                    event.setCancelled(true);
-                    return;
-                }
-
-                if (player.isSneaking())
-                    return;
-
-                ItemStack item = event.getItem();
-                if (item == null || item.isEmpty())
-                    return;
 
                 if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
                     if (!Text.isEmpty("warning.you_cant_use_that_here"))
@@ -112,15 +62,39 @@ public class InteractListener implements Listener {
                     return;
                 }
 
-                if (isOccupiedByText(signBlock.getSide(side).lines())){
-                    if (isDye(item.getType()))
-                        return;
-                    if (!Text.isEmpty("warning.you_cant_place_item_because_sign_has_text"))
-                        Delay.run(() -> player.sendMessage(Text.value("warning.you_cant_place_item_because_sign_has_text")), player, "cant_use_this_here", 20);
+                if (player.isSneaking())
+                    return;
+
+                Location center = VersionUtils.getBlockCenter(signBlock.getLocation());
+                ItemStack item = getItemInHand(event.getHand(), player);
+                if (signBlock.isWaxed()){
+                    if (item != null && MaterialTags.AXES.isTagged(item.getType())) {
+                        ItemUtils.addDurability(player, item, -1);
+                        signBlock.setWaxed(false);
+                        signBlock.update();
+                        SoundUtils.playWaxOffItemOnSign(center);
+                        ParticleUtils.spawnWaxOff(center);
+                    }
+                    event.setCancelled(true);
                     return;
                 }
 
-                if (event.getHand() == null)
+                boolean isText = isOccupiedByText(signBlock.getSide(side).lines());
+                boolean isDisplay = ItemDisplayUtils.getItemDisplayOnSign(displayLocation, side) != null;
+                if (isText || isDisplay){
+                    if (item != null && Material.HONEYCOMB.equals(item.getType())){
+                        item.subtract();
+                        signBlock.setWaxed(true);
+                        signBlock.update();
+                        SoundUtils.playWaxOnItemOnSign(center);
+                        ParticleUtils.spawnWaxOn(center);
+                    }
+                    if (isDisplay)
+                        event.setCancelled(true);
+                    return;
+                }
+
+                if (item == null)
                     return;
 
                 if (Config.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS)
@@ -143,14 +117,13 @@ public class InteractListener implements Listener {
                 SoundUtils.playPasteItemOnSign(displayLocation);
 
                 event.setCancelled(true);
-
             } break;
             case LEFT_CLICK_BLOCK: {
                 ItemDisplay display = ItemDisplayUtils.getItemDisplayOnSign(displayLocation, side);
                 if (display == null)
                     return;
 
-                if (ItemDisplayUtils.isWaxedItemDisplay(display, side))
+                if (signBlock.isWaxed())
                     return;
 
                 if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
@@ -196,16 +169,20 @@ public class InteractListener implements Listener {
         return MaterialSetTag.WALL_HANGING_SIGNS.isTagged(material) || MaterialSetTag.WALL_SIGNS.isTagged(material);
     }
 
+    private static ItemStack getItemInHand(EquipmentSlot slot, Player player){
+        if (slot == null)
+            return null;
+
+        ItemStack itemStack = player.getInventory().getItem(slot);
+        if (itemStack.isEmpty())
+            return null;
+
+        return itemStack;
+    }
     private static boolean isOccupiedByText(@NotNull List<Component> lines){
         for (Component text : lines)
             if (!text.equals(Component.empty()))
                 return true;
         return false;
     }
-    private static boolean isDye(@NotNull Material material){
-        return MaterialTags.DYES.isTagged(material)
-                || material.equals(Material.GLOW_INK_SAC)
-                || material.equals(Material.INK_SAC);
-    }
-
 }
