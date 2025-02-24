@@ -5,7 +5,14 @@ import com.bekvon.bukkit.residence.containers.Flags;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
 import com.sk89q.worldedit.world.World;
+import com.sk89q.worldedit.world.item.ItemType;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.flags.RegistryFlag;
+import com.sk89q.worldguard.protection.flags.SetFlag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
+import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionType;
@@ -74,8 +81,15 @@ public class ProtectionPlugins {
         public abstract boolean canInteractWithSign(Player player, Location block);
     }
     static class WorldGuardProtectionPlugin extends ProtectionPlugin{
+        private StateFlag USES_ITEMS_ON_SIGNS;
         WorldGuardProtectionPlugin(){
             super("WorldGuard");
+            if (!enabled())
+                return;
+
+            StateFlag flag = new StateFlag("uses-items-on-signs", false);
+            WorldGuard.getInstance().getFlagRegistry().register(flag);
+            USES_ITEMS_ON_SIGNS = flag;
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
@@ -88,7 +102,7 @@ public class ProtectionPlugins {
                 return true;
 
             for (ProtectedRegion region : container.getApplicableRegions(WorldGuardUtils.adaptLocation(location)).getRegions())
-                if(!region.isMember(WorldGuardUtils.adaptPlayer(player)) && !region.getType().equals(RegionType.GLOBAL) && !player.isOp())
+                if(!region.isMember(WorldGuardUtils.adaptPlayer(player)) && !StateFlag.State.ALLOW.equals(region.getFlag(USES_ITEMS_ON_SIGNS)) && !region.getType().equals(RegionType.GLOBAL) && !player.isOp())
                     return false;
 
             return true;
@@ -155,7 +169,7 @@ public class ProtectionPlugins {
         }
     }
     static class ChestProtectProtectionPlugin extends ProtectionPlugin{
-        ChestProtectAPI instance;
+        private ChestProtectAPI instance;
         ChestProtectProtectionPlugin(){
             super("ChestProtect");
             if (!enabled())
