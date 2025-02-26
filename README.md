@@ -6,7 +6,7 @@ This plugin also supports sign protection from plugins: **WorldGuard**, **Lands*
 
 Hopefully this will improve and diversify **your gaming experience**.
 
-![Example](/images/example.png)
+![Example](/images/example_new.png)
 
 ## Core Protect
 If you are using **CoreProtect (v22.0+)** to view player actions.
