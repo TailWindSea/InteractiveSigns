@@ -1,4 +1,5 @@
 # InteractiveSigns v1.3.0
+# Author: Vovari2
 
 # True - so that when you insert an item into the signs, it will be three-dimensional (3D)
 # False - so that when an item is inserted into the signs, it will be flat (2D)

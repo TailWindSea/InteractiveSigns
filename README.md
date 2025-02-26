@@ -23,10 +23,14 @@ You can use the command to view the actions of putting and taking an item from t
 
 ## File "config.yml":
 ```
-# True - so players need the “permission_can_use_signs” permission to insert items into the signs.
+# True - so that when you insert an item into the signs, it will be three-dimensional (3D)
+# False - so that when an item is inserted into the signs, it will be flat (2D)
+enable_items_volume: false
+
+
+# True - so players need the “permission_can_use_signs” permission to insert items into the signs
 # False - so all players can insert items into signs
 player_need_to_have_permission_to_use_signs: false
-
 # Permission required to insert items into the signs
 permission_can_use_signs: "interactive_signs.use"
 
@@ -56,8 +60,5 @@ command:
 
 warning:
   # Warning, when a player uses a plaque in someone else's region (if you make the field empty (“”) , the message will not be sent)
-  you_cant_use_that_here: "<bold><red>Hey!</bold> <gray>Sorry, but you can't use that here."
-
-  # Warning, when a player tries to insert an item into the sign with text (if you make the field empty (“”) , the message will not be sent)
-  you_cant_place_item_because_sign_has_text: "<bold><red>Hey!</bold> <gray>Sorry, but it is already occupied by the text."
+  you_cant_use_that_here: "<bold><red>He2y!</bold> <gray>Sorry, but you can't use that here."
 ```
