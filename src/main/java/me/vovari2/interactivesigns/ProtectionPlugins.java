@@ -7,7 +7,9 @@ import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionType;
@@ -82,9 +84,13 @@ public class ProtectionPlugins {
             if (!enabled())
                 return;
 
-            StateFlag flag = new StateFlag("uses-items-on-signs", false);
-            WorldGuard.getInstance().getFlagRegistry().register(flag);
-            USES_ITEMS_ON_SIGNS = flag;
+            FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
+            Flag<?> flag = registry.get("uses-items-on-signs");
+            if (flag == null){
+                USES_ITEMS_ON_SIGNS = new StateFlag("uses-items-on-signs", false);
+                registry.register(USES_ITEMS_ON_SIGNS);
+            }
+            else USES_ITEMS_ON_SIGNS = (StateFlag) flag;
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
