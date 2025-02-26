@@ -33,6 +33,9 @@ public class InteractListener implements Listener {
                 || !(event.getClickedBlock().getState() instanceof Sign signBlock))
             return;
 
+        if (ArtMapUtils.isCanvas(signBlock))
+            return;
+
         Material signMaterial = signBlock.getType();
         Vector signDirection = SignRotations.get(SignTypes.getSignFace(signBlock.getBlockData()));
         if (SignTypes.isWall(signMaterial))

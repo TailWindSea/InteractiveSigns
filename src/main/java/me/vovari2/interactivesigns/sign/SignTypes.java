@@ -2,7 +2,6 @@ package me.vovari2.interactivesigns.sign;
 
 import com.destroystokyo.paper.MaterialSetTag;
 import me.vovari2.interactivesigns.Config;
-import me.vovari2.interactivesigns.Text;
 import me.vovari2.interactivesigns.sign.types.*;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -19,9 +18,6 @@ public enum SignTypes {
     STANDING_SIGN,
     WALL_SIGN,
     HANGING_SIGN;
-
-    // TODO Test with ArtMap (if work then delete)
-    // public static final Component ART_MAP_LINE = MiniMessage.miniMessage().deserialize("*{=}*");
 
     private static HashMap<SignTypes, SignType> types;
     public static void initialize(){
