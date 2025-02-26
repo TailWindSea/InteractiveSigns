@@ -10,6 +10,7 @@ import me.vovari2.interactivesigns.listeners.ExplodeListener;
 import me.vovari2.interactivesigns.listeners.GrowListener;
 import me.vovari2.interactivesigns.listeners.InteractListener;
 import me.vovari2.interactivesigns.sign.SignRotations;
+import me.vovari2.interactivesigns.sign.SignTypes;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
 import org.bukkit.event.HandlerList;
@@ -59,6 +60,7 @@ public final class InteractiveSigns extends JavaPlugin {
             ProtectionPlugins.initialize();
 
             Delay.initialize();
+            SignTypes.initialize();
             SignRotations.initialize();
 
             coreProtectAPI = setupCoreProtect();

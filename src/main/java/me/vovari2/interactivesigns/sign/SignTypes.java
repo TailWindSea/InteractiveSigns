@@ -1,8 +1,10 @@
 package me.vovari2.interactivesigns.sign;
 
 import com.destroystokyo.paper.MaterialSetTag;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import com.destroystokyo.paper.MaterialTags;
+import me.vovari2.interactivesigns.Config;
+import me.vovari2.interactivesigns.Text;
+import me.vovari2.interactivesigns.sign.types.*;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
@@ -11,120 +13,42 @@ import org.bukkit.block.data.Rotatable;
 import org.bukkit.block.sign.Side;
 import org.bukkit.util.Transformation;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Vector3f;
 
-import java.util.List;
+import java.util.HashMap;
+
 public enum SignTypes {
-    SIGN(
-            List.of(new SignTransformation( // Item
-                            new Vector3f(0,0.34F, -0.046F),
-                            new Vector3f(0.4F,0.4F,0.001F)),
-                    new SignTransformation( // Player head
-                            new Vector3f(0,0.52F, -0.046F),
-                            new Vector3f(0.7F,0.7F,0.001F)),
-                    new SignTransformation( // Dragon head
-                            new Vector3f(0,0.38F, -0.046F),
-                            new Vector3f(0.4F,0.4F,0.001F)),
-                    new SignTransformation( // Tall items
-                            new Vector3f(0,0.32F, -0.046F),
-                            new Vector3f(0.31F,0.31F,0.001F)))),
+    STANDING_SIGN,
+    WALL_SIGN,
+    HANGING_SIGN;
 
-    WALL_SIGN_BACK(
-            List.of(new SignTransformation( // Item
-                            new Vector3f(0,0.03F,-0.483F),
-                            new Vector3f(0.4F,0.4F,0.001F)),
-                    new SignTransformation( // Player head
-                            new Vector3f(0,0.2F,-0.483F),
-                            new Vector3f(0.7F,0.7F,0.001F)),
-                    new SignTransformation( // Dragon head
-                            new Vector3f(0,0.07F,-0.483F),
-                            new Vector3f(0.4F,0.4F,0.001F)),
-                    new SignTransformation( // Tall items
-                            new Vector3f(0,0.01F,-0.483F),
-                            new Vector3f(0.31F,0.31F,0.001F)))),
-    WALL_SIGN_FRONT(
-            List.of(new SignTransformation( // Item
-                            new Vector3f(-0,0.03F,0.389F),
-                            new Vector3f(0.4F,0.4F,0.001F)),
-                    new SignTransformation( // Player head
-                            new Vector3f(-0,0.2F,0.389F),
-                            new Vector3f(0.7F,0.7F,0.001F)),
-                    new SignTransformation( // Dragon head
-                            new Vector3f(-0,0.07F,0.389F),
-                            new Vector3f(0.4F,0.4F,0.001F)),
-                    new SignTransformation( // Tall items
-                            new Vector3f(-0,0.01F,0.389F),
-                            new Vector3f(0.31F,0.31F,0.001F)))),
-    HANGING_SIGN(
-            List.of(new SignTransformation( // Item
-                            new Vector3f(0,-0.18F, -0.06451F),
-                            new Vector3f(0.5F,0.5F,0.001F)),
-                    new SignTransformation( // Player head
-                            new Vector3f(0,0F, -0.06451F),
-                            new Vector3f(0.8F,0.8F,0.001F)),
-                    new SignTransformation( // Dragon head
-                            new Vector3f(0,-0.14F, -0.06451F),
-                            new Vector3f(0.5F,0.5F,0.001F)),
-                    new SignTransformation( // Tall items
-                            new Vector3f(0,-0.21F, -0.06451F),
-                            new Vector3f(0.4F,0.4F,0.001F)))),
-    WALL_HANGING_SIGN(
-            List.of(new SignTransformation( // Item
-                            new Vector3f(0,-0.18F, -0.06451F),
-                            new Vector3f(0.5F,0.5F,0.001F)),
-                    new SignTransformation( // Player head
-                            new Vector3f(0,0F, -0.06451F),
-                            new Vector3f(0.8F,0.8F,0.001F)),
-                    new SignTransformation( // Dragon head
-                            new Vector3f(0,-0.14F, -0.06451F),
-                            new Vector3f(0.5F,0.5F,0.001F)),
-                    new SignTransformation( // Tall items
-                            new Vector3f(0,-0.21F, -0.06451F),
-                            new Vector3f(0.4F,0.4F,0.001F))));
+    // TODO Test with ArtMap (if work then delete)
+    // public static final Component ART_MAP_LINE = MiniMessage.miniMessage().deserialize("*{=}*");
 
-    public static final Component ART_MAP_LINE = MiniMessage.miniMessage().deserialize("*{=}*");
+    private static HashMap<SignTypes, SignType> types;
+    public static void initialize(){
+        types = new HashMap<>();
 
-    private final List<SignTransformation> transformations;
-    SignTypes(List<SignTransformation> transformations){
-        this.transformations = transformations;
-    }
-    public @NotNull Transformation getTransformation(Material material){
-        if (isHead(material))
-            return transformations.get(1).getTransformation();
-        if (isDragonHead(material))
-            return transformations.get(2).getTransformation();
-        if (isTallItem(material))
-            return transformations.get(3).getTransformation();
-        return transformations.get(0).getTransformation();
-    }
-    private boolean isHead(Material material){
-        return material.equals(Material.PLAYER_HEAD)
-                || material.equals(Material.CREEPER_HEAD)
-                || material.equals(Material.WITHER_SKELETON_SKULL)
-                || material.equals(Material.SKELETON_SKULL)
-                || material.equals(Material.ZOMBIE_HEAD)
-                || material.equals(Material.PIGLIN_HEAD);
-    }
-    private boolean isDragonHead(Material material){
-        return material.equals(Material.DRAGON_HEAD);
-    }
-    private boolean isTallItem(Material material){
-        return material.equals(Material.DECORATED_POT)
-                || material.equals(Material.LECTERN);
+        boolean isThreeDimensional = Config.ENABLE_ITEMS_VOLUME;
+        types.put(STANDING_SIGN, isThreeDimensional ? new StandingSign3D() : new StandingSign2D());
+        types.put(WALL_SIGN, isThreeDimensional ? new WallSign3D() : new WallSign2D());
+        types.put(HANGING_SIGN, isThreeDimensional ? new HangingSign3D() : new HangingSign2D());
     }
 
-
-
-
-    public static @NotNull SignTypes getType(@NotNull Material material, Side side){
+    public static @NotNull Transformation getTransformation(Side side, Material signMaterial, Material placedMaterial){
+        // TODO Удалить после тестирования
+        Text.sendMessageToConsole(MaterialType.getType(placedMaterial).name() + "");
+        return types.get(getType(signMaterial))
+                .getSignTransformation(side, MaterialType.getType(placedMaterial))
+                .getTransformation();
+    }
+    private static @NotNull SignTypes getType( Material material){
         if (MaterialSetTag.WALL_SIGNS.isTagged(material))
-            return side.equals(Side.FRONT) ? WALL_SIGN_FRONT : WALL_SIGN_BACK;
-        if (MaterialSetTag.WALL_HANGING_SIGNS.isTagged(material))
-            return SignTypes.WALL_HANGING_SIGN;
-        if (MaterialSetTag.CEILING_HANGING_SIGNS.isTagged(material))
-            return SignTypes.HANGING_SIGN;
-        return SignTypes.SIGN;
+            return WALL_SIGN;
+        if (MaterialSetTag.WALL_HANGING_SIGNS.isTagged(material) || MaterialSetTag.CEILING_HANGING_SIGNS.isTagged(material))
+            return HANGING_SIGN;
+        return STANDING_SIGN;
     }
+
     public static @NotNull BlockFace getSignFace(@NotNull BlockData blockData){
         return isWall(blockData.getMaterial()) ? ((Directional) blockData).getFacing() : ((Rotatable) blockData).getRotation().getOppositeFace();
     }

@@ -1,6 +1,5 @@
 package me.vovari2.interactivesigns.listeners;
 
-import com.destroystokyo.paper.MaterialSetTag;
 import com.destroystokyo.paper.MaterialTags;
 import me.vovari2.interactivesigns.*;
 import me.vovari2.interactivesigns.sign.SignRotations;
@@ -36,7 +35,7 @@ public class InteractListener implements Listener {
 
         Material signMaterial = signBlock.getType();
         Vector signDirection = SignRotations.get(SignTypes.getSignFace(signBlock.getBlockData()));
-        if (isWallSign(signMaterial))
+        if (SignTypes.isWall(signMaterial))
             signDirection = signDirection.clone().multiply(-1);
 
         Player player = event.getPlayer();
@@ -110,7 +109,7 @@ public class InteractListener implements Listener {
 
                 ItemDisplay itemDisplay = (ItemDisplay) displayLocation.getWorld().spawnEntity(displayLocation, EntityType.ITEM_DISPLAY);
                 itemDisplay.getPersistentDataContainer().set(NamespacedKeyUtils.forItemOnSign(side.name()), PersistentDataType.BOOLEAN, false);
-                itemDisplay.setTransformation(SignTypes.getType(signMaterial, side).getTransformation(placedItem.getType()));
+                itemDisplay.setTransformation(SignTypes.getTransformation(side, signMaterial, placedItem.getType()));
                 itemDisplay.setItemStack(placedItem);
 
                 SoundUtils.playPasteItemOnSign(displayLocation);
@@ -163,9 +162,6 @@ public class InteractListener implements Listener {
         if (lengthForward <= lengthBack)
             return Side.FRONT;
         return Side.BACK;
-    }
-    private static boolean isWallSign(@NotNull Material material){
-        return MaterialSetTag.WALL_HANGING_SIGNS.isTagged(material) || MaterialSetTag.WALL_SIGNS.isTagged(material);
     }
 
     private static ItemStack getItemInHand(EquipmentSlot slot, Player player){

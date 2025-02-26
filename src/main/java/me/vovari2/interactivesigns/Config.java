@@ -6,6 +6,8 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class Config {
+    public static boolean ENABLE_ITEMS_VOLUME;
+
     public static boolean PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS;
     public static String PERMISSION_CAN_USE_SIGNS;
 
@@ -25,6 +27,8 @@ public class Config {
         FileUtils.createPluginFileInDataFolder("config.yml");
         fileConfig = FileUtils.getYamlConfiguration("config.yml");
 
+        ENABLE_ITEMS_VOLUME = getBoolean("enable_items_volume", false);
+
         PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS = getBoolean("player_need_to_have_permission_to_use_signs");
         PERMISSION_CAN_USE_SIGNS = getString("permission_can_use_signs");
 
@@ -41,6 +45,9 @@ public class Config {
         if (!(object instanceof Boolean))
             throw new ComponentException("Value " + path + " is not a boolean!");
         return (boolean) object;
+    }
+    private boolean getBoolean(String path, boolean def) throws ComponentException{
+        return fileConfig.getBoolean(path, def);
     }
 
     private Material getMaterial(String path) throws ComponentException{
