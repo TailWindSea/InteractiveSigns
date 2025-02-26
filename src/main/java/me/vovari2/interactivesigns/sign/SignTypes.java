@@ -1,7 +1,6 @@
 package me.vovari2.interactivesigns.sign;
 
 import com.destroystokyo.paper.MaterialSetTag;
-import com.destroystokyo.paper.MaterialTags;
 import me.vovari2.interactivesigns.Config;
 import me.vovari2.interactivesigns.Text;
 import me.vovari2.interactivesigns.sign.types.*;
@@ -35,8 +34,6 @@ public enum SignTypes {
     }
 
     public static @NotNull Transformation getTransformation(Side side, Material signMaterial, Material placedMaterial){
-        // TODO Удалить после тестирования
-        Text.sendMessageToConsole(MaterialType.getType(placedMaterial).name() + "");
         return types.get(getType(signMaterial))
                 .getSignTransformation(side, MaterialType.getType(placedMaterial))
                 .getTransformation();

@@ -25,11 +25,6 @@ public class PredicateList {
         excludingValues.add(new MaterialValue(material));
         return this;
     }
-    public PredicateList exc(Tag<Material> tag){
-        excludingValues.add(new MaterialTagValue(tag));
-        return this;
-    }
-
     public boolean isInclude(Material material){
         for (PredicateValue value : includingValues)
             if (value.equals(material) && !isExclude(material))

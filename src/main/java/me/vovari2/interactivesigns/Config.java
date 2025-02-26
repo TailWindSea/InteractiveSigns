@@ -46,7 +46,7 @@ public class Config {
             throw new ComponentException("Value " + path + " is not a boolean!");
         return (boolean) object;
     }
-    private boolean getBoolean(String path, boolean def) throws ComponentException{
+    private boolean getBoolean(String path, boolean def){
         return fileConfig.getBoolean(path, def);
     }
 
