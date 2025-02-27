@@ -41,21 +41,31 @@ public class ProtectionPlugins {
 
     public static void load(){
         plugins = new LinkedList<>();
-        addPlugin(new WorldGuardProtectionPlugin());
-        addPlugin(new GriefPreventionProtectionPlugin());
-        addPlugin(new SuperiorSkyblock2ProtectionPlugin());
-        addPlugin(new LandsProtectionPlugin());
-        addPlugin(new ChestProtectProtectionPlugin());
-        addPlugin(new ResidenceProtectionPlugin());
+        addPlugin(WorldGuardProtectionPlugin.class, "WorldGuard");
+        addPlugin(LandsProtectionPlugin.class, "Lands");
+        addPlugin(ResidenceProtectionPlugin.class, "Residence");
+        addPlugin(GriefPreventionProtectionPlugin.class, "GriefPrevention");
+        addPlugin(SuperiorSkyblock2ProtectionPlugin.class, "SuperiorSkyblock2");
+        addPlugin(ChestProtectProtectionPlugin.class, "ChestProtect");
     }
     public static void initialize(){
-        addPlugin(new HuskClaimsProtectionPlugin());
+        addPlugin(HuskClaimsProtectionPlugin.class, "HuskClaims");
     }
-    public static void addPlugin(ProtectionPlugin plugin){
-        if (!plugin.enabled())
+    private static void addPlugin(Class<? extends ProtectionPlugin> plugin, String name){
+        if (!isEnabledPlugin(name))
             return;
-        plugins.add(plugin);
-        Text.sendMessageToConsole("<green>Found %s plugin, added support for it".formatted(plugin.name));
+
+        boolean isFullEnabled = true;
+        try{ plugins.add(plugin.getDeclaredConstructor().newInstance());}
+        catch(Exception ignored){isFullEnabled = false;}
+
+        Text.sendMessageToConsole(
+                isFullEnabled
+                        ? "<green>Found %s plugin! Plugin support is fully enabled!".formatted(name)
+                        : "<red>Found %s plugin! Plugin support is not enabled due to a bug!".formatted(name));
+    }
+    private static boolean isEnabledPlugin(String name){
+        return InteractiveSigns.getInstance().getServer().getPluginManager().getPlugin(name) != null;
     }
     public static boolean canInteractWithSign(Player player, Location location){
         boolean canInteract = true;
@@ -66,24 +76,12 @@ public class ProtectionPlugins {
     }
 
 
-
-    abstract static public class ProtectionPlugin{
-        private final String name;
-        ProtectionPlugin(String name){
-            this.name = name;
-        }
-        public boolean enabled(){
-            return InteractiveSigns.getInstance().getServer().getPluginManager().getPlugin(name) != null;
-        }
+    private abstract static class ProtectionPlugin{
         public abstract boolean canInteractWithSign(Player player, Location block);
     }
-    static class WorldGuardProtectionPlugin extends ProtectionPlugin{
-        private StateFlag USES_ITEMS_ON_SIGNS;
+    private static class WorldGuardProtectionPlugin extends ProtectionPlugin{
+        private final StateFlag USES_ITEMS_ON_SIGNS;
         WorldGuardProtectionPlugin(){
-            super("WorldGuard");
-            if (!enabled())
-                return;
-
             FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
             Flag<?> flag = registry.get("uses-items-on-signs");
             if (flag == null){
@@ -92,6 +90,7 @@ public class ProtectionPlugins {
             }
             else USES_ITEMS_ON_SIGNS = (StateFlag) flag;
         }
+
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
             World world = WorldGuardUtils.adaptWorld(location.getWorld());
@@ -109,19 +108,35 @@ public class ProtectionPlugins {
             return true;
         }
     }
-    static class GriefPreventionProtectionPlugin extends ProtectionPlugin{
-        GriefPreventionProtectionPlugin(){
-            super("GriefPrevention");
+    private static class LandsProtectionPlugin extends ProtectionPlugin{
+        private final LandsIntegration instance;
+        private final RoleFlag flag;
+        LandsProtectionPlugin(){
+            instance = LandsIntegration.of(InteractiveSigns.getInstance());
+            flag = RoleFlag.of(instance, FlagTarget.PLAYER, RoleFlagCategory.ACTION, Config.LANDS_FLAG_ID);
+            flag.setDisplayName(Config.LANDS_FLAG_NAME).setIcon(new ItemStack(Config.LANDS_FLAG_MATERIAL)).setDescription(Config.LANDS_FLAG_DESCRIPTION);
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
-            return GriefPrevention.instance.allowBuild(player, location) == null;
+            LandWorld world = instance.getWorld(location.getWorld());
+            if (world == null)
+                return true;
+            return world.hasRoleFlag(player.getUniqueId(), location, flag);
         }
     }
-    static class HuskClaimsProtectionPlugin extends ProtectionPlugin{
+    private static class ResidenceProtectionPlugin extends ProtectionPlugin{
+        @Override
+        public boolean canInteractWithSign(Player player, Location location) {
+            ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(location);
+            if (res == null)
+                return true;
+
+            return res.getPermissions().playerHas(player, Flags.container, true);
+        }
+    }
+    private static class HuskClaimsProtectionPlugin extends ProtectionPlugin{
         private final String ITEMS_ON_SIGNS;
         HuskClaimsProtectionPlugin(){
-            super("HuskClaims");
             ITEMS_ON_SIGNS = Config.HUSKCLAIMS_FLAG_ID;
         }
         @Override
@@ -140,42 +155,21 @@ public class ProtectionPlugins {
             return false;
         }
     }
-    static class SuperiorSkyblock2ProtectionPlugin extends ProtectionPlugin{
-        SuperiorSkyblock2ProtectionPlugin(){
-            super("SuperiorSkyblock2");
+    private static class GriefPreventionProtectionPlugin extends ProtectionPlugin{
+        @Override
+        public boolean canInteractWithSign(Player player, Location location) {
+            return GriefPrevention.instance.allowBuild(player, location) == null;
         }
+    }
+    private static class SuperiorSkyblock2ProtectionPlugin extends ProtectionPlugin{
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
             return SuperiorSkyblockAPI.getIslandAt(location).isMember(SuperiorSkyblockAPI.getPlayer(player));
         }
     }
-    static class LandsProtectionPlugin extends ProtectionPlugin{
-        private LandsIntegration instance;
-        private RoleFlag flag;
-        LandsProtectionPlugin(){
-            super("Lands");
-            if (!enabled())
-                return;
-
-            instance = LandsIntegration.of(InteractiveSigns.getInstance());
-            flag = RoleFlag.of(instance, FlagTarget.PLAYER, RoleFlagCategory.ACTION, Config.LANDS_FLAG_ID);
-            flag.setDisplayName(Config.LANDS_FLAG_NAME).setIcon(new ItemStack(Config.LANDS_FLAG_MATERIAL)).setDescription(Config.LANDS_FLAG_DESCRIPTION);
-        }
-        @Override
-        public boolean canInteractWithSign(Player player, Location location) {
-            LandWorld world = instance.getWorld(location.getWorld());
-            if (world == null)
-                return true;
-            return world.hasRoleFlag(player.getUniqueId(), location, flag);
-        }
-    }
-    static class ChestProtectProtectionPlugin extends ProtectionPlugin{
-        private ChestProtectAPI instance;
+    private static class ChestProtectProtectionPlugin extends ProtectionPlugin{
+        private final ChestProtectAPI instance;
         ChestProtectProtectionPlugin(){
-            super("ChestProtect");
-            if (!enabled())
-                return;
-
             instance = ChestProtectAPI.getInstance();
         }
         @Override
@@ -189,19 +183,6 @@ public class ProtectionPlugins {
                 return true;
 
             return block.getTrusted().contains(player.getUniqueId());
-        }
-    }
-    static class ResidenceProtectionPlugin extends ProtectionPlugin{
-        ResidenceProtectionPlugin(){
-            super("Residence");
-        }
-        @Override
-        public boolean canInteractWithSign(Player player, Location location) {
-            ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(location);
-            if (res == null)
-                return true;
-
-            return res.getPermissions().playerHas(player, Flags.container, true);
         }
     }
 }
