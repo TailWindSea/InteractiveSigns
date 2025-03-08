@@ -88,7 +88,7 @@ public enum MaterialType {
             .inc(Material.DEAD_HORN_CORAL)
             .inc(Material.DEAD_HORN_CORAL_FAN)
             .inc(Material.CAKE)
-            .inc(MaterialSetTag.SIGNS)
+            .inc(MaterialSetTag.ALL_SIGNS)
             .inc(MaterialSetTag.CANDLES)
             .inc(MaterialSetTag.RAILS)
             .inc(MaterialSetTag.CORALS)
