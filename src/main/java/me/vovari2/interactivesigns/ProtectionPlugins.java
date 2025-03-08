@@ -31,7 +31,6 @@ import net.william278.huskclaims.api.BukkitHuskClaimsAPI;
 import net.william278.huskclaims.api.HuskClaimsAPI;
 import net.william278.huskclaims.claim.Claim;
 import net.william278.huskclaims.libraries.cloplib.operation.OperationType;
-import net.william278.huskclaims.user.User;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
