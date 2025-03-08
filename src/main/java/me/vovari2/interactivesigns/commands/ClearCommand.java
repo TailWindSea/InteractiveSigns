@@ -23,7 +23,9 @@ public class ClearCommand {
                 player.getInventory().addItem(display.getItemStack());
             display.remove();
         }
-        player.sendMessage(Text.node("command.clear").replace("<%radius%>", String.valueOf(radius)).value());
+        player.sendMessage(Text.node("command.clear")
+                .replace("<%radius%>", String.valueOf(radius))
+                .replacePlaceholderAPI(player).value());
     }
 
     public static boolean hasPermission(CommandSender sender){

@@ -26,6 +26,7 @@ public class Executor {
         command.setAliases(new String[]{"ins"});
         command.withSubcommand(new CommandAPICommand("help")
                 .withRequirement(HelpCommand::hasPermission)
+                .executesPlayer(HelpCommand::executesPlayer)
                 .executes(HelpCommand::executes));
         command.withSubcommand(new CommandAPICommand("reload")
                 .withRequirement(ReloadCommand::hasPermission)

@@ -4,4 +4,4 @@ version: '${version}'
 main: me.vovari2.interactivesigns.InteractiveSigns
 api-version: '1.20'
 
-softdepend: [CoreProtect, WorldGuard, Lands, Residence, HuskClaims, GriefPrevention, SuperiorSkyblock2, ChestProtect, GriefDefender]
+softdepend: [PlaceholderAPI, CoreProtect, WorldGuard, Lands, Residence, HuskClaims, GriefPrevention, SuperiorSkyblock2, ChestProtect, GriefDefender]

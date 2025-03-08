@@ -24,7 +24,8 @@ repositories {
     maven { url = "https://repo.william278.net/releases" }
     maven { url = "https://repo.bg-software.com/repository/api/" }
     maven { url = "https://maven.playpro.com/"}
-    maven { url = "https://repo.glaremasters.me/repository/bloodshot" }
+    maven { url = "https://repo.glaremasters.me/repository/bloodshot"}
+    maven { url = "https://repo.extendedclip.com/releases/"}
 }
 
 dependencies {
@@ -40,6 +41,7 @@ dependencies {
     compileOnly("com.github.angeschossen:ChestProtectAPI:5.19.16")
     compileOnly files("./libs/Residence5.1.6.5.jar")
     compileOnly("com.griefdefender:api:2.1.0-SNAPSHOT")
+    compileOnly("me.clip:placeholderapi:2.11.6")
 }
 
 shadowJar {

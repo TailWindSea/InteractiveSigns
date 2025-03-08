@@ -1,7 +1,10 @@
 package me.vovari2.interactivesigns.text_nodes;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+import me.vovari2.interactivesigns.ProtectionPlugins;
 import me.vovari2.interactivesigns.utils.TextUtils;
 import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Player;
 
 public class StringTextNode{
     private final String value;
@@ -9,8 +12,10 @@ public class StringTextNode{
         this.value = value;
     }
 
-    public ComponentTextNode toComponent(){
-        return new ComponentTextNode(TextUtils.toComponent(value));
+    public StringTextNode replacePlaceholderAPI(Player player){
+        if (!ProtectionPlugins.isEnabledPlugin("PlaceholderAPI"))
+            return this;
+        return new StringTextNode(PlaceholderAPI.setPlaceholders(player, value));
     }
     public StringTextNode replace(String placeholder, String placeholderValue) {
         return new StringTextNode(value.replace(placeholder, placeholderValue));

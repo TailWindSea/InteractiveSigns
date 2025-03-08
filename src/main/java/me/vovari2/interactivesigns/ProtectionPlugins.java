@@ -68,7 +68,7 @@ public class ProtectionPlugins {
                         ? "<green>Found %s plugin! Plugin support is fully enabled!".formatted(name)
                         : "<red>Found %s plugin! Plugin support is not enabled due to a bug!".formatted(name));
     }
-    private static boolean isEnabledPlugin(String name){
+    public static boolean isEnabledPlugin(String name){
         return InteractiveSigns.getInstance().getServer().getPluginManager().getPlugin(name) != null;
     }
     public static boolean canInteractWithSign(Player player, Location location){

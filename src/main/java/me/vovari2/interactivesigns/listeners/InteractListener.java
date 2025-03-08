@@ -58,7 +58,7 @@ public class InteractListener implements Listener {
 
                 if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
                     if (!Text.isEmpty("warning.you_cant_use_that_here"))
-                        Delay.run(() -> player.sendMessage(Text.value("warning.you_cant_use_that_here")), player, "cant_use_this_here", 20);
+                        Delay.run(() -> player.sendMessage(Text.node("warning.you_cant_use_that_here").replacePlaceholderAPI(player).value()), player, "cant_use_this_here", 20);
                     return;
                 }
 
@@ -128,14 +128,14 @@ public class InteractListener implements Listener {
 
                 if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
                     if (!Text.isEmpty("warning.you_cant_use_that_here"))
-                        Delay.run(() -> player.sendMessage(Text.value("warning.you_cant_use_that_here")), player, "cant_use_this_here", 20);
+                        Delay.run(() -> player.sendMessage(Text.node("warning.you_cant_use_that_here").replacePlaceholderAPI(player).value()), player, "cant_use_this_here", 20);
                     return;
                 }
 
                 if (Config.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS)
                     if (!player.hasPermission(Config.PERMISSION_CAN_USE_SIGNS)){
                         if (!Text.isEmpty("warning.you_cant_use_that_here"))
-                            Delay.run(() -> player.sendMessage(Text.value("warning.you_cant_use_that_here")), player, "cant_use_this_here", 20);
+                            Delay.run(() -> player.sendMessage(Text.node("warning.you_cant_use_that_here").replacePlaceholderAPI(player).value()), player, "cant_use_this_here", 20);
                         event.setCancelled(true);
                         return;
                     }
