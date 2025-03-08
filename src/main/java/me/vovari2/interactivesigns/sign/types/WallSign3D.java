@@ -26,9 +26,11 @@ public class WallSign3D extends AbstractSignType {
                 new AxisAngle4f(1.572F, -1,0,0),
                 new Vector3f(0.28F,0.14F,0.28F),
                 new AxisAngle4f(1.572F, 0, 1, 0)));
-        front.put(MaterialType.ITEM, new VectorTransformation(
-                new Vector3f(-0,0.03F,0.384F),
-                new Vector3f(0.4F,0.4F,0.4F)));
+        front.put(MaterialType.ITEM, new FullTransformation(
+                new Vector3f(0,0.03F,0.384F),
+                new AxisAngle4f(0, -1,0,0),
+                new Vector3f(0.4F,0.4F,0.4F),
+                new AxisAngle4f(3.144F, 0, 1, 0)));
         front.put(MaterialType.BLOCK, new VectorTransformation(
                 new Vector3f(-0,0.03F,0.389F),
                 new Vector3f(0.35F,0.35F,0.14F)));
@@ -50,9 +52,11 @@ public class WallSign3D extends AbstractSignType {
                 new AxisAngle4f(1.572F, -1,0,0),
                 new Vector3f(0.28F,0.14F,0.28F),
                 new AxisAngle4f(1.572F, 0, 1, 0)));
-        back.put(MaterialType.ITEM, new VectorTransformation(
+        back.put(MaterialType.ITEM, new FullTransformation(
                 new Vector3f(0,0.03F,-0.488F),
-                new Vector3f(0.4F,0.4F,0.4F)));
+                new AxisAngle4f(0, -1,0,0),
+                new Vector3f(0.4F,0.4F,0.4F),
+                new AxisAngle4f(3.144F, 0, 1, 0)));
         back.put(MaterialType.BLOCK, new VectorTransformation(
                 new Vector3f(0,0.03F,-0.483F),
                 new Vector3f(0.35F,0.35F,0.14F)));
