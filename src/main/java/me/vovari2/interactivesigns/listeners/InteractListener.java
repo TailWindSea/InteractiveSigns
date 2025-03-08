@@ -47,7 +47,7 @@ public class InteractListener implements Listener {
 
         Location signLocation = signBlock.getLocation();
         Location displayLocation = signLocation.add(0.5F, 0.5F, 0.5F);
-        displayLocation.setDirection(side.equals(Side.BACK) ? signDirection.clone().multiply(-1) : signDirection);
+        displayLocation.setDirection(side.equals(Side.FRONT) ? signDirection.clone().multiply(-1) : signDirection);
         switch(event.getAction()) {
             case RIGHT_CLICK_BLOCK: {
                 if (ItemDisplayUtils.getItemDisplayOnSignOld(displayLocation) != null){

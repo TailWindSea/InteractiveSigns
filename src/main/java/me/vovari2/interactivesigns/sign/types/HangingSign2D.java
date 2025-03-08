@@ -10,27 +10,27 @@ public class HangingSign2D extends AbstractSignType {
     public HangingSign2D(){
         super();
         front.put(MaterialType.DRAGON_HEAD, new VectorTransformation(
-                new Vector3f(0,-0.14F, 0.06451F),
+                new Vector3f(0,-0.14F, -0.06451F),
                 new Vector3f(0.5F,0.5F,0.001F)));
         front.put(MaterialType.PLAYER_HEAD, new VectorTransformation(
-                new Vector3f(0,0F, 0.06451F),
+                new Vector3f(0,0F, -0.06451F),
                 new Vector3f(0.8F,0.8F,0.001F)));
         front.put(MaterialType.TALL_ITEM, new VectorTransformation(
-                new Vector3f(0,-0.21F, 0.06451F),
+                new Vector3f(0,-0.21F, -0.06451F),
                 new Vector3f(0.4F,0.4F,0.001F)));
         front.put(MaterialType.BANNERS, new VectorTransformation(
-                new Vector3f(0,-0.31F, 0.06451F),
+                new Vector3f(0,-0.31F, -0.06451F),
                 new Vector3f(0.27F,0.27F,0.001F)));
         front.put(MaterialType.BEDS, new FullTransformation(
-                new Vector3f(-0.177F,-0.18F, 0.06451F),
-                new AxisAngle4f(4.712F, -1,0,0),
+                new Vector3f(-0.177F,-0.18F, -0.06451F),
+                new AxisAngle4f(1.572F, -1,0,0),
                 new Vector3f(0.35F,0.001F,0.35F),
                 new AxisAngle4f(1.572F, 0, 1, 0)));
         front.put(MaterialType.ITEM, new VectorTransformation(
-                new Vector3f(0,-0.18F, 0.06451F),
+                new Vector3f(0,-0.18F, -0.06451F),
                 new Vector3f(0.5F,0.5F,0.001F)));
         front.put(MaterialType.BLOCK, new VectorTransformation(
-                new Vector3f(0,-0.18F, 0.06451F),
+                new Vector3f(0,-0.18F, -0.06451F),
                 new Vector3f(0.5F,0.5F,0.001F)));
 
         back.putAll(front);
