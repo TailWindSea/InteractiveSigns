@@ -59,7 +59,6 @@ public class InteractListener implements Listener {
                 if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
                     if (!Text.isEmpty("warning.you_cant_use_that_here"))
                         Delay.run(() -> player.sendMessage(Text.value("warning.you_cant_use_that_here")), player, "cant_use_this_here", 20);
-                    event.setCancelled(true);
                     return;
                 }
 
@@ -130,7 +129,6 @@ public class InteractListener implements Listener {
                 if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
                     if (!Text.isEmpty("warning.you_cant_use_that_here"))
                         Delay.run(() -> player.sendMessage(Text.value("warning.you_cant_use_that_here")), player, "cant_use_this_here", 20);
-                    event.setCancelled(true);
                     return;
                 }
 
