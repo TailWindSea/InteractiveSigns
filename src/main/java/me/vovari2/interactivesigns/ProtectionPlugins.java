@@ -4,6 +4,9 @@ import com.bekvon.bukkit.residence.api.ResidenceApi;
 import com.bekvon.bukkit.residence.containers.Flags;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
+import com.griefdefender.api.Core;
+import com.griefdefender.api.GriefDefender;
+import com.griefdefender.api.claim.TrustTypes;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -28,6 +31,7 @@ import net.william278.huskclaims.api.BukkitHuskClaimsAPI;
 import net.william278.huskclaims.api.HuskClaimsAPI;
 import net.william278.huskclaims.claim.Claim;
 import net.william278.huskclaims.libraries.cloplib.operation.OperationType;
+import net.william278.huskclaims.user.User;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -47,6 +51,7 @@ public class ProtectionPlugins {
         addPlugin(GriefPreventionProtectionPlugin.class, "GriefPrevention");
         addPlugin(SuperiorSkyblock2ProtectionPlugin.class, "SuperiorSkyblock2");
         addPlugin(ChestProtectProtectionPlugin.class, "ChestProtect");
+        addPlugin(GriefDefenderProtectionPlugin.class, "GriefDefender");
     }
     public static void initialize(){
         addPlugin(HuskClaimsProtectionPlugin.class, "HuskClaims");
@@ -183,6 +188,23 @@ public class ProtectionPlugins {
                 return true;
 
             return block.getTrusted().contains(player.getUniqueId());
+        }
+    }
+    private static class GriefDefenderProtectionPlugin extends ProtectionPlugin{
+        private final Core instance;
+        GriefDefenderProtectionPlugin(){
+            instance = GriefDefender.getCore();
+        }
+        @Override
+        public boolean canInteractWithSign(Player player, Location location) {
+            com.griefdefender.api.claim.Claim claim = instance.getClaimAt(location);
+            if (claim == null)
+                return false;
+
+            if (claim.isWilderness())
+                return false;
+
+            return claim.canUseBlock(null, location, instance.getUser(player.getUniqueId()), TrustTypes.BUILDER);
         }
     }
 }
