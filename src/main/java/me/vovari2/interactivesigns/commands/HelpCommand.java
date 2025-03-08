@@ -10,10 +10,10 @@ public class HelpCommand {
 
     public static String PERMISSION = "interactive_signs.help";
 
-    public static void executesPlayer(Player player, CommandArguments arguments){
+    public static void executesPlayer(Player player, CommandArguments ignored){
         player.sendMessage(Text.node("command.help").replacePlaceholderAPI(player).value());
     }
-    public static void executes(CommandSender sender, CommandArguments arguments){
+    public static void executes(CommandSender sender, CommandArguments ignored){
         sender.sendMessage(Text.value("command.help"));
     }
 
