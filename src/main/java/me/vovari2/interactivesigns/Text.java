@@ -16,9 +16,7 @@ public class Text {
     public static final String VERSION = InteractiveSigns.getInstance().getPluginMeta().getVersion();
     private static final Component MESSAGE_BEGIN = MiniMessage.miniMessage().deserialize("<gray>[" + PLUGIN_NAME + "]<reset> ");
 
-    private static ConsoleCommandSender sender;
-    protected static void initialize(ConsoleCommandSender newSender) throws ComponentException {
-        sender = newSender;
+    protected static void initialize() throws ComponentException {
         new Text().initializeInside();
     }
 
@@ -67,6 +65,6 @@ public class Text {
         sendMessageToConsole(message, true);
     }
     public static void sendMessageToConsole(Component message, boolean hasMessageBegin){
-        sender.sendMessage(hasMessageBegin ? MESSAGE_BEGIN.append(message) : message);
+        InteractiveSigns.getInstance().getServer().getConsoleSender().sendMessage(hasMessageBegin ? MESSAGE_BEGIN.append(message) : message);
     }
 }

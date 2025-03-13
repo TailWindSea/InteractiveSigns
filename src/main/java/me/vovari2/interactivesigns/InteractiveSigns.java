@@ -34,7 +34,7 @@ public final class InteractiveSigns extends JavaPlugin {
         CommandAPI.onLoad(new CommandAPIBukkitConfig(this).verboseOutput(false));
 
         try {
-            Text.initialize(getServer().getConsoleSender());
+            Text.initialize();
             Config.initialize();
 
             ProtectionPlugins.load();
