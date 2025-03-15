@@ -18,7 +18,7 @@ public class StringTextNode{
         return new StringTextNode(PlaceholderAPI.setPlaceholders(player, value));
     }
     public StringTextNode replace(String placeholder, String placeholderValue) {
-        return new StringTextNode(value.replace(placeholder, placeholderValue));
+        return new StringTextNode(value.replace("<%" + placeholder + "%>", placeholderValue));
     }
 
     public boolean isEmpty(){

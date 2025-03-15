@@ -24,7 +24,7 @@ public class ClearCommand {
             display.remove();
         }
         player.sendMessage(Text.node("command.clear")
-                .replace("<%radius%>", String.valueOf(radius))
+                .replace("radius", String.valueOf(radius))
                 .replacePlaceholderAPI(player).value());
     }
 
