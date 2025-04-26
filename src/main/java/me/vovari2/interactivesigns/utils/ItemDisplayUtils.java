@@ -5,19 +5,11 @@ import org.bukkit.block.sign.Side;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
 public class ItemDisplayUtils {
-    public static boolean isWaxedItemDisplay(ItemDisplay display, Side side){
-        return Boolean.TRUE.equals(display.getPersistentDataContainer().get(NamespacedKeyUtils.forItemOnSign(side.name()), PersistentDataType.BOOLEAN));
-    }
-    public static void setWaxedItemDisplay(ItemDisplay display, Side side, boolean value){
-        display.getPersistentDataContainer().set(NamespacedKeyUtils.forItemOnSign(side.name()), PersistentDataType.BOOLEAN, value);
-    }
-
     public static @Nullable ItemDisplay getItemDisplayOnSign(Location location, Side side){
         Collection<ItemDisplay> list = location.getWorld().getNearbyEntitiesByType(
                 ItemDisplay.class,

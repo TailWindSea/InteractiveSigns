@@ -7,12 +7,9 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.sign.Side;
-import org.bukkit.entity.ItemDisplay;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.StructureGrowEvent;
-
-import java.util.Collection;
 
 public class GrowListener implements Listener {
     @EventHandler

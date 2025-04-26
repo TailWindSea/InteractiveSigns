@@ -6,16 +6,11 @@ import me.vovari2.interactivesigns.utils.VersionUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.sign.Side;
-import org.bukkit.entity.ItemDisplay;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 public class ExplodeListener  implements Listener {
 
