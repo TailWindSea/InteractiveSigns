@@ -32,7 +32,4 @@ public class StringTextNode {
     public Component value(){
         return Text.toComponent(value);
     }
-    public String get(){
-        return value;
-    }
 }

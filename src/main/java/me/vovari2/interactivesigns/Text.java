@@ -1,8 +1,6 @@
 package me.vovari2.interactivesigns;
 
 import me.vovari2.interactivesigns.text_nodes.StringTextNode;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 

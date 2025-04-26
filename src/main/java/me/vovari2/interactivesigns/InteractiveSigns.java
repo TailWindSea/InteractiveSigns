@@ -52,6 +52,7 @@ public final class InteractiveSigns extends JavaPlugin {
         isEnabled = true;
         CommandAPI.onEnable();
 
+        Plugins.initialize();
         Permission.initialize();
         Executor.preInitialize(instance);
 

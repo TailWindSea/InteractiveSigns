@@ -16,9 +16,6 @@ public enum Plugins {
         this.name = name;
     }
 
-    public String getName(){
-        return name;
-    }
     public boolean isEnabled(){
         return enabled;
     }
