@@ -1,10 +1,14 @@
-# InteractiveSigns v1.3.0
+# InteractiveSigns v1.3.3
 # Author: Vovari2
 
 # True - so that when you insert an item into the signs, it will be three-dimensional (3D)
 # False - so that when an item is inserted into the signs, it will be flat (2D)
 enable_items_volume: false
 
+
+# A list of items that will not be allowed to be tabbed (default: empty)
+blacklist_of_items:
+  - #nothing
 
 # True - so players need the “permission_can_use_signs” permission to insert items into the signs
 # False - so all players can insert items into signs

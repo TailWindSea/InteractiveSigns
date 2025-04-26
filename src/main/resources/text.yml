@@ -8,5 +8,8 @@ command:
   clear: "<gradient:#54B435:#82CD47>All displays within a <#F2AE66><%radius%></#F2AE66> radius have been removed!"
 
 warning:
+  # Warning, when a player put a prohibited item in the sign (if you make the field empty (“”) , the message will not be sent)
+  you_cant_put_that_here: "<bold><red>Hey!</bold> <gray>Sorry, but you can't put that here."
+
   # Warning, when a player uses a plaque in someone else's region (if you make the field empty (“”) , the message will not be sent)
-  you_cant_use_that_here: "<bold><red>He2y!</bold> <gray>Sorry, but you can't use that here."
+  you_cant_use_that_here: "<bold><red>Hey!</bold> <gray>Sorry, but you can't use that here."

@@ -4,7 +4,6 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
-import me.vovari2.interactivesigns.exceptions.ComponentException;
 import me.vovari2.interactivesigns.listeners.BreakListener;
 import me.vovari2.interactivesigns.listeners.ExplodeListener;
 import me.vovari2.interactivesigns.listeners.GrowListener;
@@ -38,14 +37,14 @@ public final class InteractiveSigns extends JavaPlugin {
             Config.initialize();
 
             ProtectionPlugins.load();
-        } catch (ComponentException e) {
-            Text.sendMessageToConsole(e.getComponentMessage());
+        } catch (Exception e) {
+            Text.error(e.getMessage());
             isLoaded = false;
         }
 
         if (isLoaded)
-            Text.sendMessageToConsole("<green>Plugin %s %s loaded!".formatted(Text.PLUGIN_NAME, Text.VERSION), true);
-        else Text.sendMessageToConsole("<yellow>Plugin %s %s is not loaded!".formatted(Text.PLUGIN_NAME, Text.VERSION), true);
+            Text.info("Plugin %s %s loaded!".formatted(Text.PLUGIN_NAME, Text.VERSION));
+        else Text.warning("Plugin %s %s is not loaded!".formatted(Text.PLUGIN_NAME, Text.VERSION));
     }
 
     @Override
@@ -72,8 +71,8 @@ public final class InteractiveSigns extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new GrowListener(), this);
         }
         if (isLoaded && isEnabled)
-            Text.sendMessageToConsole("<green>Plugin %s %s enabled!".formatted(Text.PLUGIN_NAME, Text.VERSION), true);
-        else Text.sendMessageToConsole("<yellow>Plugin %s %s is not enabled! There was an error in the console above!".formatted(Text.PLUGIN_NAME, Text.VERSION), true);
+            Text.info("Plugin %s %s enabled!".formatted(Text.PLUGIN_NAME, Text.VERSION));
+        else Text.warning("Plugin %s %s is not enabled! There was an error in the console above!".formatted(Text.PLUGIN_NAME, Text.VERSION));
     }
 
     @Override
@@ -81,26 +80,26 @@ public final class InteractiveSigns extends JavaPlugin {
         CommandAPI.onDisable();
         HandlerList.unregisterAll(this);
         getScheduler().cancelTasks(this);
-        Text.sendMessageToConsole("<red>Plugin %s %s disabled!".formatted(Text.PLUGIN_NAME, Text.VERSION), true);
+        Text.error("Plugin %s %s disabled!".formatted(Text.PLUGIN_NAME, Text.VERSION));
     }
 
     public static CoreProtectAPI setupCoreProtect(){
         Plugin plugin = instance.getServer().getPluginManager().getPlugin("CoreProtect");
         if (!(plugin instanceof CoreProtect coreProtect))
             return null;
-        Text.sendMessageToConsole("<green>Found CoreProtect plugin.");
+        Text.info("Found CoreProtect plugin");
 
         CoreProtectAPI api = coreProtect.getAPI();
         if (!api.isEnabled()) {
-            Text.sendMessageToConsole("<red>CoreProtect plugin API is not enabled!");
+            Text.error("CoreProtect plugin API is not enabled!");
             return null;
         }
 
         if (api.APIVersion() < 10) {
-            Text.sendMessageToConsole("<red>CoreProtect plugin unsupported version v%s (needed v22.4+)!".formatted(coreProtect.getDescription().getVersion()));
+            Text.error("CoreProtect plugin unsupported version v%s (needed v22.4+)!".formatted(coreProtect.getDescription().getVersion()));
             return null;
         }
-        Text.sendMessageToConsole("<green>Full support for CoreProtect plugin!");
+        Text.info("Full support for CoreProtect plugin!");
 
         return api;
     }

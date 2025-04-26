@@ -63,10 +63,10 @@ public class ProtectionPlugins {
         try{ plugins.add(plugin.getDeclaredConstructor().newInstance());}
         catch(Exception ignored){isFullEnabled = false;}
 
-        Text.sendMessageToConsole(
-                isFullEnabled
-                        ? "<green>Found %s plugin! Plugin support is fully enabled!".formatted(name)
-                        : "<red>Found %s plugin! Plugin support is not enabled due to a bug!".formatted(name));
+
+        if (isFullEnabled)
+            Text.info("Found %s plugin! Plugin support is fully enabled!".formatted(name));
+        else Text.warning("Found %s plugin! Plugin support is not enabled due to a bug!".formatted(name));
     }
     public static boolean isEnabledPlugin(String name){
         return InteractiveSigns.getInstance().getServer().getPluginManager().getPlugin(name) != null;

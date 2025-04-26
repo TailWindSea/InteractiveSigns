@@ -14,7 +14,7 @@ public class HelpCommand {
         player.sendMessage(Text.node("command.help").replacePlaceholderAPI(player).value());
     }
     public static void executes(CommandSender sender, CommandArguments ignored){
-        sender.sendMessage(Text.value("command.help"));
+        Text.send("command.help", sender);
     }
 
     public static boolean hasPermission(CommandSender sender){

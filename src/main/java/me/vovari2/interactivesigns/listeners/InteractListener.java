@@ -63,8 +63,7 @@ public class InteractListener implements Listener {
                 ItemDisplayUtils.convertFromOldDisplay(ItemDisplayUtils.getItemDisplayOnSignOld(displayLocation));
 
                 if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
-                    if (!Text.isEmpty("warning.you_cant_use_that_here"))
-                        Delay.run(() -> player.sendMessage(Text.node("warning.you_cant_use_that_here").replacePlaceholderAPI(player).value()), player, "cant_use_this_here", 20);
+                    Delay.run(() -> Text.send("warning.you_cant_use_that_here", player), player, "cant_use_this_here", 20);
                     return;
                 }
 
@@ -107,6 +106,10 @@ public class InteractListener implements Listener {
                     if (!player.hasPermission(Config.PERMISSION_CAN_USE_SIGNS))
                         return;
 
+                if (Config.DISALLOW_SIGN_ITEM_PLACEMENT.contains(item.getType())){
+                    Delay.run(() -> Text.send("warning.you_cant_put_that_here", player), player, "cant_put_this_here", 20);
+                    return;
+                }
 
                 ItemStack placedItem = item.clone();
                 placedItem.setAmount(1);
@@ -133,15 +136,14 @@ public class InteractListener implements Listener {
                     return;
 
                 if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
-                    if (!Text.isEmpty("warning.you_cant_use_that_here"))
-                        Delay.run(() -> player.sendMessage(Text.node("warning.you_cant_use_that_here").replacePlaceholderAPI(player).value()), player, "cant_use_this_here", 20);
+                    Delay.run(() -> Text.send("warning.you_cant_use_that_here", player), player, "cant_use_this_here", 20);
                     return;
                 }
 
                 if (Config.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS)
                     if (!player.hasPermission(Config.PERMISSION_CAN_USE_SIGNS)){
-                        if (!Text.isEmpty("warning.you_cant_use_that_here"))
-                            Delay.run(() -> player.sendMessage(Text.node("warning.you_cant_use_that_here").replacePlaceholderAPI(player).value()), player, "cant_use_this_here", 20);
+
+                        Delay.run(() -> Text.send("warning.you_cant_use_that_here", player), player, "cant_use_this_here", 20);
                         event.setCancelled(true);
                         return;
                     }

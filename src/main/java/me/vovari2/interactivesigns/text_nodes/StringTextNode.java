@@ -1,19 +1,20 @@
 package me.vovari2.interactivesigns.text_nodes;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.vovari2.interactivesigns.ProtectionPlugins;
-import me.vovari2.interactivesigns.utils.TextUtils;
+import me.vovari2.interactivesigns.Plugins;
+import me.vovari2.interactivesigns.Text;
 import net.kyori.adventure.text.Component;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class StringTextNode{
+public class StringTextNode {
     private final String value;
     public StringTextNode(String value) {
         this.value = value;
     }
 
     public StringTextNode replacePlaceholderAPI(Player player){
-        if (!ProtectionPlugins.isEnabledPlugin("PlaceholderAPI"))
+        if (!Plugins.PlaceholderAPI.isEnabled())
             return this;
         return new StringTextNode(PlaceholderAPI.setPlaceholders(player, value));
     }
@@ -21,10 +22,17 @@ public class StringTextNode{
         return new StringTextNode(value.replace("<%" + placeholder + "%>", placeholderValue));
     }
 
-    public boolean isEmpty(){
-        return value.isEmpty();
+    public void send(CommandSender sender){
+        if (value.isEmpty())
+            return;
+        if (sender instanceof Player player)
+            player.sendMessage(Text.toComponent(replacePlaceholderAPI(player).value));
+        else sender.sendMessage(Text.toComponent(value));
     }
-    public Component value() {
-        return TextUtils.toComponent(value);
+    public Component value(){
+        return Text.toComponent(value);
+    }
+    public String get(){
+        return value;
     }
 }
