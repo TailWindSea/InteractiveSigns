@@ -3,8 +3,10 @@ package me.vovari2.interactivesigns.utils;
 import org.bukkit.Location;
 import org.bukkit.block.sign.Side;
 import org.bukkit.entity.ItemDisplay;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
@@ -16,7 +18,7 @@ public class ItemDisplayUtils {
         display.getPersistentDataContainer().set(NamespacedKeyUtils.forItemOnSign(side.name()), PersistentDataType.BOOLEAN, value);
     }
 
-    public static ItemDisplay getItemDisplayOnSign(Location location, Side side){
+    public static @Nullable ItemDisplay getItemDisplayOnSign(Location location, Side side){
         Collection<ItemDisplay> list = location.getWorld().getNearbyEntitiesByType(
                 ItemDisplay.class,
                 location,
@@ -28,12 +30,14 @@ public class ItemDisplayUtils {
 
         return list.iterator().next();
     }
-    public static @NotNull Collection<ItemDisplay> getItemDisplaysOnSign(Location location){
-        return location.getWorld().getNearbyEntitiesByType(
-                ItemDisplay.class,
-                location,
-                0.1,
-                display -> display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign(Side.FRONT.name())) || display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign(Side.BACK.name())));
+    public static void dropItemFromDisplay(Location location, Side side){
+        ItemDisplay display = ItemDisplayUtils.getItemDisplayOnSign(location, side);
+        if (display == null)
+            return;
+
+        display.remove();
+        if (display.getItemStack() != null)
+            location.getWorld().dropItemNaturally(location, display.getItemStack());
     }
 
     public static ItemDisplay getItemDisplayOnSignOld(Location location){
@@ -48,11 +52,17 @@ public class ItemDisplayUtils {
 
         return list.iterator().next();
     }
-    public static @NotNull Collection<ItemDisplay> getItemDisplaysOnSignOld(Location location, double radius){
-        return location.getWorld().getNearbyEntitiesByType(
-                ItemDisplay.class,
-                location,
-                radius,
-                display -> display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSignOld()));
+    public static void convertFromOldDisplay(ItemDisplay display){
+        if (display == null)
+            return;
+
+        PersistentDataContainer container = display.getPersistentDataContainer();
+        String side = container.get(NamespacedKeyUtils.forItemOnSignOld(), PersistentDataType.STRING);
+        if (side == null)
+            return;
+
+        container.remove(NamespacedKeyUtils.forItemOnSignOld());
+        container.set(NamespacedKeyUtils.forItemOnSign(side), PersistentDataType.BOOLEAN, false);
     }
+
 }

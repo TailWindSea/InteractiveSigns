@@ -27,34 +27,40 @@ import java.util.List;
 
 public class InteractListener implements Listener {
 
+    private final Component ART_MAP_LINE = TextUtils.toComponent("*{=}*");
+    public boolean isCanvas(Sign signBlock){
+        return signBlock.getSide(Side.FRONT).lines().get(3).equals(ART_MAP_LINE);
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteractPlayer(PlayerInteractEvent event){
-        if (event.getClickedBlock() == null
-                || !(event.getClickedBlock().getState() instanceof Sign signBlock))
+        // Блок должен являться табличкой
+        if (event.getClickedBlock() == null || !(event.getClickedBlock().getState() instanceof Sign signBlock))
             return;
 
-        if (ArtMapUtils.isCanvas(signBlock))
+        // Защита от вставки в таблички плагина ArtMap
+        if (isCanvas(signBlock))
             return;
 
         Material signMaterial = signBlock.getType();
         Vector signDirection = SignRotations.get(SignTypes.getSignFace(signBlock.getBlockData()));
-        if (SignTypes.isWall(signMaterial))
+        if (SignTypes.isWall(signMaterial)) // Если табличка настенная, отражаем дисплей
             signDirection = signDirection.clone().multiply(-1);
 
         Player player = event.getPlayer();
-        Vector playerDirection = new Vector(Math.sin(-Math.toRadians(player.getYaw())), signDirection.getY(), Math.cos(Math.toRadians(player.getYaw())));
-        Side side = getClickedSide(signDirection, playerDirection);
+        Side side = getClickedSide(
+                signDirection,
+                new Vector(Math.sin(-Math.toRadians(player.getYaw())), signDirection.getY(), Math.cos(Math.toRadians(player.getYaw()))));
 
         Location signLocation = signBlock.getLocation();
         Location displayLocation = signLocation.add(0.5F, 0.5F, 0.5F);
-        displayLocation.setDirection(side.equals(Side.BACK) ? signDirection.clone().multiply(-1) : signDirection);
+        displayLocation.setDirection(side.equals(Side.FRONT) ? signDirection.clone().multiply(-1) : signDirection);
+
+
         switch(event.getAction()) {
             case RIGHT_CLICK_BLOCK: {
-                if (ItemDisplayUtils.getItemDisplayOnSignOld(displayLocation) != null){
-                    player.sendMessage(TextUtils.toComponent("<red>The old signs format is used here <newline>Use the <click:run_command:'/ins refactor'><hover:show_text:'<gray>Нажмите'><yellow>/ins refactor</yellow></hover></click> to update the item format in the signs<newline> "));
-                    event.setCancelled(true);
-                    return;
-                }
+                ItemDisplayUtils.convertFromOldDisplay(ItemDisplayUtils.getItemDisplayOnSignOld(displayLocation));
+                ItemDisplayUtils.convertFromOldDisplay(ItemDisplayUtils.getItemDisplayOnSignOld(displayLocation));
 
                 if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
                     if (!Text.isEmpty("warning.you_cant_use_that_here"))

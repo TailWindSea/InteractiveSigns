@@ -7,7 +7,6 @@ import dev.jorel.commandapi.arguments.DoubleArgument;
 import dev.jorel.commandapi.arguments.LiteralArgument;
 import me.vovari2.interactivesigns.commands.ClearCommand;
 import me.vovari2.interactivesigns.commands.HelpCommand;
-import me.vovari2.interactivesigns.commands.RefactorCommand;
 import me.vovari2.interactivesigns.commands.ReloadCommand;
 
 public class Executor {
@@ -38,9 +37,6 @@ public class Executor {
                 .withOptionalArguments(new DoubleArgument(ClearCommand.ARGUMENT_RADIUS))
                 .executesPlayer(ClearCommand::executesPlayer));
 
-        command.withSubcommand(new CommandAPICommand("refactor")
-                .withRequirement(RefactorCommand::hasPermission)
-                .executesPlayer(RefactorCommand::executesPlayer));
         command.executes(HelpCommand::executes);
         command.register(instance);
     }

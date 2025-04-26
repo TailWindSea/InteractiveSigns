@@ -34,7 +34,7 @@ public enum SignTypes {
                 .getSignTransformation(side, MaterialType.getType(placedMaterial))
                 .getTransformation();
     }
-    private static @NotNull SignTypes getType( Material material){
+    private static @NotNull SignTypes getType(Material material){
         if (MaterialSetTag.WALL_SIGNS.isTagged(material))
             return WALL_SIGN;
         if (MaterialSetTag.WALL_HANGING_SIGNS.isTagged(material) || MaterialSetTag.CEILING_HANGING_SIGNS.isTagged(material))

@@ -3,17 +3,17 @@ package me.vovari2.interactivesigns.listeners;
 import com.destroystokyo.paper.MaterialSetTag;
 import com.destroystokyo.paper.event.block.BlockDestroyEvent;
 import me.vovari2.interactivesigns.utils.ItemDisplayUtils;
+import me.vovari2.interactivesigns.utils.VersionUtils;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.entity.ItemDisplay;
+import org.bukkit.block.sign.Side;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
-import java.util.Collection;
-
 public class BreakListener implements Listener {
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onBreakBlockByWorld(BlockDestroyEvent event){
         if(event.isCancelled())
             return;
@@ -22,17 +22,15 @@ public class BreakListener implements Listener {
         if (!MaterialSetTag.ALL_SIGNS.isTagged(block.getType()))
             return;
 
-        Collection<ItemDisplay> list = ItemDisplayUtils.getItemDisplaysOnSign(block.getLocation().add(0.5,0.5,0.5));
-        if (list.isEmpty())
-            return;
+        Location location = VersionUtils.getBlockCenter(block.getLocation());
 
-        for (ItemDisplay display : list){
-            display.remove();
-            if (display.getItemStack() != null)
-                block.getWorld().dropItemNaturally(block.getLocation(), display.getItemStack());
-        }
+        ItemDisplayUtils.convertFromOldDisplay(ItemDisplayUtils.getItemDisplayOnSignOld(location));
+        ItemDisplayUtils.convertFromOldDisplay(ItemDisplayUtils.getItemDisplayOnSignOld(location));
+
+        ItemDisplayUtils.dropItemFromDisplay(location, Side.FRONT);
+        ItemDisplayUtils.dropItemFromDisplay(location, Side.BACK);
     }
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onBreakBlockByPlayer(BlockBreakEvent event){
         if(event.isCancelled())
             return;
@@ -41,14 +39,12 @@ public class BreakListener implements Listener {
         if (!MaterialSetTag.ALL_SIGNS.isTagged(block.getType()))
             return;
 
-        Collection<ItemDisplay> list = ItemDisplayUtils.getItemDisplaysOnSign(block.getLocation().add(0.5,0.5,0.5));
-        if (list.isEmpty())
-            return;
+        Location location = VersionUtils.getBlockCenter(block.getLocation());
 
-        for (ItemDisplay display : list){
-            display.remove();
-            if (display.getItemStack() != null)
-                block.getWorld().dropItemNaturally(block.getLocation(), display.getItemStack());
-        }
+        ItemDisplayUtils.convertFromOldDisplay(ItemDisplayUtils.getItemDisplayOnSignOld(location));
+        ItemDisplayUtils.convertFromOldDisplay(ItemDisplayUtils.getItemDisplayOnSignOld(location));
+
+        ItemDisplayUtils.dropItemFromDisplay(location, Side.FRONT);
+        ItemDisplayUtils.dropItemFromDisplay(location, Side.BACK);
     }
 }
