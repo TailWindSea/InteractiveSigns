@@ -1,7 +1,5 @@
 package me.vovari2.interactivesigns;
 
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.protection.regions.RegionContainer;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import me.vovari2.interactivesigns.listeners.BreakListener;
@@ -20,7 +18,9 @@ import org.bukkit.scheduler.BukkitScheduler;
 public final class InteractiveSigns extends JavaPlugin {
 
     private static InteractiveSigns instance;
-    private static CoreProtectAPI coreProtectAPI;
+
+    private static boolean hasCoreProtect;
+    private static boolean hasPlaceholderAPI;
 
     public boolean isLoaded;
     public boolean isEnabled;
@@ -52,7 +52,6 @@ public final class InteractiveSigns extends JavaPlugin {
         isEnabled = true;
         CommandAPI.onEnable();
 
-        Plugins.initialize();
         Permission.initialize();
         Executor.preInitialize(instance);
 
@@ -63,7 +62,8 @@ public final class InteractiveSigns extends JavaPlugin {
             SignTypes.initialize();
             SignRotations.initialize();
 
-            coreProtectAPI = setupCoreProtect();
+            hasCoreProtect = setupCoreProtect();
+            hasPlaceholderAPI = instance.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
             Executor.initialize(instance);
 
             getServer().getPluginManager().registerEvents(new InteractListener(), this);
@@ -75,6 +75,26 @@ public final class InteractiveSigns extends JavaPlugin {
             Text.info("Plugin %s %s enabled!".formatted(Text.PLUGIN_NAME, Text.VERSION));
         else Text.warning("Plugin %s %s is not enabled! There was an error in the console above!".formatted(Text.PLUGIN_NAME, Text.VERSION));
     }
+    public static boolean setupCoreProtect(){
+        Plugin plugin = instance.getServer().getPluginManager().getPlugin("CoreProtect");
+        if (!(plugin instanceof CoreProtect coreProtect))
+            return false;
+        Text.info("Found CoreProtect plugin");
+
+        CoreProtectAPI api = coreProtect.getAPI();
+        if (!api.isEnabled()) {
+            Text.error("CoreProtect plugin API is not enabled!");
+            return false;
+        }
+
+        if (api.APIVersion() < 10) {
+            Text.error("CoreProtect plugin unsupported version v%s (needed v22.4+)!".formatted(coreProtect.getDescription().getVersion()));
+            return false;
+        }
+        Text.info("Full support for CoreProtect plugin!");
+
+        return true;
+    }
 
     @Override
     public void onDisable() {
@@ -84,39 +104,19 @@ public final class InteractiveSigns extends JavaPlugin {
         Text.error("Plugin %s %s disabled!".formatted(Text.PLUGIN_NAME, Text.VERSION));
     }
 
-    public static CoreProtectAPI setupCoreProtect(){
-        Plugin plugin = instance.getServer().getPluginManager().getPlugin("CoreProtect");
-        if (!(plugin instanceof CoreProtect coreProtect))
-            return null;
-        Text.info("Found CoreProtect plugin");
-
-        CoreProtectAPI api = coreProtect.getAPI();
-        if (!api.isEnabled()) {
-            Text.error("CoreProtect plugin API is not enabled!");
-            return null;
-        }
-
-        if (api.APIVersion() < 10) {
-            Text.error("CoreProtect plugin unsupported version v%s (needed v22.4+)!".formatted(coreProtect.getDescription().getVersion()));
-            return null;
-        }
-        Text.info("Full support for CoreProtect plugin!");
-
-        return api;
-    }
-
     public static InteractiveSigns getInstance(){
         return instance;
     }
-    public static CoreProtectAPI getCoreProtectAPI(){
-        return coreProtectAPI;
+
+    public static boolean hasCoreProtect(){
+        return hasCoreProtect;
     }
-    public static BukkitScheduler getScheduler(){
-        return instance.getServer().getScheduler();
+    public static boolean hasPlaceholderAPI(){
+        return hasPlaceholderAPI;
     }
 
-    public static RegionContainer getRegionContainer(){
-        return WorldGuard.getInstance().getPlatform().getRegionContainer();
+    public static BukkitScheduler getScheduler(){
+        return instance.getServer().getScheduler();
     }
 
 }

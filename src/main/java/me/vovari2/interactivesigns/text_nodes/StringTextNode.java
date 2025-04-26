@@ -1,7 +1,7 @@
 package me.vovari2.interactivesigns.text_nodes;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.vovari2.interactivesigns.Plugins;
+import me.vovari2.interactivesigns.InteractiveSigns;
 import me.vovari2.interactivesigns.Text;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
@@ -14,7 +14,7 @@ public class StringTextNode {
     }
 
     public StringTextNode replacePlaceholderAPI(Player player){
-        if (!Plugins.PlaceholderAPI.isEnabled())
+        if (!InteractiveSigns.hasPlaceholderAPI())
             return this;
         return new StringTextNode(PlaceholderAPI.setPlaceholders(player, value));
     }

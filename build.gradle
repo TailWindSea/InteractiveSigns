@@ -22,8 +22,8 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
     implementation("dev.jorel:commandapi-bukkit-shade:9.7.0")
-    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.6")
-    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.1.0-SNAPSHOT")
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.0")
+    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9-SNAPSHOT")
     compileOnly("com.github.GriefPrevention:GriefPrevention:16.18.2")
     compileOnly("net.william278.huskclaims:huskclaims-bukkit:1.5")
     compileOnly("com.bgsoftware:SuperiorSkyblockAPI:2024.4")
@@ -33,7 +33,7 @@ dependencies {
     compileOnly files("./libs/Residence5.1.6.5.jar")
     compileOnly("com.griefdefender:api:2.1.0-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.6")
-    implementation("com.github.Vovari2:FoamLib:1.0.4")
+    implementation("com.github.Vovari2:FoamLib:1.0.5")
 }
 
 shadowJar {
@@ -42,7 +42,7 @@ shadowJar {
     archiveFileName = "${project.name}-${project.version}.jar"
 }
 
-def targetJavaVersion = 21
+def targetJavaVersion = 17
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion

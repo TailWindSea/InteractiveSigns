@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Config extends me.vovari2.foamlib.Config {
+public class Config extends me.vovari2.foamlib.Config{
     public static boolean ENABLE_ITEMS_VOLUME;
 
     public static List<Material> DISALLOW_SIGN_ITEM_PLACEMENT;
@@ -39,7 +39,7 @@ public class Config extends me.vovari2.foamlib.Config {
 
         HUSKCLAIMS_FLAG_ID = getString("huskclaims.flag_id");
 
-        LANDS_FLAG_ID = getString("lands.flag_id");
+        LANDS_FLAG_ID = fileConfig.getString("lands.flag_id");
         LANDS_FLAG_NAME = getString("lands.flag_name");
         LANDS_FLAG_MATERIAL = getMaterial("lands.flag_material");
         LANDS_FLAG_DESCRIPTION = getString("lands.flag_description");

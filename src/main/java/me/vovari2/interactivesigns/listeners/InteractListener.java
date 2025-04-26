@@ -27,7 +27,7 @@ import java.util.List;
 
 public class InteractListener implements Listener {
 
-    private final Component ART_MAP_LINE = TextUtils.toComponent("*{=}*");
+    private final Component ART_MAP_LINE = Text.toComponent("*{=}*");
     public boolean isCanvas(Sign signBlock){
         return signBlock.getSide(Side.FRONT).lines().get(3).equals(ART_MAP_LINE);
     }
@@ -115,7 +115,7 @@ public class InteractListener implements Listener {
                 placedItem.setAmount(1);
                 player.getInventory().getItem(event.getHand()).subtract();
 
-                if (InteractiveSigns.getCoreProtectAPI() != null)
+                if (InteractiveSigns.hasCoreProtect())
                     CoreProtectUtils.logPuttingItemOnSign(player.getName(), signLocation, placedItem.getType());
 
                 ItemDisplay itemDisplay = (ItemDisplay) displayLocation.getWorld().spawnEntity(displayLocation, EntityType.ITEM_DISPLAY);
@@ -153,7 +153,7 @@ public class InteractListener implements Listener {
                 if (droppedItem == null)
                     return;
 
-                if (InteractiveSigns.getCoreProtectAPI() != null)
+                if (InteractiveSigns.hasCoreProtect())
                     CoreProtectUtils.logTakingItemOnSign(player.getName(), signLocation, droppedItem.getType());
 
                 signBlock.getWorld().dropItemNaturally(VersionUtils.getBlockCenter(signBlock.getLocation()), droppedItem);

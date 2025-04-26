@@ -33,4 +33,9 @@ public class Delay {
         delaysOfPlayers.add(delayOfPlayer);
         InteractiveSigns.getScheduler().runTaskLater(InteractiveSigns.getInstance(), () -> delaysOfPlayers.remove(delayOfPlayer), delay);
     }
+
+
+    public interface Function {
+        void run();
+    }
 }

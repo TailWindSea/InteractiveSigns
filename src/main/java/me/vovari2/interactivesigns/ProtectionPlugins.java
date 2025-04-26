@@ -7,7 +7,10 @@ import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
 import com.griefdefender.api.Core;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.TrustTypes;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.world.World;
+import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.Flag;
@@ -25,12 +28,12 @@ import me.angeschossen.lands.api.flags.enums.RoleFlagCategory;
 import me.angeschossen.lands.api.flags.type.RoleFlag;
 import me.angeschossen.lands.api.land.LandWorld;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import me.vovari2.interactivesigns.utils.HuskClaimsUtils;
-import me.vovari2.interactivesigns.utils.WorldGuardUtils;
 import net.william278.huskclaims.api.BukkitHuskClaimsAPI;
 import net.william278.huskclaims.api.HuskClaimsAPI;
 import net.william278.huskclaims.claim.Claim;
 import net.william278.huskclaims.libraries.cloplib.operation.OperationType;
+import net.william278.huskclaims.position.Position;
+import net.william278.huskclaims.user.User;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -97,16 +100,18 @@ public class ProtectionPlugins {
 
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
-            World world = WorldGuardUtils.adaptWorld(location.getWorld());
+            World world = BukkitAdapter.adapt(location.getWorld());
             if (!WorldGuardPlugin.inst().getConfigManager().get(world).useRegions)
                 return true;
 
-            RegionManager container = InteractiveSigns.getRegionContainer().get(world);
+            RegionManager container = WorldGuard.getInstance().getPlatform().getRegionContainer().get(world);
             if (container == null)
                 return true;
 
-            for (ProtectedRegion region : container.getApplicableRegions(WorldGuardUtils.adaptLocation(location)).getRegions())
-                if(!region.isMember(WorldGuardUtils.adaptPlayer(player)) && !StateFlag.State.ALLOW.equals(region.getFlag(USES_ITEMS_ON_SIGNS)) && !region.getType().equals(RegionType.GLOBAL) && !player.isOp())
+            BlockVector3 blockVector3 = BukkitAdapter.asBlockVector(location);
+            LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+            for (ProtectedRegion region : container.getApplicableRegions(blockVector3).getRegions())
+                if(!region.isMember(localPlayer) && !StateFlag.State.ALLOW.equals(region.getFlag(USES_ITEMS_ON_SIGNS)) && !region.getType().equals(RegionType.GLOBAL) && !player.isOp())
                     return false;
 
             return true;
@@ -147,9 +152,11 @@ public class ProtectionPlugins {
         public boolean canInteractWithSign(Player player, Location location) {
             Claim claim;
             try{
-                claim = BukkitHuskClaimsAPI.getInstance().getClaimAt(HuskClaimsUtils.adaptPosition(location)).orElseThrow();
+                Position position = BukkitHuskClaimsAPI.getInstance().getPosition(location);
+                claim = BukkitHuskClaimsAPI.getInstance().getClaimAt(position).orElseThrow();
                 try{
-                    for(OperationType operation : claim.getUserTrustLevel(HuskClaimsUtils.adaptPlayer(player), HuskClaimsAPI.getInstance().getPlugin()).orElseThrow().getFlags())
+                    User user = BukkitHuskClaimsAPI.getInstance().getOnlineUser(player);
+                    for(OperationType operation : claim.getUserTrustLevel(user, HuskClaimsAPI.getInstance().getPlugin()).orElseThrow().getFlags())
                         if (ITEMS_ON_SIGNS.equals(operation.getKey().value()))
                             return true;
                 }
