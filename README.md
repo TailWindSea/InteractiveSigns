@@ -1,4 +1,4 @@
-# Interactive Signs (1.20.2 - 1.21.4)
+# Interactive Signs (1.20.2 - 1.21.5)
 The plugin allows you to insert your items into the sign by clicking **the right mouse button**. To pick up an item, you need to hit the sign with **the left mouse button**.
 Also, items on signs can be waxed with **honeycomb**, once they are waxed they cannot be taken by anyone. Waxing can be removed by using an **axe**.
 
