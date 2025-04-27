@@ -6,6 +6,7 @@ import me.vovari2.interactivesigns.commands.ReloadCommand;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +61,10 @@ public class Permission {
         public void addParent(String key){
             parents.add(key);
         }
-        public boolean hasPermission(CommandSender player){
+        public boolean hasPermission(@Nullable CommandSender player){
+            if (player == null)
+                return false;
+
             for (String parent : parents)
                 if (player.hasPermission(parent))
                     return true;
