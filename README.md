@@ -19,7 +19,6 @@ You can use the command to view the actions of putting and taking an item from t
 - **/ins help**  "Shows information on commands" (Permission: interactive_signs.help)
 - **/ins reload**  "Restarts the plugin (to configure "text.yml")" (Permission: interactive_signs.reload)
 - **/ins clear**  "Clears the item in signs within the specified radius" (Permission: interactive_signs.clear)
-- **/ins refactor**  "Conversion of the old table format from version 1.2.6, to the new one within a radius of 10 blocks" (Permission: interactive_signs.refactor)
 
 ## File "config.yml":
 ```
@@ -27,6 +26,10 @@ You can use the command to view the actions of putting and taking an item from t
 # False - so that when an item is inserted into the signs, it will be flat (2D)
 enable_items_volume: false
 
+
+# A list of items that will not be allowed to be tabbed (default: empty)
+blacklist_of_items:
+  - #nothing
 
 # True - so players need the “permission_can_use_signs” permission to insert items into the signs
 # False - so all players can insert items into signs
@@ -59,6 +62,9 @@ command:
   clear: "<gradient:#54B435:#82CD47>All displays within a <#F2AE66><%radius%></#F2AE66> radius have been removed!"
 
 warning:
+  # Warning, when a player put a prohibited item in the sign (if you make the field empty (“”) , the message will not be sent)
+  you_cant_put_that_here: "<bold><red>Hey!</bold> <gray>Sorry, but you can't put that here."
+
   # Warning, when a player uses a plaque in someone else's region (if you make the field empty (“”) , the message will not be sent)
   you_cant_use_that_here: "<bold><red>He2y!</bold> <gray>Sorry, but you can't use that here."
 ```
