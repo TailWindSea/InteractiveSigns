@@ -31,6 +31,11 @@ public class StandingSign3D extends AbstractSignType {
                 new AxisAngle4f(0, -1,0,0),
                 new Vector3f(0.28F,0.28F,0.26F),
                 new AxisAngle4f(0, 0, 1, 0)));
+        front.put(MaterialType.TRIDENT, new FullTransformation(
+                new Vector3f(-0.28F,-0.13F,0.1F),
+                new AxisAngle4f(1.8F, 1,0,0),
+                new Vector3f(0.75F,0.75F,0.75F),
+                new AxisAngle4f(1.8F, 0, 1, 0)));
         front.put(MaterialType.ITEM, new FullTransformation(
                 new Vector3f(0,0.34F, -0.05F),
                 new AxisAngle4f(0, -1,0,0),

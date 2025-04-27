@@ -31,6 +31,11 @@ public class WallSign3D extends AbstractSignType {
                 new AxisAngle4f(0, -1,0,0),
                 new Vector3f(0.28F,0.28F,0.26F),
                 new AxisAngle4f(0, 0, 1, 0)));
+        front.put(MaterialType.TRIDENT, new FullTransformation(
+                new Vector3f(-0.28F,-0.42F,0.52F),
+                new AxisAngle4f(1.8F, 1,0,0),
+                new Vector3f(0.75F,0.75F,0.75F),
+                new AxisAngle4f(1.8F, 0, 1, 0)));
         front.put(MaterialType.ITEM, new FullTransformation(
                 new Vector3f(0,0.03F,0.384F),
                 new AxisAngle4f(0, -1,0,0),
@@ -39,6 +44,7 @@ public class WallSign3D extends AbstractSignType {
         front.put(MaterialType.BLOCK, new VectorTransformation(
                 new Vector3f(-0,0.03F,0.389F),
                 new Vector3f(0.35F,0.35F,0.14F)));
+
 
         back.put(MaterialType.DRAGON_HEAD, new VectorTransformation(
                 new Vector3f(0,0.08F,-0.483F),
@@ -62,6 +68,11 @@ public class WallSign3D extends AbstractSignType {
                 new AxisAngle4f(0, -1,0,0),
                 new Vector3f(0.28F,0.28F,0.26F),
                 new AxisAngle4f(0, 0, 1, 0)));
+        back.put(MaterialType.TRIDENT, new FullTransformation(
+                new Vector3f(-0.28F,-0.42F,-0.33F),
+                new AxisAngle4f(1.8F, 1,0,0),
+                new Vector3f(0.75F,0.75F,0.75F),
+                new AxisAngle4f(1.8F, 0, 1, 0)));
         back.put(MaterialType.ITEM, new FullTransformation(
                 new Vector3f(0,0.03F,-0.488F),
                 new AxisAngle4f(0, -1,0,0),

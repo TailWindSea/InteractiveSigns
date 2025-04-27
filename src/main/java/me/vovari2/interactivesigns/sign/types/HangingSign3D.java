@@ -31,6 +31,11 @@ public class HangingSign3D extends AbstractSignType {
                 new AxisAngle4f(0, -1,0,0),
                 new Vector3f(0.35F,0.35F,0.35F),
                 new AxisAngle4f(0, 0, 1, 0)));
+        front.put(MaterialType.TRIDENT, new FullTransformation(
+                new Vector3f(-0.25F,-0.6F,0.12F),
+                new AxisAngle4f(1.8F, 1,0,0),
+                new Vector3f(0.75F,0.75F,0.75F),
+                new AxisAngle4f(1.8F, 0, 1, 0)));
         front.put(MaterialType.ITEM, new FullTransformation(
                 new Vector3f(0,-0.18F, -0.074F),
                 new AxisAngle4f(0, -1,0,0),
