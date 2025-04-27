@@ -38,7 +38,7 @@ dependencies {
 
 shadowJar {
     relocate("dev.jorel.commandapi", "libs.commandapi")
-    getDestinationDirectory().set(new File("D:\\Minecraft\\Servers\\Purpur 1.21.4\\plugins\\"))
+    getDestinationDirectory().set(new File("D:\\Minecraft\\Servers\\Paper 1.21.5\\plugins\\"))
     archiveFileName = "${project.name}-${project.version}.jar"
 }
 
