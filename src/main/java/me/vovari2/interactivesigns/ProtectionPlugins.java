@@ -4,6 +4,7 @@ import com.bekvon.bukkit.residence.api.ResidenceApi;
 import com.bekvon.bukkit.residence.containers.Flags;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
+import com.bgsoftware.superiorskyblock.api.island.Island;
 import com.griefdefender.api.Core;
 import com.griefdefender.api.GriefDefender;
 import com.griefdefender.api.claim.TrustTypes;
@@ -175,7 +176,10 @@ public class ProtectionPlugins {
     private static class SuperiorSkyblock2ProtectionPlugin extends ProtectionPlugin{
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
-            return SuperiorSkyblockAPI.getIslandAt(location).isMember(SuperiorSkyblockAPI.getPlayer(player));
+            Island island = SuperiorSkyblockAPI.getIslandAt(location);
+            if(island == null)
+                return false;
+            return island.isMember(SuperiorSkyblockAPI.getPlayer(player));
         }
     }
     private static class ChestProtectProtectionPlugin extends ProtectionPlugin{
