@@ -23,6 +23,8 @@ public enum MaterialType {
             .inc(MaterialSetTag.BANNERS)),
     BEDS(new PredicateList()
             .inc(MaterialSetTag.BEDS)),
+    SHIELD(new PredicateList()
+            .inc(Material.SHIELD)),
     ITEM(new PredicateList()
             .inc(MaterialTags.DOORS)
             .inc(Material.IRON_BARS)
