@@ -62,9 +62,10 @@ public class InteractListener implements Listener {
                 ItemDisplayUtils.convertFromOldDisplay(ItemDisplayUtils.getItemDisplayOnSignOld(displayLocation));
                 ItemDisplayUtils.convertFromOldDisplay(ItemDisplayUtils.getItemDisplayOnSignOld(displayLocation));
 
-                boolean isText = isOccupiedByText(signBlock.getSide(side).lines());
-                if (!ProtectionPlugins.canInteractWithSign(player, signLocation) && !isText){
-                    Delay.run(() -> Text.send("warning.you_cant_use_that_here", player), player, "cant_use_this_here", 20);
+                boolean isDisplay = ItemDisplayUtils.getItemDisplayOnSign(displayLocation, side) != null;
+                if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
+                    if (isDisplay)
+                        Delay.run(() -> Text.send("warning.you_cant_use_that_here", player), player, "cant_use_this_here", 20);
                     return;
                 }
 
@@ -85,7 +86,7 @@ public class InteractListener implements Listener {
                     return;
                 }
 
-                boolean isDisplay = ItemDisplayUtils.getItemDisplayOnSign(displayLocation, side) != null;
+                boolean isText = isOccupiedByText(signBlock.getSide(side).lines());
                 if (isText || isDisplay){
                     if (item != null && Material.HONEYCOMB.equals(item.getType())){
                         item.subtract();
