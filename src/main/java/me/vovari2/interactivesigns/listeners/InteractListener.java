@@ -62,7 +62,8 @@ public class InteractListener implements Listener {
                 ItemDisplayUtils.convertFromOldDisplay(ItemDisplayUtils.getItemDisplayOnSignOld(displayLocation));
                 ItemDisplayUtils.convertFromOldDisplay(ItemDisplayUtils.getItemDisplayOnSignOld(displayLocation));
 
-                if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
+                boolean isText = isOccupiedByText(signBlock.getSide(side).lines());
+                if (!ProtectionPlugins.canInteractWithSign(player, signLocation) && !isText){
                     Delay.run(() -> Text.send("warning.you_cant_use_that_here", player), player, "cant_use_this_here", 20);
                     return;
                 }
@@ -84,7 +85,6 @@ public class InteractListener implements Listener {
                     return;
                 }
 
-                boolean isText = isOccupiedByText(signBlock.getSide(side).lines());
                 boolean isDisplay = ItemDisplayUtils.getItemDisplayOnSign(displayLocation, side) != null;
                 if (isText || isDisplay){
                     if (item != null && Material.HONEYCOMB.equals(item.getType())){
