@@ -24,6 +24,9 @@ public class Permission {
         imp.put(ClearCommand.PERMISSION);
     }
     public static boolean hasPermission(CommandSender sender, String permission){
+        if (sender == null)
+            return false;
+
         if (!imp.permissions.containsKey(permission))
             return sender.hasPermission(permission);
         return imp.permissions.get(permission).hasPermission(sender);
