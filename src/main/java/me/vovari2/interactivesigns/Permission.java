@@ -64,10 +64,7 @@ public class Permission {
         public void addParent(String key){
             parents.add(key);
         }
-        public boolean hasPermission(@Nullable CommandSender player){
-            if (player == null)
-                return false;
-
+        public boolean hasPermission(@NotNull CommandSender player){
             for (String parent : parents)
                 if (player.hasPermission(parent))
                     return true;

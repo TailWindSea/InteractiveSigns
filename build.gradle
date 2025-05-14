@@ -14,6 +14,7 @@ repositories {
     maven { url = "https://repo.william278.net/releases" } // HuskClaims
     maven { url = "https://repo.bg-software.com/repository/api/" } // SuperiorSkyblock
     maven { url = "https://maven.playpro.com/"} // CoreProtect
+//    maven { url = "https://maven.addstar.com.au/artifactory/all-releases/"} // Prism
     maven { url = "https://repo.glaremasters.me/repository/bloodshot"} // GriefDefender
     maven { url = "https://repo.extendedclip.com/releases/"} // PlaceholderAPI
 
@@ -28,6 +29,7 @@ dependencies {
     compileOnly("net.william278.huskclaims:huskclaims-bukkit:1.5")
     compileOnly("com.bgsoftware:SuperiorSkyblockAPI:2024.4")
     compileOnly("net.coreprotect:coreprotect:22.0")
+    compileOnly("network.darkhelmet:Prism-Api:4.0.0-SNAPSHOT")
     compileOnly("com.github.angeschossen:LandsAPI:7.11.10")
     compileOnly("com.github.angeschossen:ChestProtectAPI:5.19.16")
     compileOnly files("./libs/Residence5.1.6.5.jar")
