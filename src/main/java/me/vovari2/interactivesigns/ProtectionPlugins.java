@@ -67,7 +67,6 @@ public class ProtectionPlugins {
         try{ plugins.add(plugin.getDeclaredConstructor().newInstance());}
         catch(Exception ignored){isFullEnabled = false;}
 
-
         if (isFullEnabled)
             Text.info("Found %s plugin! Plugin support is fully enabled!".formatted(name));
         else Text.warning("Found %s plugin! Plugin support is not enabled due to a bug!".formatted(name));
@@ -176,6 +175,16 @@ public class ProtectionPlugins {
     private static class SuperiorSkyblock2ProtectionPlugin extends ProtectionPlugin{
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
+            org.bukkit.World world = location.getWorld();
+            if (world == null)
+                return false;
+
+            if (!world.getName().equals("superiorworld"))
+                return true;
+
+            location.getWorld().getName();
+
+
             Island island = SuperiorSkyblockAPI.getIslandAt(location);
             if(island == null)
                 return false;
