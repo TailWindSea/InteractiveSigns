@@ -2,6 +2,7 @@ package me.vovari2.interactivesigns;
 
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
+import me.vovari2.interactivesigns.bstats.Metrics;
 import me.vovari2.interactivesigns.listeners.BreakListener;
 import me.vovari2.interactivesigns.listeners.ExplodeListener;
 import me.vovari2.interactivesigns.listeners.GrowListener;
@@ -43,17 +44,15 @@ public final class InteractiveSigns extends JavaPlugin {
 
         Plugins.initialize();
         ProtectionPlugins.initialize();
-
         Executor.pre_register(this);
-
         isLoaded = MessagesLoader.initialize()
                 && ConfigurationLoader.initialize();
-
         initializeListeners();
+
+        new Metrics(this, 26326);
 
         if (isLoaded){
             SignTypes.initialize();
-
             Executor.register(this);
             Console.info("<green>Plugin {} {} enabled! ({} ms)", PLUGIN_NAME, VERSION, System.currentTimeMillis() - time);
         }
@@ -63,7 +62,6 @@ public final class InteractiveSigns extends JavaPlugin {
     public void onDisable() {
         CommandAPI.onDisable();
         HandlerList.unregisterAll(this);
-
         Console.info("<red>Plugin {} {} disabled!", PLUGIN_NAME, VERSION);
     }
 
@@ -73,13 +71,10 @@ public final class InteractiveSigns extends JavaPlugin {
         Executor.pre_register(this);
         isLoaded = MessagesLoader.initialize()
                 && ConfigurationLoader.initialize();
-
         HandlerList.unregisterAll(this);
         initializeListeners();
-
         if (isLoaded){
             SignTypes.initialize();
-
             Executor.register(this);
             Console.info("<green>Plugin {} {} reloaded! ({} ms)", PLUGIN_NAME, VERSION, System.currentTimeMillis() - time);
         }
@@ -125,7 +120,7 @@ public final class InteractiveSigns extends JavaPlugin {
         }, () -> {}),
         PlaceholderAPI("PlaceholderAPI", plugin -> {
 
-            if (InteractiveSigns.getInstance().getServer().getPluginManager().getPlugin(plugin.name) != null)
+            if (InteractiveSigns.getInstance().getServer().getPluginManager().getPlugin(plugin.name) == null)
                 return false;
 
             Console.info("Full support for PlaceholderAPI plugin!");
