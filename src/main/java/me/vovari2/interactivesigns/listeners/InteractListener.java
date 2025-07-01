@@ -66,7 +66,7 @@ public class InteractListener implements Listener {
                 ItemDisplayUtils.convertFromOldDisplay(ItemDisplayUtils.getItemDisplayOnSignOld(displayLocation));
 
                 boolean isDisplay = ItemDisplayUtils.getItemDisplayOnSign(displayLocation, side) != null;
-                if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
+                if (!ProtectionPlugins.canInteractWithSign(player, signLocation) && !Executor.hasPermission(player)){
                     if (isDisplay)
                         Messages.WARNING_YOU_CANT_USE_THAT_HERE.send(player);
                     return;
@@ -139,7 +139,7 @@ public class InteractListener implements Listener {
                 if (signBlock.isWaxed())
                     return;
 
-                if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
+                if (!ProtectionPlugins.canInteractWithSign(player, signLocation) && !Executor.hasPermission(player)){
                     Messages.WARNING_YOU_CANT_USE_THAT_HERE.send(player);
                     return;
                 }

@@ -8,9 +8,14 @@ import dev.jorel.commandapi.arguments.LiteralArgument;
 import me.vovari2.interactivesigns.commands.ClearCommand;
 import me.vovari2.interactivesigns.commands.HelpCommand;
 import me.vovari2.interactivesigns.commands.ReloadCommand;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class Executor {
     private static final String PERMISSION = "interactive_signs.*";
+    public static boolean hasPermission(@NotNull Player player){
+        return player.hasPermission(PERMISSION);
+    }
 
     public static void pre_register(InteractiveSigns instance){
         CommandTree command = new CommandTree("interactivesigns");
