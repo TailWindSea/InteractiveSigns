@@ -123,7 +123,7 @@ public final class InteractiveSigns extends JavaPlugin {
             if (InteractiveSigns.getInstance().getServer().getPluginManager().getPlugin(plugin.name) == null)
                 return false;
 
-            Console.info("Full support for PlaceholderAPI plugin!");
+            Console.info("Found and connected to PlaceholderAPI plugin!");
             return true;
         }, () -> {});
 
