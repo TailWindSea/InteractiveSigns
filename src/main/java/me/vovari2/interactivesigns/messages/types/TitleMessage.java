@@ -32,14 +32,14 @@ public class TitleMessage extends StringMessage {
         if (isEmpty())
             return;
 
-        Delay.run(key, player, () -> {
-            player.showTitle(Title.title(
-                    TextUtils.toComponent(InteractiveSigns.Plugins.PlaceholderAPI.isEnabled() ?
-                            PlaceholderAPI.setPlaceholders(player, message) :
-                            message),
-                    TextUtils.toComponent(subtitle),
-                    times));
-        });
+        Delay.run(key, player, () ->
+                player.showTitle(Title.title(
+                        TextUtils.toComponent(InteractiveSigns.Plugins.PlaceholderAPI.isEnabled() ?
+                                PlaceholderAPI.setPlaceholders(player, message) :
+                                message),
+                        TextUtils.toComponent(subtitle),
+                        times))
+        );
     }
 
     public @NotNull StringMessage replace(@NotNull String placeholder, @NotNull String replacement){

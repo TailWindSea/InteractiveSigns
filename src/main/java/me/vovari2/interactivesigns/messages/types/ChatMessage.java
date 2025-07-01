@@ -26,11 +26,10 @@ public class ChatMessage extends StringMessage {
         if (isEmpty())
             return;
 
-        Delay.run(key, player, () -> {
-            player.sendMessage(TextUtils.toComponent(InteractiveSigns.Plugins.PlaceholderAPI.isEnabled() ?
-                    PlaceholderAPI.setPlaceholders(player, message) :
-                    message));
-        });
+        Delay.run(key, player, () ->
+                player.sendMessage(TextUtils.toComponent(InteractiveSigns.Plugins.PlaceholderAPI.isEnabled() ?
+                        PlaceholderAPI.setPlaceholders(player, message) :
+                        message)));
     }
 
     public @NotNull StringMessage replace(@NotNull String placeholder, @NotNull String replacement){

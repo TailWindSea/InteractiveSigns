@@ -2,10 +2,8 @@ package me.vovari2.interactivesigns;
 
 import me.vovari2.interactivesigns.messages.Messages;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 

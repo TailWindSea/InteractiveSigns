@@ -1,6 +1,5 @@
 package me.vovari2.interactivesigns.messages;
 
-import me.vovari2.interactivesigns.Delay;
 import me.vovari2.interactivesigns.messages.types.ChatMessage;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;

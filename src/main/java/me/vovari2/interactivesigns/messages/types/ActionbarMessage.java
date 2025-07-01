@@ -7,7 +7,6 @@ import me.vovari2.interactivesigns.messages.MessageType;
 import me.vovari2.interactivesigns.messages.Messages;
 import me.vovari2.interactivesigns.messages.StringMessage;
 import me.vovari2.interactivesigns.utils.TextUtils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

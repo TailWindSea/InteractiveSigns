@@ -4,7 +4,6 @@ import dev.jorel.commandapi.executors.CommandArguments;
 import me.vovari2.interactivesigns.messages.Messages;
 import me.vovari2.interactivesigns.utils.NamespacedKeyUtils;
 import org.bukkit.block.sign.Side;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 
