@@ -6,7 +6,7 @@ import org.bukkit.Location;
 public class VersionUtils {
     public static Location getBlockCenter(Location blockLocation){
         String currentVersion = InteractiveSigns.getInstance().getServer().getMinecraftVersion();
-        return currentVersion.matches("1\\.21\\.[345]")
+        return currentVersion.matches("1\\.21\\.[34567]")
                 ? blockLocation.clone().add(0.5, 0.5, 0.5) : blockLocation;
     }
 }
