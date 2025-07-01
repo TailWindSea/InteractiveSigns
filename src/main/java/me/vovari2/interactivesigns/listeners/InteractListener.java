@@ -2,6 +2,8 @@ package me.vovari2.interactivesigns.listeners;
 
 import com.destroystokyo.paper.MaterialTags;
 import me.vovari2.interactivesigns.*;
+import me.vovari2.interactivesigns.loader.ConfigurationLoader;
+import me.vovari2.interactivesigns.messages.Messages;
 import me.vovari2.interactivesigns.sign.SignRotations;
 import me.vovari2.interactivesigns.sign.SignTypes;
 import me.vovari2.interactivesigns.utils.*;
@@ -19,6 +21,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +30,7 @@ import java.util.List;
 
 public class InteractListener implements Listener {
 
-    private final Component ART_MAP_LINE = Text.toComponent("*{=}*");
+    private final Component ART_MAP_LINE = TextUtils.toComponent("*{=}*");
     public boolean isCanvas(Sign signBlock){
         return signBlock.getSide(Side.FRONT).lines().get(3).equals(ART_MAP_LINE);
     }
@@ -65,7 +68,7 @@ public class InteractListener implements Listener {
                 boolean isDisplay = ItemDisplayUtils.getItemDisplayOnSign(displayLocation, side) != null;
                 if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
                     if (isDisplay)
-                        Delay.run(() -> Text.send("warning.you_cant_use_that_here", player), player, "cant_use_this_here", 20);
+                        Messages.WARNING_YOU_CANT_USE_THAT_HERE.send(player);
                     return;
                 }
 
@@ -76,7 +79,7 @@ public class InteractListener implements Listener {
                 ItemStack item = getItemInHand(event.getHand(), player);
                 if (signBlock.isWaxed()){
                     if (item != null && MaterialTags.AXES.isTagged(item.getType())) {
-                        ItemUtils.addDurability(player, item, -1);
+                        addItemDamage(player, item);
                         signBlock.setWaxed(false);
                         signBlock.update();
                         SoundUtils.playWaxOffItemOnSign(center);
@@ -103,12 +106,12 @@ public class InteractListener implements Listener {
                 if (item == null)
                     return;
 
-                if (Config.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS)
-                    if (!player.hasPermission(Config.PERMISSION_CAN_USE_SIGNS))
+                if (ConfigurationLoader.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS)
+                    if (!player.hasPermission(ConfigurationLoader.PERMISSION_CAN_USE_SIGNS))
                         return;
 
-                if (Config.DISALLOW_SIGN_ITEM_PLACEMENT.contains(item.getType())){
-                    Delay.run(() -> Text.send("warning.you_cant_put_that_here", player), player, "cant_put_this_here", 20);
+                if (ConfigurationLoader.DISALLOW_SIGN_ITEM_PLACEMENT.contains(item.getType())){
+                    Messages.WARNING_YOU_CANT_PUT_THAT_HERE.send(player);
                     return;
                 }
 
@@ -116,7 +119,7 @@ public class InteractListener implements Listener {
                 placedItem.setAmount(1);
                 player.getInventory().getItem(event.getHand()).subtract();
 
-                if (InteractiveSigns.hasCoreProtect())
+                if (InteractiveSigns.Plugins.CoreProtect.isEnabled())
                     CoreProtectUtils.logPuttingItemOnSign(player.getName(), signLocation, placedItem.getType());
 
                 ItemDisplay itemDisplay = (ItemDisplay) displayLocation.getWorld().spawnEntity(displayLocation, EntityType.ITEM_DISPLAY);
@@ -137,14 +140,13 @@ public class InteractListener implements Listener {
                     return;
 
                 if (!ProtectionPlugins.canInteractWithSign(player, signLocation)){
-                    Delay.run(() -> Text.send("warning.you_cant_use_that_here", player), player, "cant_use_this_here", 20);
+                    Messages.WARNING_YOU_CANT_USE_THAT_HERE.send(player);
                     return;
                 }
 
-                if (Config.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS)
-                    if (!player.hasPermission(Config.PERMISSION_CAN_USE_SIGNS)){
-
-                        Delay.run(() -> Text.send("warning.you_cant_use_that_here", player), player, "cant_use_this_here", 20);
+                if (ConfigurationLoader.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS)
+                    if (!player.hasPermission(ConfigurationLoader.PERMISSION_CAN_USE_SIGNS)){
+                        Messages.WARNING_YOU_CANT_USE_THAT_HERE.send(player);
                         event.setCancelled(true);
                         return;
                     }
@@ -154,7 +156,7 @@ public class InteractListener implements Listener {
                 if (droppedItem == null)
                     return;
 
-                if (InteractiveSigns.hasCoreProtect())
+                if (InteractiveSigns.Plugins.CoreProtect.isEnabled())
                     CoreProtectUtils.logTakingItemOnSign(player.getName(), signLocation, droppedItem.getType());
 
                 signBlock.getWorld().dropItemNaturally(VersionUtils.getBlockCenter(signBlock.getLocation()), droppedItem);
@@ -173,7 +175,6 @@ public class InteractListener implements Listener {
             return Side.FRONT;
         return Side.BACK;
     }
-
     private static ItemStack getItemInHand(EquipmentSlot slot, Player player){
         if (slot == null)
             return null;
@@ -183,6 +184,16 @@ public class InteractListener implements Listener {
             return null;
 
         return itemStack;
+    }
+    private static void addItemDamage(Player player, ItemStack item){
+        if (!(item.getItemMeta() instanceof Damageable damageable))
+            return;
+        damageable.setDamage(damageable.getDamage() + 1);
+        item.setItemMeta(damageable);
+        if (damageable.getDamage() >= item.getType().getMaxDurability()){
+            item.subtract();
+            SoundUtils.playToolBreak(player);
+        }
     }
     private static boolean isOccupiedByText(@NotNull List<Component> lines){
         for (Component text : lines)

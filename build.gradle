@@ -1,10 +1,10 @@
 plugins {
     id 'java'
-    id 'com.gradleup.shadow' version '8.3.5'
+    id 'com.gradleup.shadow' version '8.3.7'
 }
 
 group = 'me.vovari2'
-version = '1.3.8'
+version = '1.4.0'
 
 repositories {
     mavenCentral()
@@ -22,7 +22,7 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
-    implementation("dev.jorel:commandapi-bukkit-shade:10.0.1")
+    implementation("dev.jorel:commandapi-bukkit-shade:10.1.0")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.0")
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9-SNAPSHOT")
     compileOnly("com.github.GriefPrevention:GriefPrevention:16.18.2")
@@ -35,12 +35,11 @@ dependencies {
     compileOnly files("./libs/Residence5.1.6.5.jar")
     compileOnly("com.griefdefender:api:2.1.0-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.6")
-    implementation("com.github.Vovari2:FoamLib:1.0.5")
 }
 
 shadowJar {
     relocate("dev.jorel.commandapi", "libs.commandapi")
-    getDestinationDirectory().set(new File("D:\\Minecraft\\Servers\\Purpur 1.21.4\\plugins\\"))
+    getDestinationDirectory().set(new File("D:\\Minecraft\\Servers\\Paper 1.21.6\\plugins\\"))
     archiveFileName = "${project.name}-${project.version}.jar"
 }
 

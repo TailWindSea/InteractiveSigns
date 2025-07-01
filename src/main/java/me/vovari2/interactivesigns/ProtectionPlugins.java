@@ -29,6 +29,7 @@ import me.angeschossen.lands.api.flags.enums.RoleFlagCategory;
 import me.angeschossen.lands.api.flags.type.RoleFlag;
 import me.angeschossen.lands.api.land.LandWorld;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import me.vovari2.interactivesigns.loader.ConfigurationLoader;
 import net.william278.huskclaims.api.BukkitHuskClaimsAPI;
 import net.william278.huskclaims.api.HuskClaimsAPI;
 import net.william278.huskclaims.claim.Claim;
@@ -68,8 +69,8 @@ public class ProtectionPlugins {
         catch(Exception ignored){isFullEnabled = false;}
 
         if (isFullEnabled)
-            Text.info("Found %s plugin! Plugin support is fully enabled!".formatted(name));
-        else Text.warning("Found %s plugin! Plugin support is not enabled due to a bug!".formatted(name));
+            Console.info("Found %s plugin! Plugin support is fully enabled!".formatted(name));
+        else Console.warn("Found %s plugin! Plugin support is not enabled due to a bug!".formatted(name));
     }
     public static boolean isEnabledPlugin(String name){
         return InteractiveSigns.getInstance().getServer().getPluginManager().getPlugin(name) != null;
@@ -122,8 +123,8 @@ public class ProtectionPlugins {
         private final RoleFlag flag;
         LandsProtectionPlugin(){
             instance = LandsIntegration.of(InteractiveSigns.getInstance());
-            flag = RoleFlag.of(instance, FlagTarget.PLAYER, RoleFlagCategory.ACTION, Config.LANDS_FLAG_ID);
-            flag.setDisplayName(Config.LANDS_FLAG_NAME).setIcon(new ItemStack(Config.LANDS_FLAG_MATERIAL)).setDescription(Config.LANDS_FLAG_DESCRIPTION);
+            flag = RoleFlag.of(instance, FlagTarget.PLAYER, RoleFlagCategory.ACTION, ConfigurationLoader.LANDS_FLAG_ID);
+            flag.setDisplayName(ConfigurationLoader.LANDS_FLAG_NAME).setIcon(new ItemStack(ConfigurationLoader.LANDS_FLAG_MATERIAL)).setDescription(ConfigurationLoader.LANDS_FLAG_DESCRIPTION);
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
@@ -146,7 +147,7 @@ public class ProtectionPlugins {
     private static class HuskClaimsProtectionPlugin extends ProtectionPlugin{
         private final String ITEMS_ON_SIGNS;
         HuskClaimsProtectionPlugin(){
-            ITEMS_ON_SIGNS = Config.HUSKCLAIMS_FLAG_ID;
+            ITEMS_ON_SIGNS = ConfigurationLoader.HUSKCLAIMS_FLAG_ID;
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {

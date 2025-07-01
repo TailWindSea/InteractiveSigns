@@ -1,41 +1,44 @@
 package me.vovari2.interactivesigns;
 
+import me.vovari2.interactivesigns.messages.Messages;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Delay {
-    private record DelayOfPlayer(Player player, String name) {
-        private boolean equals(Player player, String name) {
-            return this.player.equals(player) && this.name.equals(name);
+    private static final List<Record> records = new LinkedList<>();
+    private record Record(@NotNull Messages key, @NotNull CommandSender sender) {
+        private boolean equals(Messages key, CommandSender sender) {
+            return this.key.equals(key) && this.sender.equals(sender);
         }
     }
 
-    private static List<DelayOfPlayer> delaysOfPlayers;
-    public static void initialize(){
-        delaysOfPlayers = new ArrayList<>();
-    }
-    public static void run(Function func, Player player, String name, long delay){
-        if (!is(player, name)){
-            func.run();
-            add(player, name, delay);
-        }
-    }
-    public static boolean is(Player player, String name){
-        for (DelayOfPlayer delayOfPlayer : delaysOfPlayers)
-            if (delayOfPlayer.equals(player, name))
+    private static boolean is(@NotNull Messages key, @NotNull CommandSender sender){
+        for (Record record : records)
+            if (record.equals(key, sender))
                 return true;
         return false;
     }
-    public static void add(Player player, String name, long delay){
-        DelayOfPlayer delayOfPlayer = new DelayOfPlayer(player, name);
-        delaysOfPlayers.add(delayOfPlayer);
-        InteractiveSigns.getScheduler().runTaskLater(InteractiveSigns.getInstance(), () -> delaysOfPlayers.remove(delayOfPlayer), delay);
+    private static void add(@NotNull Messages key, @NotNull CommandSender sender, long delay){
+        Record record = new Record(key, sender);
+        records.add(record);
+        InteractiveSigns.getInstance().getServer().getScheduler().runTaskLaterAsynchronously(InteractiveSigns.getInstance(), () -> records.remove(record), delay);
+    }
+    public static void run(@NotNull Messages key, @NotNull CommandSender sender, long delay, @NotNull Operation operation){
+        if (!is(key, sender)){
+            operation.run();
+            add(key, sender, delay);
+        }
+    }
+    public static void run(@NotNull Messages key, @NotNull CommandSender sender, @NotNull Operation operation){
+        run(key, sender, 20, operation);
     }
 
-
-    public interface Function {
+    public interface Operation {
         void run();
     }
 }

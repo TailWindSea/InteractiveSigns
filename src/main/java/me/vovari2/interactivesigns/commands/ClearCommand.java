@@ -1,8 +1,7 @@
 package me.vovari2.interactivesigns.commands;
 
 import dev.jorel.commandapi.executors.CommandArguments;
-import me.vovari2.interactivesigns.Permission;
-import me.vovari2.interactivesigns.Text;
+import me.vovari2.interactivesigns.messages.Messages;
 import me.vovari2.interactivesigns.utils.NamespacedKeyUtils;
 import org.bukkit.block.sign.Side;
 import org.bukkit.command.CommandSender;
@@ -10,8 +9,6 @@ import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 
 public class ClearCommand {
-
-    public static String PERMISSION = "interactive_signs.clear";
     public static String ARGUMENT_RADIUS = "radius";
 
     public static void executesPlayer(Player player, CommandArguments arguments){
@@ -23,12 +20,8 @@ public class ClearCommand {
                 player.getInventory().addItem(display.getItemStack());
             display.remove();
         }
-        player.sendMessage(Text.node("command.clear")
+        Messages.COMMAND_CLEAR
                 .replace("radius", String.valueOf(radius))
-                .replacePlaceholderAPI(player).value());
-    }
-
-    public static boolean hasPermission(CommandSender sender){
-        return Permission.hasPermission(sender, PERMISSION);
+                .send(player);
     }
 }

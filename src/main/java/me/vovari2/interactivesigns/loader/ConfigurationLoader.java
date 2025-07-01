@@ -1,13 +1,14 @@
-package me.vovari2.interactivesigns;
+package me.vovari2.interactivesigns.loader;
 
-import me.vovari2.foamlib.utils.FileUtils;
+import me.vovari2.interactivesigns.Console;
+import me.vovari2.interactivesigns.utils.FileUtils;
 import org.bukkit.Material;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Config extends me.vovari2.foamlib.Config{
+public class ConfigurationLoader extends Loader{
     public static boolean ENABLE_ITEMS_VOLUME;
 
     public static List<Material> DISALLOW_SIGN_ITEM_PLACEMENT;
@@ -22,13 +23,13 @@ public class Config extends me.vovari2.foamlib.Config{
     public static Material LANDS_FLAG_MATERIAL;
     public static String LANDS_FLAG_DESCRIPTION;
 
-    public static void initialize() throws Exception {
-        new Config().initializeInside();
+    public static boolean initialize() {
+        try { new ConfigurationLoader("config.yml"); return true; }
+        catch(Exception e){ Console.error("Error loading configuration: " + e.getMessage()); return false; }
     }
-
-    private void initializeInside() throws Exception {
-        FileUtils.createResourceFileInFolder(InteractiveSigns.getInstance(), "config.yml");
-        fileConfig = FileUtils.getContentFromYamlFile(FileUtils.getPluginFolder(InteractiveSigns.getInstance()), "config.yml");
+    private ConfigurationLoader(String resourcePath) throws Exception {
+        FileUtils.createResourceFileInFolder(resourcePath);
+        configuration = FileUtils.getContentFromYamlFile(FileUtils.getPluginFolder(), resourcePath);
 
         ENABLE_ITEMS_VOLUME = getBoolean("enable_items_volume", false);
 
@@ -39,14 +40,14 @@ public class Config extends me.vovari2.foamlib.Config{
 
         HUSKCLAIMS_FLAG_ID = getString("huskclaims.flag_id");
 
-        LANDS_FLAG_ID = fileConfig.getString("lands.flag_id");
+        LANDS_FLAG_ID = configuration.getString("lands.flag_id");
         LANDS_FLAG_NAME = getString("lands.flag_name");
-        LANDS_FLAG_MATERIAL = getMaterial("lands.flag_material");
+        LANDS_FLAG_MATERIAL = getMaterial("lands.flag_material", Material.STONE);
         LANDS_FLAG_DESCRIPTION = getString("lands.flag_description");
     }
 
     private List<Material> getMaterialList(String path) throws Exception{
-        Iterator<String> iterator = fileConfig.getStringList(path).iterator();
+        Iterator<String> iterator = configuration.getStringList(path).iterator();
         List<Material> materialList = new LinkedList<>();
         for(int i = 1; iterator.hasNext(); i++)
             materialList.add(getMaterial(iterator.next(), "%s.%s".formatted(path, String.valueOf(i))));

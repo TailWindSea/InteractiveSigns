@@ -6,117 +6,165 @@ import me.vovari2.interactivesigns.listeners.BreakListener;
 import me.vovari2.interactivesigns.listeners.ExplodeListener;
 import me.vovari2.interactivesigns.listeners.GrowListener;
 import me.vovari2.interactivesigns.listeners.InteractListener;
-import me.vovari2.interactivesigns.sign.SignRotations;
+import me.vovari2.interactivesigns.loader.ConfigurationLoader;
+import me.vovari2.interactivesigns.messages.MessagesLoader;
 import me.vovari2.interactivesigns.sign.SignTypes;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitScheduler;
+import org.jetbrains.annotations.NotNull;
 
 public final class InteractiveSigns extends JavaPlugin {
+    private static InteractiveSigns INSTANCE;
 
-    private static InteractiveSigns instance;
+    private String PLUGIN_NAME;
+    private String VERSION;
+    private String AUTHOR;
 
-    private static boolean hasCoreProtect;
-    private static boolean hasPlaceholderAPI;
-
-    public boolean isLoaded;
-    public boolean isEnabled;
-
-    @Override
     public void onLoad() {
-        isLoaded = true;
+        INSTANCE = this;
+        Console.LOGGER = getComponentLogger();
 
-        instance = this;
+        PLUGIN_NAME = INSTANCE.getName();
+        VERSION = INSTANCE.getPluginMeta().getVersion();
+        AUTHOR = INSTANCE.getPluginMeta().getAuthors().get(0);
+
+        ProtectionPlugins.load();
+
         CommandAPI.onLoad(new CommandAPIBukkitConfig(this).verboseOutput(false));
-
-        try {
-            Text.initialize();
-            Config.initialize();
-
-            ProtectionPlugins.load();
-        } catch (Exception e) {
-            Text.error(e.getMessage());
-            isLoaded = false;
-        }
-
-        if (isLoaded)
-            Text.info("Plugin %s %s loaded!".formatted(Text.PLUGIN_NAME, Text.VERSION));
-        else Text.warning("Plugin %s %s is not loaded!".formatted(Text.PLUGIN_NAME, Text.VERSION));
     }
 
-    @Override
+    private boolean isLoaded = false;
     public void onEnable() {
-        isEnabled = true;
+        long time = System.currentTimeMillis();
         CommandAPI.onEnable();
 
-        Permission.initialize();
-        Executor.preInitialize(instance);
+        Plugins.initialize();
+        ProtectionPlugins.initialize();
+
+        Executor.pre_register(this);
+
+        isLoaded = MessagesLoader.initialize()
+                && ConfigurationLoader.initialize();
+
+        initializeListeners();
 
         if (isLoaded){
-            ProtectionPlugins.initialize();
-
-            Delay.initialize();
             SignTypes.initialize();
-            SignRotations.initialize();
 
-            hasCoreProtect = setupCoreProtect();
-            hasPlaceholderAPI = instance.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
-            Executor.initialize(instance);
-
-            getServer().getPluginManager().registerEvents(new InteractListener(), this);
-            getServer().getPluginManager().registerEvents(new BreakListener(), this);
-            getServer().getPluginManager().registerEvents(new ExplodeListener(), this);
-            getServer().getPluginManager().registerEvents(new GrowListener(), this);
+            Executor.register(this);
+            Console.info("<green>Plugin {} {} enabled! ({} ms)", PLUGIN_NAME, VERSION, System.currentTimeMillis() - time);
         }
-        if (isLoaded && isEnabled)
-            Text.info("Plugin %s %s enabled!".formatted(Text.PLUGIN_NAME, Text.VERSION));
-        else Text.warning("Plugin %s %s is not enabled! There was an error in the console above!".formatted(Text.PLUGIN_NAME, Text.VERSION));
-    }
-    public static boolean setupCoreProtect(){
-        Plugin plugin = instance.getServer().getPluginManager().getPlugin("CoreProtect");
-        if (!(plugin instanceof CoreProtect coreProtect))
-            return false;
-        Text.info("Found CoreProtect plugin");
-
-        CoreProtectAPI api = coreProtect.getAPI();
-        if (!api.isEnabled()) {
-            Text.error("CoreProtect plugin API is not enabled!");
-            return false;
-        }
-
-        if (api.APIVersion() < 10) {
-            Text.error("CoreProtect plugin unsupported version v%s (needed v22.4+)!".formatted(coreProtect.getDescription().getVersion()));
-            return false;
-        }
-        Text.info("Full support for CoreProtect plugin!");
-
-        return true;
+        else Console.warn("Plugin {} {} is not enabled! There was an error in the console above!", PLUGIN_NAME, VERSION);
     }
 
-    @Override
     public void onDisable() {
         CommandAPI.onDisable();
         HandlerList.unregisterAll(this);
-        getScheduler().cancelTasks(this);
-        Text.error("Plugin %s %s disabled!".formatted(Text.PLUGIN_NAME, Text.VERSION));
+
+        Console.info("<red>Plugin {} {} disabled!", PLUGIN_NAME, VERSION);
+    }
+
+    public void onReload() {
+        long time = System.currentTimeMillis();
+
+        Executor.pre_register(this);
+        isLoaded = MessagesLoader.initialize()
+                && ConfigurationLoader.initialize();
+
+        HandlerList.unregisterAll(this);
+        initializeListeners();
+
+        if (isLoaded){
+            SignTypes.initialize();
+
+            Executor.register(this);
+            Console.info("<green>Plugin {} {} reloaded! ({} ms)", PLUGIN_NAME, VERSION, System.currentTimeMillis() - time);
+        }
+        else Console.warn("Plugin {} {} is not reloaded! There was an error in the console above!", PLUGIN_NAME, VERSION);
+    }
+
+    private void initializeListeners(){
+        getServer().getPluginManager().registerEvents(new InteractListener(), this);
+        getServer().getPluginManager().registerEvents(new BreakListener(), this);
+        getServer().getPluginManager().registerEvents(new ExplodeListener(), this);
+        getServer().getPluginManager().registerEvents(new GrowListener(), this);
     }
 
     public static InteractiveSigns getInstance(){
-        return instance;
+        return INSTANCE;
+    }
+    public static String getPluginName(){
+        return INSTANCE.PLUGIN_NAME;
+    }
+    public static String getVersion(){
+        return INSTANCE.VERSION;
+    }
+    public static String getAuthor(){
+        return INSTANCE.AUTHOR;
     }
 
-    public static boolean hasCoreProtect(){
-        return hasCoreProtect;
-    }
-    public static boolean hasPlaceholderAPI(){
-        return hasPlaceholderAPI;
-    }
+    public enum Plugins {
+        CoreProtect("CoreProtect", plugin -> {
+            Plugin javaPlugin = INSTANCE.getServer().getPluginManager().getPlugin("CoreProtect");
+            if (!(javaPlugin instanceof CoreProtect coreProtect))
+                return false;
+            Console.info("Found CoreProtect plugin!");
 
-    public static BukkitScheduler getScheduler(){
-        return instance.getServer().getScheduler();
+            CoreProtectAPI api = coreProtect.getAPI();
+            if (!api.isEnabled()) {
+                Console.error("CoreProtect plugin API is not enabled!"); return false;}
+
+            if (api.APIVersion() < 10) {
+                Console.error("CoreProtect plugin unsupported version v%s (needed v22.4+)!".formatted(coreProtect.getDescription().getVersion()));return false;}
+
+            Console.info("Full support for CoreProtect plugin!");
+            return true;
+        }, () -> {}),
+        PlaceholderAPI("PlaceholderAPI", plugin -> {
+
+            if (InteractiveSigns.getInstance().getServer().getPluginManager().getPlugin(plugin.name) != null)
+                return false;
+
+            Console.info("Full support for PlaceholderAPI plugin!");
+            return true;
+        }, () -> {});
+
+        static void initialize(){
+            for(Plugins plugin : Plugins.values()){
+                plugin.enabled = plugin.enableOperation.isEnable(plugin);
+                if (plugin.isEnabled())
+                    plugin.initializationOperation.run();
+            }
+
+        }
+
+        private final String name;
+        private final EnableOperation enableOperation;
+        private final InitializationOperation initializationOperation;
+
+        private boolean enabled;
+        Plugins(String name, EnableOperation enableOperation, InitializationOperation initializationOperation){
+            this.name = name;
+            this.enableOperation = enableOperation;
+            this.initializationOperation = initializationOperation;
+        }
+
+        public String getName(){
+            return name;
+        }
+        public boolean isEnabled(){
+            return enabled;
+        }
+
+        private interface InitializationOperation {
+            void run();
+        }
+        private interface EnableOperation {
+            boolean isEnable(@NotNull Plugins plugin);
+        }
     }
 
 }
