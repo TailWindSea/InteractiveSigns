@@ -29,44 +29,47 @@ public class MessagesLoader extends Loader {
         File pluginFolder = FileUtils.getPluginFolder(),
                 file = new File(pluginFolder, fileName);
 
-        if (!file.exists()){
-            configuration = new YamlConfiguration();
-            for (Messages message : Messages.values())
-                configuration.set(message.name().replaceAll("_","-").toLowerCase(), message.string());
+        if (!file.exists())
+            saveConfiguration(pluginFolder, file);
+        else loadConfiguration(pluginFolder, file);
+    }
+    private void loadConfiguration(@NotNull File pluginFolder, @NotNull File file) throws Exception {
+        configuration = FileUtils.getContentFromYamlFile(pluginFolder, file.getName());
+        for (Messages object : Messages.values()){
+            String path = object.name().replaceAll("_", "-").toLowerCase();
+            ConfigurationSection section = configuration.getConfigurationSection(path);
+            if (section == null){
+                object.setMessage(new ChatMessage(object, getStringFromSection(path))); continue;}
 
-            FileUtils.createFolder(pluginFolder);
-            FileUtils.createFileInFolder(pluginFolder, file);
-            FileUtils.setContentInYamlFile(pluginFolder, fileName, configuration);
+            String message = getStringFromSection("%s.message".formatted(path));
+            MessageType type = getMessageType("%s.type".formatted(path), MessageType.CHAT);
+
+            object.setMessage(switch(type){
+                case CHAT -> new ChatMessage(object, message);
+                case ACTIONBAR -> new ActionbarMessage(object, message);
+                case BOSSBAR -> {
+                    BossBar.Color color = getBossbarColor("%s.color".formatted(path), BossBar.Color.YELLOW);
+                    BossBar.Overlay overlay = getBossbarOverlay("%s.overlay".formatted(path), BossBar.Overlay.NOTCHED_6);
+                    yield new BossbarMessage(object, message, color, overlay, configuration.getInt("%s.stay-time", 100));
+                }
+                case TITLE -> {
+                    String subtitle = getString("%s.subtitle".formatted(path), "");
+                    Duration fadeIn = getDuration("%s.fade-in".formatted(path), Duration.of(500, ChronoUnit.MILLIS)),
+                            stay = getDuration("%s.stay".formatted(path), Duration.of(3500, ChronoUnit.MILLIS)),
+                            fadeOut = getDuration("%s.fade-out".formatted(path), Duration.of(1000, ChronoUnit.MILLIS));
+                    yield new TitleMessage(object, message, subtitle, Title.Times.times(fadeIn, stay, fadeOut));
+                }
+            });
         }
-        else {
-            configuration = FileUtils.getContentFromYamlFile(pluginFolder, fileName);
-            for (Messages object : Messages.values()){
-                String path = object.name().replaceAll("_", "-").toLowerCase();
-                ConfigurationSection section = configuration.getConfigurationSection(path);
-                if (section == null){
-                    object.setMessage(new ChatMessage(object, getStringFromSection(path))); continue;}
+    }
+    private void saveConfiguration(@NotNull File pluginFolder, @NotNull File file){
+        configuration = new YamlConfiguration();
+        for (Messages message : Messages.values())
+            configuration.set(message.name().replaceAll("_","-").toLowerCase(), message.string());
 
-                String message = getStringFromSection("%s.message".formatted(path));
-                MessageType type = getMessageType("%s.type".formatted(path), MessageType.CHAT);
-
-                object.setMessage(switch(type){
-                    case CHAT -> new ChatMessage(object, message);
-                    case ACTIONBAR -> new ActionbarMessage(object, message);
-                    case BOSSBAR -> {
-                        BossBar.Color color = getBossbarColor("%s.color".formatted(path), BossBar.Color.YELLOW);
-                        BossBar.Overlay overlay = getBossbarOverlay("%s.overlay".formatted(path), BossBar.Overlay.NOTCHED_6);
-                        yield new BossbarMessage(object, message, color, overlay, configuration.getInt("%s.stay-time", 100));
-                    }
-                    case TITLE -> {
-                        String subtitle = getString("%s.subtitle".formatted(path), "");
-                        Duration fadeIn = getDuration("%s.fade-in".formatted(path), Duration.of(500, ChronoUnit.MILLIS)),
-                                stay = getDuration("%s.stay".formatted(path), Duration.of(3500, ChronoUnit.MILLIS)),
-                                fadeOut = getDuration("%s.fade-out".formatted(path), Duration.of(1000, ChronoUnit.MILLIS));
-                        yield new TitleMessage(object, message, subtitle, Title.Times.times(fadeIn, stay, fadeOut));
-                    }
-                });
-            }
-        }
+        FileUtils.createFolder(pluginFolder);
+        FileUtils.createFileInFolder(pluginFolder, file);
+        FileUtils.setContentInYamlFile(pluginFolder, file.getName(), configuration);
     }
 
 

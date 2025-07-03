@@ -1,5 +1,6 @@
 package me.vovari2.interactivesigns;
 
+import com.tcoded.folialib.FoliaLib;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import me.vovari2.interactivesigns.bstats.Metrics;
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 public final class InteractiveSigns extends JavaPlugin {
     private static InteractiveSigns INSTANCE;
+    private static FoliaLib FOLIA_INSTANCE;
 
     private String PLUGIN_NAME;
     private String VERSION;
@@ -38,6 +40,7 @@ public final class InteractiveSigns extends JavaPlugin {
     }
     private boolean isLoaded = false;
     public void onEnable() {
+        FOLIA_INSTANCE = new FoliaLib(this);
         long time = System.currentTimeMillis();
         CommandAPI.onEnable();
 
@@ -87,6 +90,9 @@ public final class InteractiveSigns extends JavaPlugin {
 
     public static InteractiveSigns getInstance(){
         return INSTANCE;
+    }
+    public static FoliaLib getFoliaInstance(){
+        return FOLIA_INSTANCE;
     }
     public static String getPluginName(){
         return INSTANCE.PLUGIN_NAME;

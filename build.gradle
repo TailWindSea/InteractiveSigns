@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.vovari2'
-version = '1.4.2'
+version = '1.4.3'
 
 repositories {
     mavenCentral()
@@ -22,6 +22,7 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
+    implementation("com.github.technicallycoded:FoliaLib:0.4.4")
     implementation("dev.jorel:commandapi-bukkit-shade:10.1.1")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.0")
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9-SNAPSHOT")
@@ -39,7 +40,8 @@ dependencies {
 
 shadowJar {
     relocate("dev.jorel.commandapi", "libs.commandapi")
-    getDestinationDirectory().set(new File("D:\\Minecraft\\Servers\\Paper 1.21.7\\plugins\\"))
+    relocate("com.tcoded.folialib", "libs.folialib")
+    getDestinationDirectory().set(new File("D:\\Minecraft\\Servers\\Folia 1.21.6\\plugins\\"))
     archiveFileName = "${project.name}-${project.version}.jar"
 }
 

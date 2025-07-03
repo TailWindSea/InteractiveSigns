@@ -24,7 +24,7 @@ public class Delay {
     private static void add(@NotNull Messages key, @NotNull CommandSender sender, long delay){
         Record record = new Record(key, sender);
         records.add(record);
-        InteractiveSigns.getInstance().getServer().getScheduler().runTaskLaterAsynchronously(InteractiveSigns.getInstance(), () -> records.remove(record), delay);
+        InteractiveSigns.getFoliaInstance().getScheduler().runLater(() -> records.remove(record), delay);
     }
     public static void run(@NotNull Messages key, @NotNull CommandSender sender, long delay, @NotNull Operation operation){
         if (!is(key, sender)){
