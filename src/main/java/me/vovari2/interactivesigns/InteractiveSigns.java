@@ -32,11 +32,10 @@ public final class InteractiveSigns extends JavaPlugin {
         VERSION = INSTANCE.getPluginMeta().getVersion();
         AUTHOR = INSTANCE.getPluginMeta().getAuthors().get(0);
 
-        ProtectionPlugins.load();
-
         CommandAPI.onLoad(new CommandAPIBukkitConfig(this).verboseOutput(false));
-    }
 
+        ProtectionPlugins.load();
+    }
     private boolean isLoaded = false;
     public void onEnable() {
         long time = System.currentTimeMillis();
@@ -58,13 +57,11 @@ public final class InteractiveSigns extends JavaPlugin {
         }
         else Console.warn("Plugin {} {} is not enabled! There was an error in the console above!", PLUGIN_NAME, VERSION);
     }
-
     public void onDisable() {
         CommandAPI.onDisable();
         HandlerList.unregisterAll(this);
         Console.info("<red>Plugin {} {} disabled!", PLUGIN_NAME, VERSION);
     }
-
     public void onReload() {
         long time = System.currentTimeMillis();
 
