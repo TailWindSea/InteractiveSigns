@@ -1,11 +1,10 @@
 package me.vovari2.interactivesigns.messages.types;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import me.vovari2.interactivesigns.Delay;
-import me.vovari2.interactivesigns.InteractiveSigns;
 import me.vovari2.interactivesigns.messages.MessageType;
 import me.vovari2.interactivesigns.messages.Messages;
 import me.vovari2.interactivesigns.messages.StringMessage;
+import me.vovari2.interactivesigns.utils.PlaceholderUtils;
 import me.vovari2.interactivesigns.utils.TextUtils;
 import net.kyori.adventure.title.Title;
 import org.bukkit.command.CommandSender;
@@ -34,9 +33,7 @@ public class TitleMessage extends StringMessage {
 
         Delay.run(key, player, () ->
                 player.showTitle(Title.title(
-                        TextUtils.toComponent(InteractiveSigns.Plugins.PlaceholderAPI.isEnabled() ?
-                                PlaceholderAPI.setPlaceholders(player, message) :
-                                message),
+                        TextUtils.toComponent(PlaceholderUtils.replacePlaceholders(player, message)),
                         TextUtils.toComponent(subtitle),
                         times))
         );
