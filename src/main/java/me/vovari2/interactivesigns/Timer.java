@@ -2,7 +2,6 @@ package me.vovari2.interactivesigns;
 
 import com.tcoded.folialib.wrapper.task.WrappedTask;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 public record Timer(@NotNull Runnable runnable, @NotNull WrappedTask task) {

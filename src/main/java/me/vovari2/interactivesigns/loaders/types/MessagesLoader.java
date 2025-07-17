@@ -1,6 +1,5 @@
 package me.vovari2.interactivesigns.loaders.types;
 
-import io.papermc.paper.registry.RegistryKey;
 import me.vovari2.interactivesigns.Console;
 import me.vovari2.interactivesigns.loaders.Loader;
 import me.vovari2.interactivesigns.messages.Messages;
@@ -10,7 +9,6 @@ import me.vovari2.interactivesigns.messages.types.ChatMessage;
 import me.vovari2.interactivesigns.messages.types.TitleMessage;
 import me.vovari2.interactivesigns.utils.FileUtils;
 import net.kyori.adventure.bossbar.BossBar;
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.title.Title;
 import org.bukkit.configuration.ConfigurationSection;
@@ -22,7 +20,6 @@ import java.io.File;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Objects;
 
 public class MessagesLoader extends Loader {
     public static boolean initialize() {

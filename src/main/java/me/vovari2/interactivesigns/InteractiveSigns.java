@@ -1,7 +1,6 @@
 package me.vovari2.interactivesigns;
 
 import com.tcoded.folialib.FoliaLib;
-import me.clip.placeholderapi.metrics.charts.DrilldownPie;
 import me.vovari2.interactivesigns.bstats.Metrics;
 import me.vovari2.interactivesigns.listeners.BreakListener;
 import me.vovari2.interactivesigns.listeners.ExplodeListener;
@@ -19,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 public final class InteractiveSigns extends JavaPlugin {
     private static InteractiveSigns INSTANCE;
