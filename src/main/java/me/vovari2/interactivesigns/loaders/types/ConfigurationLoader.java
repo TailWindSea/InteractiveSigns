@@ -1,6 +1,7 @@
-package me.vovari2.interactivesigns.loader;
+package me.vovari2.interactivesigns.loaders.types;
 
 import me.vovari2.interactivesigns.Console;
+import me.vovari2.interactivesigns.loaders.Loader;
 import me.vovari2.interactivesigns.utils.FileUtils;
 import org.bukkit.Material;
 
@@ -8,7 +9,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ConfigurationLoader extends Loader{
+public class ConfigurationLoader extends Loader {
     public static boolean ENABLE_ITEMS_VOLUME;
 
     public static List<Material> DISALLOW_SIGN_ITEM_PLACEMENT;

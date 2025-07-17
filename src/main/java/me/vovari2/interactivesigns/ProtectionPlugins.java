@@ -29,7 +29,7 @@ import me.angeschossen.lands.api.flags.enums.RoleFlagCategory;
 import me.angeschossen.lands.api.flags.type.RoleFlag;
 import me.angeschossen.lands.api.land.LandWorld;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import me.vovari2.interactivesigns.loader.ConfigurationLoader;
+import me.vovari2.interactivesigns.loaders.types.ConfigurationLoader;
 import net.william278.huskclaims.api.BukkitHuskClaimsAPI;
 import net.william278.huskclaims.api.HuskClaimsAPI;
 import net.william278.huskclaims.claim.Claim;
@@ -39,6 +39,7 @@ import net.william278.huskclaims.user.User;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -65,7 +66,7 @@ public class ProtectionPlugins {
             return;
 
         boolean isFullEnabled = true;
-        try{ plugins.add(plugin.getDeclaredConstructor().newInstance());}
+        try{ plugins.add(plugin.getDeclaredConstructor(String.class).newInstance(name));}
         catch(Exception ignored){isFullEnabled = false;}
 
         if (isFullEnabled)
@@ -83,13 +84,23 @@ public class ProtectionPlugins {
         return canInteract;
     }
 
+    static List<ProtectionPlugin> plugins() {
+        return plugins;
+    }
 
-    private abstract static class ProtectionPlugin{
+
+    abstract static class ProtectionPlugin{
+        protected final String name;
+        protected ProtectionPlugin(String name){
+            this.name = name;
+        }
+
         public abstract boolean canInteractWithSign(Player player, Location block);
     }
     private static class WorldGuardProtectionPlugin extends ProtectionPlugin{
         private final StateFlag USES_ITEMS_ON_SIGNS;
-        WorldGuardProtectionPlugin(){
+        WorldGuardProtectionPlugin(@NotNull String name){
+            super(name);
             FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
             Flag<?> flag = registry.get("uses-items-on-signs");
             if (flag == null){
@@ -121,7 +132,8 @@ public class ProtectionPlugins {
     private static class LandsProtectionPlugin extends ProtectionPlugin{
         private final LandsIntegration instance;
         private final RoleFlag flag;
-        LandsProtectionPlugin(){
+        LandsProtectionPlugin(@NotNull String name){
+            super(name);
             instance = LandsIntegration.of(InteractiveSigns.getInstance());
             flag = RoleFlag.of(instance, FlagTarget.PLAYER, RoleFlagCategory.ACTION, ConfigurationLoader.LANDS_FLAG_ID);
             flag.setDisplayName(ConfigurationLoader.LANDS_FLAG_NAME).setIcon(new ItemStack(ConfigurationLoader.LANDS_FLAG_MATERIAL)).setDescription(ConfigurationLoader.LANDS_FLAG_DESCRIPTION);
@@ -135,6 +147,9 @@ public class ProtectionPlugins {
         }
     }
     private static class ResidenceProtectionPlugin extends ProtectionPlugin{
+        ResidenceProtectionPlugin(@NotNull String name){
+            super(name);
+        }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
             ClaimedResidence res = ResidenceApi.getResidenceManager().getByLoc(location);
@@ -146,7 +161,8 @@ public class ProtectionPlugins {
     }
     private static class HuskClaimsProtectionPlugin extends ProtectionPlugin{
         private final String ITEMS_ON_SIGNS;
-        HuskClaimsProtectionPlugin(){
+        HuskClaimsProtectionPlugin(@NotNull String name){
+            super(name);
             ITEMS_ON_SIGNS = ConfigurationLoader.HUSKCLAIMS_FLAG_ID;
         }
         @Override
@@ -168,12 +184,18 @@ public class ProtectionPlugins {
         }
     }
     private static class GriefPreventionProtectionPlugin extends ProtectionPlugin{
+        GriefPreventionProtectionPlugin(@NotNull String name){
+            super(name);
+        }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
             return GriefPrevention.instance.allowBuild(player, location) == null;
         }
     }
     private static class SuperiorSkyblock2ProtectionPlugin extends ProtectionPlugin{
+        SuperiorSkyblock2ProtectionPlugin(@NotNull String name){
+            super(name);
+        }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
             org.bukkit.World world = location.getWorld();
@@ -194,7 +216,8 @@ public class ProtectionPlugins {
     }
     private static class ChestProtectProtectionPlugin extends ProtectionPlugin{
         private final ChestProtectAPI instance;
-        ChestProtectProtectionPlugin(){
+        ChestProtectProtectionPlugin(@NotNull String name){
+            super(name);
             instance = ChestProtectAPI.getInstance();
         }
         @Override
@@ -212,7 +235,8 @@ public class ProtectionPlugins {
     }
     private static class GriefDefenderProtectionPlugin extends ProtectionPlugin{
         private final Core instance;
-        GriefDefenderProtectionPlugin(){
+        GriefDefenderProtectionPlugin(@NotNull String name){
+            super(name);
             instance = GriefDefender.getCore();
         }
         @Override

@@ -1,79 +1,57 @@
 package me.vovari2.interactivesigns.messages.types;
 
-import me.vovari2.interactivesigns.Delay;
-import me.vovari2.interactivesigns.InteractiveSigns;
-import me.vovari2.interactivesigns.messages.MessageType;
-import me.vovari2.interactivesigns.messages.Messages;
-import me.vovari2.interactivesigns.messages.StringMessage;
-import me.vovari2.interactivesigns.utils.PlaceholderUtils;
-import me.vovari2.interactivesigns.utils.TextUtils;
+import me.vovari2.interactivesigns.Timer;
+import me.vovari2.interactivesigns.messages.Message;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
-import org.bukkit.command.CommandSender;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-public class BossbarMessage extends StringMessage {
+public class BossbarMessage extends Message {
     private final BossBar.Color color;
     private final BossBar.Overlay overlay;
     private final int stayTime;
-    public BossbarMessage(@NotNull Messages key, @Nullable String message, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, int stayTime){
-        super(key, message, MessageType.BOSSBAR);
+    public BossbarMessage(@Nullable String message, @Nullable Sound sound, @NotNull BossBar.Color color, @NotNull BossBar.Overlay overlay, int stayTime){
+        super(message, sound);
         this.color = color;
         this.overlay = overlay;
         this.stayTime = stayTime;
     }
-
-    public void send(@NotNull CommandSender sender){
-        if (isEmpty())
-            return;
-        sender.sendMessage("Bossbar cannot be displayed!");
-    }
-    public void send(@NotNull Player player){
-        send(player,1f);
-    }
-    public void send(@NotNull Player player, float bossbarValue){
-        if (isEmpty())
-            return;
-
-        Delay.run(key, player, () -> {
+    protected void sendInside(@NotNull Audience audience){
+        if (audience instanceof Player player){
             BossBar bossBar = BossBar.bossBar(
-                    TextUtils.toComponent(PlaceholderUtils.replacePlaceholders(player, message)),
-                    bossbarValue,
+                    component(player),
+                    1f,
                     color,
                     overlay);
             player.showBossBar(bossBar);
-            AutoHideBossbarMessage.start(player.getUniqueId(), new BukkitRunnable() {
-                public void run() {
-                    player.hideBossBar(bossBar);
-                }
-            });
-        });
-    }
-
-    public @NotNull StringMessage replace(@NotNull String placeholder, @NotNull String replacement){
-        return new BossbarMessage(key, message.replaceAll("<%" + placeholder + "%>", replacement), color, overlay, stayTime);
-    }
-    public @NotNull StringMessage replace(@NotNull String placeholder, long replacement){
-        return replace(placeholder, String.valueOf(replacement));
-    }
-
-    public static class AutoHideBossbarMessage {
-        private static final HashMap<UUID, RunnableAndTask> tasks = new HashMap<>();
-        public static void start(@NotNull UUID player, @NotNull BukkitRunnable runnable){
-            if (tasks.containsKey(player)){
-                RunnableAndTask task = tasks.get(player);
-                task.runnable.run();
-                task.task.cancel();
-            }
-            tasks.put(player, new RunnableAndTask(runnable, runnable.runTaskLater(InteractiveSigns.getInstance(), 100)));
+            SendBossbarMessages.start(player.getUniqueId(), () -> player.hideBossBar(bossBar));
         }
+        else audience.sendMessage(component());
+    }
+    protected @NotNull Message replaceInside(@NotNull String placeholder, @NotNull String replacement){
+        return new BossbarMessage(
+                message.replaceAll("<%" + placeholder + "%>", replacement),
+                sound,
+                color,
+                overlay,
+                stayTime);
+    }
 
-        private record RunnableAndTask(BukkitRunnable runnable, BukkitTask task){}
+    public static class SendBossbarMessages {
+        private static final HashMap<UUID, Timer> timers = new HashMap<>();
+        public static void start(@NotNull UUID player, @NotNull Timer.WaitOperation operation){
+            if (timers.containsKey(player)){
+                Timer timer = timers.get(player);
+                timer.runnable().run();
+                timer.task().cancel();
+            }
+            timers.put(player, Timer.wait(40, operation));
+        }
     }
 }

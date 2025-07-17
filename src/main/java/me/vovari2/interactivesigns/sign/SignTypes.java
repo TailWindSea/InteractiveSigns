@@ -1,7 +1,7 @@
 package me.vovari2.interactivesigns.sign;
 
 import com.destroystokyo.paper.MaterialSetTag;
-import me.vovari2.interactivesigns.loader.ConfigurationLoader;
+import me.vovari2.interactivesigns.loaders.types.ConfigurationLoader;
 import me.vovari2.interactivesigns.sign.types.*;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;

@@ -1,4 +1,4 @@
-package me.vovari2.interactivesigns.loader;
+package me.vovari2.interactivesigns.loaders;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;

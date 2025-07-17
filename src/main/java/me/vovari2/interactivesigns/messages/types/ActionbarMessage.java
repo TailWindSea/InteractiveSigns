@@ -1,37 +1,25 @@
 package me.vovari2.interactivesigns.messages.types;
 
-import me.vovari2.interactivesigns.Delay;
-import me.vovari2.interactivesigns.messages.MessageType;
-import me.vovari2.interactivesigns.messages.Messages;
-import me.vovari2.interactivesigns.messages.StringMessage;
-import me.vovari2.interactivesigns.utils.PlaceholderUtils;
-import me.vovari2.interactivesigns.utils.TextUtils;
-import org.bukkit.command.CommandSender;
+import me.vovari2.interactivesigns.messages.Message;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ActionbarMessage extends StringMessage {
-    public ActionbarMessage(@NotNull Messages key, @Nullable String message) {
-        super(key, message, MessageType.ACTIONBAR);
+public class ActionbarMessage extends Message {
+    public ActionbarMessage(@Nullable String message, @Nullable Sound sound) {
+        super(message, sound);
     }
 
-    public void send(@NotNull CommandSender sender) {
-        if (isEmpty())
-            return;
-        sender.sendMessage("Actionbar cannot be displayed!");
+    protected void sendInside(@NotNull Audience audience) {
+        if (audience instanceof Player player)
+            player.sendMessage(component(player));
+        else audience.sendMessage(component());
     }
-    public void send(@NotNull Player player) {
-        if (isEmpty())
-            return;
-        Delay.run(key, player,
-                () -> player.sendActionBar(TextUtils.toComponent(PlaceholderUtils.replacePlaceholders(player, message))));
-    }
-
-    public @NotNull StringMessage replace(@NotNull String placeholder, @NotNull String replacement){
-        return new ActionbarMessage(key, message.replaceAll("<%" + placeholder + "%>", replacement));
-    }
-    public @NotNull StringMessage replace(@NotNull String placeholder, long replacement){
-        return replace(placeholder, String.valueOf(replacement));
+    protected @NotNull Message replaceInside(@NotNull String placeholder, @NotNull String replacement){
+        return new ActionbarMessage(
+                message.replaceAll("<%" + placeholder + "%>", replacement),
+                sound);
     }
 }

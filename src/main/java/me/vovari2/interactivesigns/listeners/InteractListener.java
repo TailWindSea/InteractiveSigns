@@ -2,7 +2,7 @@ package me.vovari2.interactivesigns.listeners;
 
 import com.destroystokyo.paper.MaterialTags;
 import me.vovari2.interactivesigns.*;
-import me.vovari2.interactivesigns.loader.ConfigurationLoader;
+import me.vovari2.interactivesigns.loaders.types.ConfigurationLoader;
 import me.vovari2.interactivesigns.messages.Messages;
 import me.vovari2.interactivesigns.sign.SignRotations;
 import me.vovari2.interactivesigns.sign.SignTypes;

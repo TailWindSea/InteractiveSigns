@@ -1,15 +1,14 @@
 package me.vovari2.interactivesigns;
 
 import com.tcoded.folialib.FoliaLib;
-import dev.jorel.commandapi.CommandAPI;
-import dev.jorel.commandapi.CommandAPIBukkitConfig;
+import me.clip.placeholderapi.metrics.charts.DrilldownPie;
 import me.vovari2.interactivesigns.bstats.Metrics;
 import me.vovari2.interactivesigns.listeners.BreakListener;
 import me.vovari2.interactivesigns.listeners.ExplodeListener;
 import me.vovari2.interactivesigns.listeners.GrowListener;
 import me.vovari2.interactivesigns.listeners.InteractListener;
-import me.vovari2.interactivesigns.loader.ConfigurationLoader;
-import me.vovari2.interactivesigns.messages.MessagesLoader;
+import me.vovari2.interactivesigns.loaders.types.ConfigurationLoader;
+import me.vovari2.interactivesigns.loaders.types.MessagesLoader;
 import me.vovari2.interactivesigns.sign.SignTypes;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
@@ -17,6 +16,10 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Callable;
 
 public final class InteractiveSigns extends JavaPlugin {
     private static InteractiveSigns INSTANCE;
@@ -34,58 +37,70 @@ public final class InteractiveSigns extends JavaPlugin {
         VERSION = INSTANCE.getPluginMeta().getVersion();
         AUTHOR = INSTANCE.getPluginMeta().getAuthors().get(0);
 
-        CommandAPI.onLoad(new CommandAPIBukkitConfig(this).verboseOutput(false));
-
         ProtectionPlugins.load();
     }
-    private boolean isLoaded = false;
+    private boolean isConfigurationLoaded = false;
+    public boolean isPluginLoaded(){
+        return isConfigurationLoaded;
+    }
     public void onEnable() {
         FOLIA_INSTANCE = new FoliaLib(this);
+
         long time = System.currentTimeMillis();
-        CommandAPI.onEnable();
 
         Plugins.initialize();
         ProtectionPlugins.initialize();
-        Executor.pre_register(this);
-        isLoaded = MessagesLoader.initialize()
+        Executor.register(this);
+
+        isConfigurationLoaded = MessagesLoader.initialize()
                 && ConfigurationLoader.initialize();
-        initializeListeners();
+        registerListeners();
+        registerMetrics();
 
-        new Metrics(this, 26326);
-
-        if (isLoaded){
+        if (isConfigurationLoaded){
             SignTypes.initialize();
-            Executor.register(this);
             Console.info("<green>Plugin {} {} enabled! ({} ms)", PLUGIN_NAME, VERSION, System.currentTimeMillis() - time);
         }
         else Console.warn("Plugin {} {} is not enabled! There was an error in the console above!", PLUGIN_NAME, VERSION);
     }
     public void onDisable() {
-        CommandAPI.onDisable();
-        HandlerList.unregisterAll(this);
+        unregisterListeners();
         Console.info("<red>Plugin {} {} disabled!", PLUGIN_NAME, VERSION);
     }
     public void onReload() {
         long time = System.currentTimeMillis();
 
-        Executor.pre_register(this);
-        isLoaded = MessagesLoader.initialize()
+        isConfigurationLoaded = MessagesLoader.initialize()
                 && ConfigurationLoader.initialize();
-        HandlerList.unregisterAll(this);
-        initializeListeners();
-        if (isLoaded){
+
+        unregisterListeners();
+        registerListeners();
+
+        if (isConfigurationLoaded){
             SignTypes.initialize();
-            Executor.register(this);
             Console.info("<green>Plugin {} {} reloaded! ({} ms)", PLUGIN_NAME, VERSION, System.currentTimeMillis() - time);
         }
         else Console.warn("Plugin {} {} is not reloaded! There was an error in the console above!", PLUGIN_NAME, VERSION);
     }
 
-    private void initializeListeners(){
+    private void registerMetrics(){
+        Metrics metrics = new Metrics(this, 26326);
+        metrics.addCustomChart(new Metrics.AdvancedPie("protection_plugins_used", () -> {
+            Map<String, Integer> valueMap = new HashMap<>();
+            for (ProtectionPlugins.ProtectionPlugin plugin : ProtectionPlugins.plugins())
+                valueMap.put(plugin.name, 1);
+            return valueMap;
+        }));
+    }
+
+    private void registerListeners(){
         getServer().getPluginManager().registerEvents(new InteractListener(), this);
         getServer().getPluginManager().registerEvents(new BreakListener(), this);
         getServer().getPluginManager().registerEvents(new ExplodeListener(), this);
         getServer().getPluginManager().registerEvents(new GrowListener(), this);
+    }
+    private void unregisterListeners(){
+        HandlerList.unregisterAll(this);
     }
 
     public static InteractiveSigns getInstance(){
