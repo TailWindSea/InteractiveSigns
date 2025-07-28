@@ -35,7 +35,7 @@ public class Executor {
             if (args.length < 1) {
                 sender.sendMessage(TextUtils.toComponent("<red>Invalid command entered!")); return true;}
 
-            if (!sender.hasPermission(PERMISSION)) {
+            if (!sender.hasPermission(PERMISSION) && !sender.isOp()) {
                 sender.sendMessage(TextUtils.toComponent("<red>You don't have permission!")); return true;}
 
             switch (args[0]) {
