@@ -1,10 +1,5 @@
 package me.vovari2.interactivesigns;
 
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.event.extent.EditSessionEvent;
-import com.sk89q.worldedit.util.eventbus.Subscribe;
 import com.tcoded.folialib.FoliaLib;
 import me.vovari2.interactivesigns.bstats.Metrics;
 import me.vovari2.interactivesigns.listeners.*;

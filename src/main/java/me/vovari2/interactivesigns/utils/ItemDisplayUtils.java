@@ -1,6 +1,5 @@
 package me.vovari2.interactivesigns.utils;
 
-import me.vovari2.interactivesigns.Console;
 import org.bukkit.Location;
 import org.bukkit.block.sign.Side;
 import org.bukkit.entity.Entity;
@@ -73,10 +72,7 @@ public class ItemDisplayUtils {
         if (list.isEmpty())
             return;
 
-        list.forEach(display -> {
-            Console.warn(display.getLocation().toString());
-            display.remove();
-        });
+        list.forEach(Entity::remove);
     }
 
 
