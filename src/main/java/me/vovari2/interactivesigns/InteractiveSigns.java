@@ -1,11 +1,13 @@
 package me.vovari2.interactivesigns;
 
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.event.extent.EditSessionEvent;
+import com.sk89q.worldedit.util.eventbus.Subscribe;
 import com.tcoded.folialib.FoliaLib;
 import me.vovari2.interactivesigns.bstats.Metrics;
-import me.vovari2.interactivesigns.listeners.BreakListener;
-import me.vovari2.interactivesigns.listeners.ExplodeListener;
-import me.vovari2.interactivesigns.listeners.GrowListener;
-import me.vovari2.interactivesigns.listeners.InteractListener;
+import me.vovari2.interactivesigns.listeners.*;
 import me.vovari2.interactivesigns.loaders.types.ConfigurationLoader;
 import me.vovari2.interactivesigns.loaders.types.MessagesLoader;
 import me.vovari2.interactivesigns.sign.SignTypes;
@@ -119,7 +121,7 @@ public final class InteractiveSigns extends JavaPlugin {
 
     public enum Plugins {
         CoreProtect("CoreProtect", plugin -> {
-            Plugin javaPlugin = INSTANCE.getServer().getPluginManager().getPlugin("CoreProtect");
+            Plugin javaPlugin = INSTANCE.getServer().getPluginManager().getPlugin(plugin.name);
             if (!(javaPlugin instanceof CoreProtect coreProtect))
                 return false;
             Console.info("Found CoreProtect plugin!");
@@ -131,7 +133,7 @@ public final class InteractiveSigns extends JavaPlugin {
             if (api.APIVersion() < 10) {
                 Console.error("CoreProtect plugin unsupported version v%s (needed v22.4+)!".formatted(coreProtect.getDescription().getVersion()));return false;}
 
-            Console.info("Full support for CoreProtect plugin!");
+            Console.info("Connected to CoreProtect plugin!");
             return true;
         }, () -> {}),
         PlaceholderAPI("PlaceholderAPI", plugin -> {
@@ -141,7 +143,16 @@ public final class InteractiveSigns extends JavaPlugin {
 
             Console.info("Found and connected to PlaceholderAPI plugin!");
             return true;
-        }, () -> {});
+        },() -> {}),
+        WorldEdit("WorldEdit", plugin -> {
+            if (InteractiveSigns.getInstance().getServer().getPluginManager().getPlugin(plugin.name) == null)
+                return false;
+
+            Console.info("Found and connected to WorldEdit plugin!");
+            return true;
+        },() -> {
+            com.sk89q.worldedit.WorldEdit.getInstance().getEventBus().register(new WorldEditListener());
+        });
 
         static void initialize(){
             for(Plugins plugin : Plugins.values()){
