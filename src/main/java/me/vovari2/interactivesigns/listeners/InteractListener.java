@@ -1,5 +1,6 @@
 package me.vovari2.interactivesigns.listeners;
 
+import at.pcgamingfreaks.Minepacks.Bukkit.API.MinepacksPlugin;
 import com.destroystokyo.paper.MaterialTags;
 import me.vovari2.interactivesigns.*;
 import me.vovari2.interactivesigns.loaders.types.ConfigurationLoader;
@@ -35,7 +36,7 @@ public class InteractListener implements Listener {
         return signBlock.getSide(Side.FRONT).lines().get(3).equals(ART_MAP_LINE);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOW)
     public void onInteractPlayer(PlayerInteractEvent event){
         // Блок должен являться табличкой
         if (event.getClickedBlock() == null || !(event.getClickedBlock().getState() instanceof Sign signBlock))
@@ -43,6 +44,10 @@ public class InteractListener implements Listener {
 
         // Защита от вставки в таблички плагина ArtMap
         if (isCanvas(signBlock))
+            return;
+
+        // Защита от вставки в таблички рюкзаков плагина Minepacks
+        if (Plugins.Minepacks.isEnabled() && ((MinepacksPlugin)Plugins.Minepacks.getPlugin()).isBackpackItem(getItemInHand(EquipmentSlot.HAND, event.getPlayer())))
             return;
 
         Material signMaterial = signBlock.getType();
@@ -75,8 +80,8 @@ public class InteractListener implements Listener {
                 if (player.isSneaking())
                     return;
 
+                ItemStack item = getItemInHand(EquipmentSlot.HAND, player);
                 Location center = VersionUtils.getBlockCenter(signBlock.getLocation());
-                ItemStack item = getItemInHand(event.getHand(), player);
                 if (signBlock.isWaxed()){
                     if (item != null && MaterialTags.AXES.isTagged(item.getType())) {
                         addItemDamage(player, item);

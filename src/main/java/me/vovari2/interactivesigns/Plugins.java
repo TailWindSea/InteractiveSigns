@@ -1,10 +1,12 @@
 package me.vovari2.interactivesigns;
 
+import at.pcgamingfreaks.Minepacks.Bukkit.API.MinepacksPlugin;
 import com.fastasyncworldedit.core.configuration.Settings;
 import me.vovari2.interactivesigns.listeners.WorldEditListener;
 import me.vovari2.interactivesigns.utils.FileUtils;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
+import net.royawesome.jlibnoise.module.combiner.Min;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +17,8 @@ public enum Plugins {
     CoreProtect,
     PlaceholderAPI,
     FastAsyncWorldEdit,
-    WorldEdit;
+    WorldEdit,
+    Minepacks;
 
     static void load(){
         PluginManager manager = InteractiveSigns.getInstance().getServer().getPluginManager();
@@ -28,7 +31,9 @@ public enum Plugins {
     }
     static void enable(){
         if (CoreProtect.loaded){
-            CoreProtect coreProtect = ((CoreProtect) CoreProtect.plugin);
+            if (!(CoreProtect.plugin instanceof CoreProtect coreProtect))
+                return;
+
             CoreProtectAPI api = coreProtect.getAPI();
             if (!api.isEnabled()) {
                 Console.error("CoreProtect plugin API is not enabled!"); return;}
@@ -53,6 +58,11 @@ public enum Plugins {
             com.sk89q.worldedit.WorldEdit.getInstance().getEventBus().register(new WorldEditListener());
             WorldEdit.enableInside();
         }
+        if (Minepacks.loaded){
+            if (!(Minepacks.plugin instanceof MinepacksPlugin))
+                return;
+            Minepacks.enableInside();
+        }
     }
     private static void addAllowedPluginInFAWE(@NotNull String classPath){
         File config = new File(new File(FileUtils.getPluginFolder().getParentFile(), "FastAsyncWorldEdit"), "config.yml");
@@ -69,6 +79,9 @@ public enum Plugins {
 
     public boolean isEnabled(){
         return enabled;
+    }
+    public @NotNull Plugin getPlugin(){
+        return plugin;
     }
 
     void loadInside(){

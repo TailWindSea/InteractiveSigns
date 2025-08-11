@@ -14,7 +14,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 
 public class ExplodeListener  implements Listener {
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.LOW)
     public void onExplodeBlocksByBlock(BlockExplodeEvent event){
         if (event.isCancelled())
             return;

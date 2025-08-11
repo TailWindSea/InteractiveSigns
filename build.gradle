@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.vovari2'
-version = '1.4.7'
+version = '1.4.8'
 
 repositories {
     mavenCentral()
@@ -17,6 +17,7 @@ repositories {
 //    maven { url = "https://maven.addstar.com.au/artifactory/all-releases/"} // Prism
     maven { url = "https://repo.glaremasters.me/repository/bloodshot"} // GriefDefender
     maven { url = "https://repo.extendedclip.com/releases/"} // PlaceholderAPI
+    maven { url = "https://repo.pcgamingfreaks.at/repository/maven-everything/"} // Minepacks
 }
 
 dependencies {
@@ -38,6 +39,7 @@ dependencies {
     compileOnly files("./libs/Residence5.1.6.5.jar")
     compileOnly("com.griefdefender:api:2.1.0-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.6")
+    compileOnly("at.pcgamingfreaks:Minepacks-API:2.4.32.4")
 }
 
 shadowJar {
