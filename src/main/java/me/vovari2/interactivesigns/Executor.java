@@ -30,7 +30,7 @@ public class Executor {
         }
 
         @Override
-        public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+        public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, String @NotNull [] args) {
             if (args.length < 1) {
                 sender.sendMessage(TextUtils.toComponent("<red>Invalid command entered!")); return true;}
 
@@ -75,8 +75,7 @@ public class Executor {
                     for (ItemDisplay display : player.getWorld().getNearbyEntitiesByType(ItemDisplay.class, player.getLocation(), radius,
                             display -> display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign(Side.FRONT.name()))
                                     || display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign(Side.BACK.name())))) {
-                        if (display.getItemStack() == null)
-                            player.getInventory().addItem(display.getItemStack());
+                        player.getInventory().addItem(display.getItemStack());
                         display.remove();
                     }
                     Messages.COMMAND_CLEAR.replace("radius", String.valueOf(radius)).send(player);

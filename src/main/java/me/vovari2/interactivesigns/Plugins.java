@@ -1,8 +1,6 @@
 package me.vovari2.interactivesigns;
 
-import com.fastasyncworldedit.core.Fawe;
 import com.fastasyncworldedit.core.configuration.Settings;
-import com.sk89q.worldedit.WorldEdit;
 import me.vovari2.interactivesigns.listeners.WorldEditListener;
 import me.vovari2.interactivesigns.utils.FileUtils;
 import net.coreprotect.CoreProtect;
@@ -69,9 +67,6 @@ public enum Plugins {
     private boolean loaded = false;
     private boolean enabled = false;
 
-    public boolean isLoaded(){
-        return loaded;
-    }
     public boolean isEnabled(){
         return enabled;
     }

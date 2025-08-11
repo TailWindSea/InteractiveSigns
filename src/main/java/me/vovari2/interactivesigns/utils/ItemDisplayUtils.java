@@ -28,8 +28,7 @@ public class ItemDisplayUtils {
             return;
 
         display.remove();
-        if (display.getItemStack() != null)
-            location.getWorld().dropItemNaturally(location, display.getItemStack());
+        location.getWorld().dropItemNaturally(location, display.getItemStack());
     }
 
     public static @Nullable ItemDisplay getItemDisplayOnSignOld(Location location){

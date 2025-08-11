@@ -26,15 +26,12 @@ public final class InteractiveSigns extends JavaPlugin {
 
         PLUGIN_NAME = INSTANCE.getName();
         VERSION = INSTANCE.getPluginMeta().getVersion();
-        AUTHOR = INSTANCE.getPluginMeta().getAuthors().get(0);
+        AUTHOR = INSTANCE.getPluginMeta().getAuthors().getFirst();
 
         Plugins.load();
         ProtectionPlugins.load();
     }
     private boolean isConfigurationLoaded = false;
-    public boolean isPluginLoaded(){
-        return isConfigurationLoaded;
-    }
     public void onEnable() {
         FOLIA_INSTANCE = new FoliaLib(this);
 
@@ -49,10 +46,9 @@ public final class InteractiveSigns extends JavaPlugin {
         registerListeners();
         registerMetrics();
 
-        if (isConfigurationLoaded){
-            SignTypes.initialize();
+        SignTypes.initialize();
+        if (isConfigurationLoaded)
             Console.info("<green>Plugin {} {} enabled! ({} ms)", PLUGIN_NAME, VERSION, System.currentTimeMillis() - time);
-        }
         else Console.warn("Plugin {} {} is not enabled! There was an error in the console above!", PLUGIN_NAME, VERSION);
     }
     public void onDisable() {
@@ -68,10 +64,9 @@ public final class InteractiveSigns extends JavaPlugin {
         unregisterListeners();
         registerListeners();
 
-        if (isConfigurationLoaded){
-            SignTypes.initialize();
+        SignTypes.initialize();
+        if (isConfigurationLoaded)
             Console.info("<green>Plugin {} {} reloaded! ({} ms)", PLUGIN_NAME, VERSION, System.currentTimeMillis() - time);
-        }
         else Console.warn("Plugin {} {} is not reloaded! There was an error in the console above!", PLUGIN_NAME, VERSION);
     }
 
