@@ -74,8 +74,13 @@ public final class InteractiveSigns extends JavaPlugin {
         Metrics metrics = new Metrics(this, 26326);
         metrics.addCustomChart(new Metrics.AdvancedPie("protection_plugins_used", () -> {
             Map<String, Integer> valueMap = new HashMap<>();
-            for (ProtectionPlugins.ProtectionPlugin plugin : ProtectionPlugins.plugins())
+            boolean hasAnyProtectionPlugin = false;
+            for (ProtectionPlugins.ProtectionPlugin plugin : ProtectionPlugins.plugins()){
+                hasAnyProtectionPlugin = true;
                 valueMap.put(plugin.name, 1);
+            }
+            if (!hasAnyProtectionPlugin)
+                valueMap.put("none", 1);
             return valueMap;
         }));
     }
