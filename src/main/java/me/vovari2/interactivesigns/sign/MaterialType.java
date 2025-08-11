@@ -45,7 +45,6 @@ public enum MaterialType {
             .inc(Material.WARPED_FUNGUS)
             .inc(Material.DEAD_BUSH)
             .inc(Material.FERN)
-            .inc(Material.GRASS)
             .inc(Material.BAMBOO)
             .inc(Material.SUGAR_CANE)
             .inc(Material.LARGE_FERN)

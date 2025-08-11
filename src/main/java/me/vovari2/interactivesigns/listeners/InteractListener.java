@@ -119,7 +119,7 @@ public class InteractListener implements Listener {
                 placedItem.setAmount(1);
                 player.getInventory().getItem(event.getHand()).subtract();
 
-                if (InteractiveSigns.Plugins.CoreProtect.isEnabled())
+                if (Plugins.CoreProtect.isEnabled())
                     CoreProtectUtils.logPuttingItemOnSign(player.getName(), signLocation, placedItem.getType());
 
                 ItemDisplay itemDisplay = (ItemDisplay) displayLocation.getWorld().spawnEntity(displayLocation, EntityType.ITEM_DISPLAY);
@@ -153,10 +153,8 @@ public class InteractListener implements Listener {
 
                 display.remove();
                 ItemStack droppedItem = display.getItemStack();
-                if (droppedItem == null)
-                    return;
 
-                if (InteractiveSigns.Plugins.CoreProtect.isEnabled())
+                if (Plugins.CoreProtect.isEnabled())
                     CoreProtectUtils.logTakingItemOnSign(player.getName(), signLocation, droppedItem.getType());
 
                 signBlock.getWorld().dropItemNaturally(VersionUtils.getBlockCenter(signBlock.getLocation()), droppedItem);

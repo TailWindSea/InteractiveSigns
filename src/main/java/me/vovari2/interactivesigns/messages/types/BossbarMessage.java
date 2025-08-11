@@ -51,7 +51,7 @@ public class BossbarMessage extends Message {
                 timer.runnable().run();
                 timer.task().cancel();
             }
-            timers.put(player, Timer.wait(40, operation));
+            timers.put(player, Timer.wait(40 * 50, operation));
         }
     }
 }

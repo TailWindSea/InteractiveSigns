@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.vovari2'
-version = '1.4.6'
+version = '1.4.7'
 
 repositories {
     mavenCentral()
@@ -23,10 +23,11 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
     implementation("com.github.technicallycoded:FoliaLib:0.4.4")
 //    implementation("dev.jorel:commandapi-bukkit-shade:10.1.1")
-    implementation(platform("com.intellectualsites.bom:bom-newest:1.52"))
-    compileOnly("com.sk89q.worldedit:worldedit-core:7.3.9")
-    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.9")
-    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9-SNAPSHOT")
+    implementation(platform("com.intellectualsites.bom:bom-newest:1.55"))
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit")
+//    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.9")
+   compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9-SNAPSHOT")
     compileOnly("com.github.GriefPrevention:GriefPrevention:16.18.2")
     compileOnly("net.william278.huskclaims:huskclaims-bukkit:1.5")
     compileOnly("com.bgsoftware:SuperiorSkyblockAPI:2024.4")
@@ -42,7 +43,7 @@ dependencies {
 shadowJar {
 //    relocate("dev.jorel.commandapi", "libs.commandapi")
     relocate("com.tcoded.folialib", "libs.folialib")
-    getDestinationDirectory().set(new File("D:\\Minecraft\\Servers\\Paper 1.21.6\\plugins\\"))
+    getDestinationDirectory().set(new File("D:\\Minecraft\\Servers\\Paper 1.21.7\\plugins\\"))
     archiveFileName = "${project.name}-${project.version}.jar"
 }
 

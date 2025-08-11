@@ -6,12 +6,8 @@ import me.vovari2.interactivesigns.listeners.*;
 import me.vovari2.interactivesigns.loaders.types.ConfigurationLoader;
 import me.vovari2.interactivesigns.loaders.types.MessagesLoader;
 import me.vovari2.interactivesigns.sign.SignTypes;
-import net.coreprotect.CoreProtect;
-import net.coreprotect.CoreProtectAPI;
 import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +28,7 @@ public final class InteractiveSigns extends JavaPlugin {
         VERSION = INSTANCE.getPluginMeta().getVersion();
         AUTHOR = INSTANCE.getPluginMeta().getAuthors().get(0);
 
+        Plugins.load();
         ProtectionPlugins.load();
     }
     private boolean isConfigurationLoaded = false;
@@ -43,7 +40,7 @@ public final class InteractiveSigns extends JavaPlugin {
 
         long time = System.currentTimeMillis();
 
-        Plugins.initialize();
+        Plugins.enable();
         ProtectionPlugins.initialize();
         Executor.register(this);
 
@@ -113,75 +110,4 @@ public final class InteractiveSigns extends JavaPlugin {
     public static String getAuthor(){
         return INSTANCE.AUTHOR;
     }
-
-    public enum Plugins {
-        CoreProtect("CoreProtect", plugin -> {
-            Plugin javaPlugin = INSTANCE.getServer().getPluginManager().getPlugin(plugin.name);
-            if (!(javaPlugin instanceof CoreProtect coreProtect))
-                return false;
-            Console.info("Found CoreProtect plugin!");
-
-            CoreProtectAPI api = coreProtect.getAPI();
-            if (!api.isEnabled()) {
-                Console.error("CoreProtect plugin API is not enabled!"); return false;}
-
-            if (api.APIVersion() < 10) {
-                Console.error("CoreProtect plugin unsupported version v%s (needed v22.4+)!".formatted(coreProtect.getDescription().getVersion()));return false;}
-
-            Console.info("Connected to CoreProtect plugin!");
-            return true;
-        }, () -> {}),
-        PlaceholderAPI("PlaceholderAPI", plugin -> {
-
-            if (InteractiveSigns.getInstance().getServer().getPluginManager().getPlugin(plugin.name) == null)
-                return false;
-
-            Console.info("Found and connected to PlaceholderAPI plugin!");
-            return true;
-        },() -> {}),
-        WorldEdit("WorldEdit", plugin -> {
-            if (InteractiveSigns.getInstance().getServer().getPluginManager().getPlugin(plugin.name) == null)
-                return false;
-
-            Console.info("Found and connected to WorldEdit plugin!");
-            return true;
-        },() -> {
-            com.sk89q.worldedit.WorldEdit.getInstance().getEventBus().register(new WorldEditListener());
-        });
-
-        static void initialize(){
-            for(Plugins plugin : Plugins.values()){
-                plugin.enabled = plugin.enableOperation.isEnable(plugin);
-                if (plugin.isEnabled())
-                    plugin.initializationOperation.run();
-            }
-
-        }
-
-        private final String name;
-        private final EnableOperation enableOperation;
-        private final InitializationOperation initializationOperation;
-
-        private boolean enabled;
-        Plugins(String name, EnableOperation enableOperation, InitializationOperation initializationOperation){
-            this.name = name;
-            this.enableOperation = enableOperation;
-            this.initializationOperation = initializationOperation;
-        }
-
-        public String getName(){
-            return name;
-        }
-        public boolean isEnabled(){
-            return enabled;
-        }
-
-        private interface InitializationOperation {
-            void run();
-        }
-        private interface EnableOperation {
-            boolean isEnable(@NotNull Plugins plugin);
-        }
     }
-
-}

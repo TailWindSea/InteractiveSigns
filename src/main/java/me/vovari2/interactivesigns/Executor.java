@@ -17,7 +17,6 @@ public class Executor {
     public static boolean hasPermission(@NotNull Player player){
         return player.hasPermission(PERMISSION);
     }
-
     public static void register(InteractiveSigns instance){
         instance.getServer().getCommandMap().register(
                 InteractiveSigns.getPluginName(),

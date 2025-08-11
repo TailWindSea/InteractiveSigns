@@ -22,9 +22,10 @@ public record Timer(@NotNull Runnable runnable, @NotNull WrappedTask task) {
         BukkitRunnable runnable = new BukkitRunnable() {
             public void run() { waitOperation.run();}
         };
-        WrappedTask task = InteractiveSigns.getFoliaInstance().getScheduler().runLater(runnable, wait * 50L);
+        WrappedTask task = InteractiveSigns.getFoliaInstance().getScheduler().runLater(runnable, wait);
         return new Timer(runnable, task);
     }
+
     public interface PeriodOperation {
         void run(int times);
     }
