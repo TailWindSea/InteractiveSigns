@@ -80,7 +80,7 @@ public final class InteractiveSigns extends JavaPlugin {
                 valueMap.put(plugin.name, 1);
             }
             if (!hasAnyProtectionPlugin)
-                valueMap.put("none", 1);
+                valueMap.put("<none>", 1);
             return valueMap;
         }));
     }
