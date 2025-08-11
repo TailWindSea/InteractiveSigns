@@ -6,7 +6,6 @@ import me.vovari2.interactivesigns.listeners.WorldEditListener;
 import me.vovari2.interactivesigns.utils.FileUtils;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
-import net.royawesome.jlibnoise.module.combiner.Min;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;

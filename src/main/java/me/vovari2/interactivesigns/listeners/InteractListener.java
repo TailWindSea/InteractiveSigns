@@ -26,8 +26,10 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 public class InteractListener implements Listener {
 
@@ -47,7 +49,7 @@ public class InteractListener implements Listener {
             return;
 
         // Защита от вставки в таблички рюкзаков плагина Minepacks
-        if (Plugins.Minepacks.isEnabled() && ((MinepacksPlugin)Plugins.Minepacks.getPlugin()).isBackpackItem(getItemInHand(EquipmentSlot.HAND, event.getPlayer())))
+        if (Plugins.Minepacks.isEnabled() && ((MinepacksPlugin)Plugins.Minepacks.getPlugin()).isBackpackItem(getItemInHand(event.getHand(), event.getPlayer())))
             return;
 
         Material signMaterial = signBlock.getType();
@@ -80,7 +82,7 @@ public class InteractListener implements Listener {
                 if (player.isSneaking())
                     return;
 
-                ItemStack item = getItemInHand(EquipmentSlot.HAND, player);
+                ItemStack item = getItemInHand(event.getHand(), player);
                 Location center = VersionUtils.getBlockCenter(signBlock.getLocation());
                 if (signBlock.isWaxed()){
                     if (item != null && MaterialTags.AXES.isTagged(item.getType())) {
@@ -122,7 +124,7 @@ public class InteractListener implements Listener {
 
                 ItemStack placedItem = item.clone();
                 placedItem.setAmount(1);
-                player.getInventory().getItem(event.getHand()).subtract();
+                player.getInventory().getItem(Objects.requireNonNullElse(event.getHand(), EquipmentSlot.HAND)).subtract();
 
                 if (Plugins.CoreProtect.isEnabled())
                     CoreProtectUtils.logPuttingItemOnSign(player.getName(), signLocation, placedItem.getType());
@@ -178,7 +180,7 @@ public class InteractListener implements Listener {
             return Side.FRONT;
         return Side.BACK;
     }
-    private static ItemStack getItemInHand(EquipmentSlot slot, Player player){
+    private static ItemStack getItemInHand(@Nullable EquipmentSlot slot, Player player){
         if (slot == null)
             return null;
 
