@@ -38,7 +38,7 @@ public final class InteractiveSigns extends JavaPlugin {
         long time = System.currentTimeMillis();
 
         Plugins.enable();
-        ProtectionPlugins.initialize();
+        ProtectionPlugins.enable();
         Executor.register(this);
 
         isConfigurationLoaded = MessagesLoader.initialize()

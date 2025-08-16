@@ -4,18 +4,18 @@ plugins {
 }
 
 group = 'me.vovari2'
-version = '1.4.8'
+version = '1.4.9'
 
 repositories {
     mavenCentral()
     maven { url = "https://repo.papermc.io/repository/maven-public/"} // Paper
     maven { url = "https://maven.enginehub.org/repo/" } // WorldEdit, WorldGuard
     maven { url = "https://jitpack.io" } // GriefPrevention, Lands, ChestProtect
-    maven { url = "https://repo.william278.net/releases" } // HuskClaims
+    maven { url = "https://repo.william278.net/releases/" } // HuskClaims
     maven { url = "https://repo.bg-software.com/repository/api/" } // SuperiorSkyblock
     maven { url = "https://maven.playpro.com/"} // CoreProtect
 //    maven { url = "https://maven.addstar.com.au/artifactory/all-releases/"} // Prism
-    maven { url = "https://repo.glaremasters.me/repository/bloodshot"} // GriefDefender
+    maven { url = "https://repo.glaremasters.me/repository/bloodshot/"} // GriefDefender
     maven { url = "https://repo.extendedclip.com/releases/"} // PlaceholderAPI
     maven { url = "https://repo.pcgamingfreaks.at/repository/maven-everything/"} // Minepacks
 }

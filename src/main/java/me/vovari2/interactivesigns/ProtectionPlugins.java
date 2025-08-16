@@ -56,10 +56,10 @@ public class ProtectionPlugins {
         addPlugin(GriefPreventionProtectionPlugin.class, "GriefPrevention");
         addPlugin(SuperiorSkyblock2ProtectionPlugin.class, "SuperiorSkyblock2");
         addPlugin(ChestProtectProtectionPlugin.class, "ChestProtect");
-        addPlugin(GriefDefenderProtectionPlugin.class, "GriefDefender");
     }
-    public static void initialize(){
+    public static void enable(){
         addPlugin(HuskClaimsProtectionPlugin.class, "HuskClaims");
+        addPlugin(GriefDefenderProtectionPlugin.class, "GriefDefender");
     }
     private static void addPlugin(Class<? extends ProtectionPlugin> plugin, String name){
         if (!isEnabledPlugin(name))
@@ -77,11 +77,10 @@ public class ProtectionPlugins {
         return InteractiveSigns.getInstance().getServer().getPluginManager().getPlugin(name) != null;
     }
     public static boolean canInteractWithSign(Player player, Location location){
-        boolean canInteract = true;
         for (ProtectionPlugin plugin : plugins)
             if (!plugin.canInteractWithSign(player, location))
-                canInteract = false;
-        return canInteract;
+                return false;
+        return true;
     }
 
     static List<ProtectionPlugin> plugins() {
@@ -242,13 +241,10 @@ public class ProtectionPlugins {
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
             com.griefdefender.api.claim.Claim claim = instance.getClaimAt(location);
-            if (claim == null)
-                return false;
+            if (claim == null || claim.isWilderness())
+                return true;
 
-            if (claim.isWilderness())
-                return false;
-
-            return claim.canUseBlock(null, location, instance.getUser(player.getUniqueId()), TrustTypes.BUILDER);
+            return claim.isUserTrusted(player.getUniqueId(), TrustTypes.BUILDER);
         }
     }
 }
