@@ -29,7 +29,7 @@ import me.angeschossen.lands.api.flags.enums.RoleFlagCategory;
 import me.angeschossen.lands.api.flags.type.RoleFlag;
 import me.angeschossen.lands.api.land.LandWorld;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import me.vovari2.interactivesigns.loaders.types.ConfigurationLoader;
+import me.vovari2.interactivesigns.configuration.Configuration;
 import net.william278.huskclaims.api.BukkitHuskClaimsAPI;
 import net.william278.huskclaims.api.HuskClaimsAPI;
 import net.william278.huskclaims.claim.Claim;
@@ -134,8 +134,8 @@ public class ProtectionPlugins {
         LandsProtectionPlugin(@NotNull String name){
             super(name);
             instance = LandsIntegration.of(InteractiveSigns.getInstance());
-            flag = RoleFlag.of(instance, FlagTarget.PLAYER, RoleFlagCategory.ACTION, ConfigurationLoader.LANDS_FLAG_ID);
-            flag.setDisplayName(ConfigurationLoader.LANDS_FLAG_NAME).setIcon(new ItemStack(ConfigurationLoader.LANDS_FLAG_MATERIAL)).setDescription(ConfigurationLoader.LANDS_FLAG_DESCRIPTION);
+            flag = RoleFlag.of(instance, FlagTarget.PLAYER, RoleFlagCategory.ACTION, Configuration.LANDS.FLAG_ID);
+            flag.setDisplayName(Configuration.LANDS.FLAG_NAME).setIcon(new ItemStack(Configuration.LANDS.FLAG_MATERIAL)).setDescription(Configuration.LANDS.FLAG_DESCRIPTION);
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {
@@ -162,7 +162,7 @@ public class ProtectionPlugins {
         private final String ITEMS_ON_SIGNS;
         HuskClaimsProtectionPlugin(@NotNull String name){
             super(name);
-            ITEMS_ON_SIGNS = ConfigurationLoader.HUSKCLAIMS_FLAG_ID;
+            ITEMS_ON_SIGNS = Configuration.HUSKCLAIMS.FLAG_ID;
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {

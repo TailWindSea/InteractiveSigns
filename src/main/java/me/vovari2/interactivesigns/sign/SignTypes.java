@@ -1,7 +1,7 @@
 package me.vovari2.interactivesigns.sign;
 
 import com.destroystokyo.paper.MaterialSetTag;
-import me.vovari2.interactivesigns.loaders.types.ConfigurationLoader;
+import me.vovari2.interactivesigns.configuration.Configuration;
 import me.vovari2.interactivesigns.sign.types.*;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -23,7 +23,7 @@ public enum SignTypes {
     public static void initialize(){
         types = new HashMap<>();
 
-        boolean isThreeDimensional = ConfigurationLoader.ENABLE_ITEMS_VOLUME;
+        boolean isThreeDimensional = Configuration.ENABLE_ITEMS_VOLUME;
         types.put(STANDING_SIGN, isThreeDimensional ? new StandingSign3D() : new StandingSign2D());
         types.put(WALL_SIGN, isThreeDimensional ? new WallSign3D() : new WallSign2D());
         types.put(HANGING_SIGN, isThreeDimensional ? new HangingSign3D() : new HangingSign2D());

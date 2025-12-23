@@ -2,9 +2,9 @@ package me.vovari2.interactivesigns;
 
 import com.tcoded.folialib.FoliaLib;
 import me.vovari2.interactivesigns.bstats.Metrics;
+import me.vovari2.interactivesigns.configuration.Configuration;
 import me.vovari2.interactivesigns.listeners.*;
-import me.vovari2.interactivesigns.loaders.types.ConfigurationLoader;
-import me.vovari2.interactivesigns.loaders.types.MessagesLoader;
+import me.vovari2.interactivesigns.messages.Messages;
 import me.vovari2.interactivesigns.sign.SignTypes;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,7 +18,6 @@ public final class InteractiveSigns extends JavaPlugin {
 
     private String PLUGIN_NAME;
     private String VERSION;
-    private String AUTHOR;
 
     public void onLoad() {
         INSTANCE = this;
@@ -26,28 +25,28 @@ public final class InteractiveSigns extends JavaPlugin {
 
         PLUGIN_NAME = INSTANCE.getName();
         VERSION = INSTANCE.getPluginMeta().getVersion();
-        AUTHOR = INSTANCE.getPluginMeta().getAuthors().getFirst();
 
         Plugins.load();
         ProtectionPlugins.load();
     }
-    private boolean isConfigurationLoaded = false;
+    private boolean isLoaded = false;
     public void onEnable() {
-        FOLIA_INSTANCE = new FoliaLib(this);
-
         long time = System.currentTimeMillis();
+        FOLIA_INSTANCE = new FoliaLib(this);
 
         Plugins.enable();
         ProtectionPlugins.enable();
         Executor.register(this);
 
-        isConfigurationLoaded = MessagesLoader.initialize()
-                && ConfigurationLoader.initialize();
+        isLoaded = Messages.enable()
+                && Configuration.enable();
+
         registerListeners();
         registerMetrics();
 
         SignTypes.initialize();
-        if (isConfigurationLoaded)
+
+        if (isLoaded)
             Console.info("<green>Plugin {} {} enabled! ({} ms)", PLUGIN_NAME, VERSION, System.currentTimeMillis() - time);
         else Console.warn("Plugin {} {} is not enabled! There was an error in the console above!", PLUGIN_NAME, VERSION);
     }
@@ -58,14 +57,14 @@ public final class InteractiveSigns extends JavaPlugin {
     public void onReload() {
         long time = System.currentTimeMillis();
 
-        isConfigurationLoaded = MessagesLoader.initialize()
-                && ConfigurationLoader.initialize();
+        isLoaded = Messages.enable()
+                && Configuration.enable();
 
         unregisterListeners();
         registerListeners();
 
         SignTypes.initialize();
-        if (isConfigurationLoaded)
+        if (isLoaded)
             Console.info("<green>Plugin {} {} reloaded! ({} ms)", PLUGIN_NAME, VERSION, System.currentTimeMillis() - time);
         else Console.warn("Plugin {} {} is not reloaded! There was an error in the console above!", PLUGIN_NAME, VERSION);
     }
@@ -106,8 +105,5 @@ public final class InteractiveSigns extends JavaPlugin {
     }
     public static String getVersion(){
         return INSTANCE.VERSION;
-    }
-    public static String getAuthor(){
-        return INSTANCE.AUTHOR;
     }
     }

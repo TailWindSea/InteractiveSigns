@@ -3,7 +3,7 @@ package me.vovari2.interactivesigns.listeners;
 import at.pcgamingfreaks.Minepacks.Bukkit.API.MinepacksPlugin;
 import com.destroystokyo.paper.MaterialTags;
 import me.vovari2.interactivesigns.*;
-import me.vovari2.interactivesigns.loaders.types.ConfigurationLoader;
+import me.vovari2.interactivesigns.configuration.Configuration;
 import me.vovari2.interactivesigns.messages.Messages;
 import me.vovari2.interactivesigns.sign.SignRotations;
 import me.vovari2.interactivesigns.sign.SignTypes;
@@ -113,11 +113,11 @@ public class InteractListener implements Listener {
                 if (item == null)
                     return;
 
-                if (ConfigurationLoader.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS)
-                    if (!player.hasPermission(ConfigurationLoader.PERMISSION_CAN_USE_SIGNS))
+                if (Configuration.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS)
+                    if (!player.hasPermission(Configuration.PERMISSION_CAN_USE_SIGNS))
                         return;
 
-                if (ConfigurationLoader.DISALLOW_SIGN_ITEM_PLACEMENT.contains(item.getType())){
+                if (Configuration.BLACKLIST_OF_ITEMS.contains(item.getType())){
                     Messages.WARNING_YOU_CANT_PUT_THAT_HERE.send(player);
                     return;
                 }
@@ -151,8 +151,8 @@ public class InteractListener implements Listener {
                     return;
                 }
 
-                if (ConfigurationLoader.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS)
-                    if (!player.hasPermission(ConfigurationLoader.PERMISSION_CAN_USE_SIGNS)){
+                if (Configuration.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS)
+                    if (!player.hasPermission(Configuration.PERMISSION_CAN_USE_SIGNS)){
                         Messages.WARNING_YOU_CANT_USE_THAT_HERE.send(player);
                         event.setCancelled(true);
                         return;

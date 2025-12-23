@@ -21,7 +21,7 @@ public class ChatMessage extends Message {
         else audience.sendMessage(component());
     }
     protected @NotNull Message replaceInside(@NotNull String placeholder, @NotNull String replacement){
-        return new ActionbarMessage(
+        return new ChatMessage(
                 message.replaceAll("<%" + placeholder + "%>", replacement),
                 sound);
     }
