@@ -10,7 +10,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.nio.file.Path;
 
 public enum Plugins {
@@ -39,7 +38,7 @@ public enum Plugins {
                 Console.error("CoreProtect plugin API is not enabled!"); return;}
 
             if (api.APIVersion() < 10) {
-                Console.error("CoreProtect plugin unsupported version v%s (needed v22.4+)!".formatted(coreProtect.getDescription().getVersion())); return;}
+                Console.error("CoreProtect plugin unsupported version v%s (needed v22.4+)!".formatted(coreProtect.getPluginMeta().getAPIVersion())); return;}
 
             if (FastAsyncWorldEdit.loaded)
                 addAllowedPluginInFAWE("net.coreprotect.worldedit.CoreProtectLogger");
