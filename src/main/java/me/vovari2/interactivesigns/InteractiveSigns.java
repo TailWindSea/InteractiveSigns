@@ -44,7 +44,7 @@ public final class InteractiveSigns extends JavaPlugin {
         registerListeners();
         registerMetrics();
 
-        SignTypes.initialize();
+        SignTypes.enable();
 
         if (isLoaded)
             Console.info("<green>Plugin {} {} enabled! ({} ms)", PLUGIN_NAME, VERSION, System.currentTimeMillis() - time);
@@ -63,7 +63,7 @@ public final class InteractiveSigns extends JavaPlugin {
         unregisterListeners();
         registerListeners();
 
-        SignTypes.initialize();
+        SignTypes.enable();
         if (isLoaded)
             Console.info("<green>Plugin {} {} reloaded! ({} ms)", PLUGIN_NAME, VERSION, System.currentTimeMillis() - time);
         else Console.warn("Plugin {} {} is not reloaded! There was an error in the console above!", PLUGIN_NAME, VERSION);

@@ -20,7 +20,7 @@ public enum SignTypes {
     HANGING_SIGN;
 
     private static HashMap<SignTypes, SignType> types;
-    public static void initialize(){
+    public static void enable(){
         types = new HashMap<>();
 
         boolean isThreeDimensional = Configuration.ENABLE_ITEMS_VOLUME;
