@@ -11,6 +11,7 @@ import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.nio.file.Path;
 
 public enum Plugins {
     CoreProtect,
@@ -64,11 +65,11 @@ public enum Plugins {
         }
     }
     private static void addAllowedPluginInFAWE(@NotNull String classPath){
-        File config = new File(new File(FileUtils.getPluginFolder().getParentFile(), "FastAsyncWorldEdit"), "config.yml");
-        Settings.settings().load(config);
+        Path config = Path.of(FileUtils.getPluginDirectory().getParent().toString(), "FastAsyncWorldEdit/config.yml");
+        Settings.settings().load(config.toFile());
         if (!Settings.settings().EXTENT.ALLOWED_PLUGINS.contains(classPath)){
             Settings.settings().EXTENT.ALLOWED_PLUGINS.add(classPath);
-            Settings.settings().save(config);
+            Settings.settings().save(config.toFile());
         }
     }
 
