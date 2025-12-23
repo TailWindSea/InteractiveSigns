@@ -2,6 +2,7 @@ package me.vovari2.interactivesigns;
 
 import at.pcgamingfreaks.Minepacks.Bukkit.API.MinepacksPlugin;
 import com.fastasyncworldedit.core.configuration.Settings;
+import me.vovari2.interactivesigns.configuration.Configuration;
 import me.vovari2.interactivesigns.listeners.WorldEditListener;
 import me.vovari2.interactivesigns.utils.FileUtils;
 import net.coreprotect.CoreProtect;
@@ -54,7 +55,8 @@ public enum Plugins {
         }
 
         if (WorldEdit.loaded){
-            com.sk89q.worldedit.WorldEdit.getInstance().getEventBus().register(new WorldEditListener());
+            if (Configuration.WORLDEDIT.AUTO_DROP_ITEMS)
+                com.sk89q.worldedit.WorldEdit.getInstance().getEventBus().register(new WorldEditListener());
             WorldEdit.enableInside();
         }
         if (Minepacks.loaded){
