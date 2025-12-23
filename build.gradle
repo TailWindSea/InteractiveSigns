@@ -25,11 +25,11 @@ dependencies {
 
     implementation("org.bstats:bstats-bukkit:3.1.0")
     implementation("com.github.technicallycoded:FoliaLib:0.4.4")
-    implementation(platform("com.intellectualsites.bom:bom-newest:1.55"))
 
+    implementation(platform("com.intellectualsites.bom:bom-newest:1.55"))
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit")
-    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.11")
+    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.10")
     compileOnly("com.github.GriefPrevention:GriefPrevention:16.18.2")
     compileOnly("net.william278.huskclaims:huskclaims-bukkit:1.5")
     compileOnly("com.bgsoftware:SuperiorSkyblockAPI:2024.4")
@@ -44,11 +44,11 @@ dependencies {
 }
 
 shadowJar {
-    relocate("com.tcoded.folialib", "libs.folialib") // FoliaLib
-    relocate("org.bstats", "libs.bstats") // bStats
+    relocate("com.tcoded.folialib", "me.vovari2.libs.folialib") // FoliaLib
+    relocate("org.bstats", "me.vovari2.libs.bstats") // bStats
 
     // General
-    getDestinationDirectory().set(new File("D:\\Minecraft\\Servers\\Paper 1.21.10\\plugins\\"))
+    getDestinationDirectory().set(new File("D:\\Minecraft\\Servers\\Paper 1.21.11\\plugins\\"))
     archiveFileName = "${project.name}-${project.version}.jar"
 }
 

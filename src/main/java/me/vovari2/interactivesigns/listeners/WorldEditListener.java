@@ -10,7 +10,6 @@ import com.sk89q.worldedit.extent.Extent;
 import com.sk89q.worldedit.function.mask.Mask;
 import com.sk89q.worldedit.function.pattern.Pattern;
 import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.math.Vector3;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.util.eventbus.Subscribe;
 import com.sk89q.worldedit.world.block.BaseBlock;
@@ -20,7 +19,7 @@ import me.vovari2.interactivesigns.utils.NamespacedKeyUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.sign.Side;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
@@ -41,40 +40,10 @@ public class WorldEditListener {
 
     private static class SignExtent extends AbstractDelegateExtent {
         private final World world;
-
         public SignExtent(@NotNull Extent extent, @NotNull World world) {
             super(extent);
             this.world = world;
         }
-
-        public void removeItemDisplayFromSign(@NotNull Region region) {
-            Vector3 minimum = region.getMinimumPoint().toVector3(),
-                    dimensions = region.getDimensions().toVector3().divide(2);
-            Vector3 center = minimum.add(dimensions);
-            Collection<Entity> list = world.getNearbyEntities(
-                    BukkitAdapter.adapt(world, center),
-                    dimensions.x(),
-                    dimensions.y(),
-                    dimensions.z(),
-                    entity -> {
-                        if (!(entity instanceof ItemDisplay display))
-                            return false;
-
-                        return display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSignOld())
-                                || display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign(Side.FRONT.name()))
-                                || display.getPersistentDataContainer().has(NamespacedKeyUtils.forItemOnSign(Side.BACK.name()));
-                    });
-
-            if (!list.isEmpty())
-                list.forEach(entity -> {
-                    if (!(entity instanceof ItemDisplay display))
-                        return;
-
-                    world.dropItem(display.getLocation(), display.getItemStack());
-                    display.remove();
-                });
-        }
-
         public void removeItemDisplayFromSign(@NotNull Location location) {
             Collection<ItemDisplay> list = location.getWorld().getNearbyEntitiesByType(
                     ItemDisplay.class,
@@ -85,29 +54,31 @@ public class WorldEditListener {
                         return container.has(NamespacedKeyUtils.forItemOnSignOld()) || container.has(NamespacedKeyUtils.forItemOnSign(Side.FRONT.name())) || container.has(NamespacedKeyUtils.forItemOnSign(Side.BACK.name()));
                     });
 
-            if (!list.isEmpty())
-                list.forEach(display -> {
-                    world.dropItem(display.getLocation(), display.getItemStack());
-                    display.remove();
-                });
+            if (list.isEmpty())
+                return;
+
+            for (ItemDisplay display : list){
+                world.dropItemNaturally(display.getLocation(), display.getItemStack());
+                display.remove();
+            }
         }
 
         public <T extends BlockStateHolder<T>> boolean setBlock(BlockVector3 pos, T block) throws WorldEditException {
             final Location location = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-            Scheduler.waitInLocation(0, location, () -> removeItemDisplayFromSign(location));
+            Scheduler.waitInLocation(location, 0, () -> removeItemDisplayFromSign(location));
             return super.setBlock(pos, block);
         }
 
         public <T extends BlockStateHolder<T>> boolean setBlock(int x, int y, int z, T block) throws WorldEditException {
             final Location location = new Location(world, x + 0.5, y + 0.5, z + 0.5);
-            Scheduler.waitInLocation(0, location, ()  -> removeItemDisplayFromSign(location));
+            Scheduler.waitInLocation(location, 0,()  -> removeItemDisplayFromSign(location));
             return super.setBlock(x, y, z, block);
         }
 
         public <B extends BlockStateHolder<B>> int setBlocks(final @NotNull Region region, final B block) throws MaxChangedBlocksException {
             region.forEach(pos -> {
                 final Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-                Scheduler.waitInLocation(0, loc, () -> removeItemDisplayFromSign(loc));
+                Scheduler.waitInLocation(loc, 0, () -> removeItemDisplayFromSign(loc));
             });
             return super.setBlocks(region, block);
         }
@@ -115,7 +86,7 @@ public class WorldEditListener {
         public int setBlocks(final @NotNull Region region, final Pattern pattern) throws MaxChangedBlocksException {
             region.forEach(pos -> {
                 final Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-                Scheduler.waitInLocation(0, loc, () -> removeItemDisplayFromSign(loc));
+                Scheduler.waitInLocation(loc, 0, () -> removeItemDisplayFromSign(loc));
             });
             return super.setBlocks(region, pattern);
         }
@@ -123,7 +94,7 @@ public class WorldEditListener {
         public <B extends BlockStateHolder<B>> int replaceBlocks(final @NotNull Region region, final Set<BaseBlock> filter, final B replacement) throws MaxChangedBlocksException {
             region.forEach(pos -> {
                 final Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-                Scheduler.waitInLocation(0, loc, () -> removeItemDisplayFromSign(loc));
+                Scheduler.waitInLocation( loc, 0,() -> removeItemDisplayFromSign(loc));
             });
             return super.replaceBlocks(region, filter, replacement);
         }
@@ -131,7 +102,7 @@ public class WorldEditListener {
         public int replaceBlocks(final @NotNull Region region, final Set<BaseBlock> filter, final Pattern pattern) throws MaxChangedBlocksException {
             region.forEach(pos -> {
                 Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-                Scheduler.waitInLocation(0, loc, () -> removeItemDisplayFromSign(loc));
+                Scheduler.waitInLocation(loc, 0, () -> removeItemDisplayFromSign(loc));
             });
             return super.replaceBlocks(region, filter, pattern);
         }
@@ -139,7 +110,7 @@ public class WorldEditListener {
         public int replaceBlocks(final @NotNull Region region, final Mask mask, final Pattern pattern) throws MaxChangedBlocksException {
             region.forEach(pos -> {
                 Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-                Scheduler.waitInLocation(0, loc, () -> removeItemDisplayFromSign(loc));
+                Scheduler.waitInLocation(loc, 0, () -> removeItemDisplayFromSign(loc));
             });
             return super.replaceBlocks(region, mask, pattern);
         }
@@ -147,7 +118,7 @@ public class WorldEditListener {
         public int setBlocks(final @NotNull Set<BlockVector3> vset, final Pattern pattern) {
             vset.forEach(pos -> {
                 Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-                Scheduler.waitInLocation(10, loc, () -> removeItemDisplayFromSign(loc));
+                Scheduler.waitInLocation(loc, 10, () -> removeItemDisplayFromSign(loc));
             });
             return super.setBlocks(vset, pattern);
         }
