@@ -26,6 +26,8 @@ public class Loader {
         Configuration.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS = getBoolean("player_need_to_have_permission_to_use_signs");
         Configuration.PERMISSION_CAN_USE_SIGNS = getString("permission_can_use_signs");
 
+        Configuration.WORLDEDIT.AUTO_DROP_ITEMS = getBoolean("worldedit.auto_drop_items");
+
         Configuration.HUSKCLAIMS.FLAG_ID = getString("huskclaims.flag_id");
 
         Configuration.LANDS.FLAG_ID = configuration.getString("lands.flag_id");

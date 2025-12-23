@@ -16,8 +16,13 @@ player_need_to_have_permission_to_use_signs: false
 # Permission required to insert items into the signs
 permission_can_use_signs: "interactive_signs.use"
 
+## Settings for plugins
+# WorldEdit (FAWE)
+worldedit:
+  # True - Enable automatic drop of items from signs when using //set commands in WorldEdit (may affect server performance)
+  # False - Items from removed signs remain suspended in the air
+  auto_drop_items: true
 
-## Settings for protection plugins
 # HuskClaims
 huskclaims:
   flag_id: "items_on_signs"

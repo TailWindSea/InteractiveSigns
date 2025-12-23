@@ -13,7 +13,11 @@ public class Configuration {
     public static boolean PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS;
     public static String PERMISSION_CAN_USE_SIGNS;
 
-    public static class HUSKCLAIMS{
+    public static class WORLDEDIT {
+        public static boolean AUTO_DROP_ITEMS;
+    }
+
+    public static class HUSKCLAIMS {
         public static String FLAG_ID;
     }
 
