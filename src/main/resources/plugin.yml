@@ -2,7 +2,18 @@ name: InteractiveSigns
 author: Vovari2
 version: '${version}'
 main: me.vovari2.interactivesigns.InteractiveSigns
-api-version: '1.20'
+api-version: '1.21'
 folia-supported: true
 
-softdepend: [PlaceholderAPI, CoreProtect, WorldGuard, Lands, Residence, HuskClaims, GriefPrevention, SuperiorSkyblock2, ChestProtect, GriefDefender]
+softdepend: [PlaceholderAPI,
+             CoreProtect,
+             WorldEdit,
+             WorldGuard,
+             Lands,
+             Residence,
+             HuskClaims,
+             GriefPrevention,
+             SuperiorSkyblock2,
+             ChestProtect,
+             GriefDefender,
+             Minepacks]
