@@ -20,6 +20,7 @@ public final class InteractiveSigns extends JavaPlugin {
     private String PLUGIN_NAME;
     private String VERSION;
 
+    private boolean isLoaded = false;
     public void onLoad() {
         INSTANCE = this;
         Console.LOGGER = getComponentLogger();
@@ -27,20 +28,19 @@ public final class InteractiveSigns extends JavaPlugin {
         PLUGIN_NAME = INSTANCE.getName();
         VERSION = INSTANCE.getPluginMeta().getVersion();
 
+        isLoaded = Messages.load()
+                && Configuration.load();
+
         Plugins.load();
         ProtectionPlugins.load();
     }
-    private boolean isLoaded = false;
     public void onEnable() {
         long time = System.currentTimeMillis();
         FOLIA_INSTANCE = new FoliaLib(this);
 
         Plugins.enable();
-        ProtectionPlugins.enable();
         Executor.register(this);
-
-        isLoaded = Messages.enable()
-                && Configuration.enable();
+        ProtectionPlugins.enable();
 
         registerListeners();
         registerMetrics();
@@ -58,8 +58,8 @@ public final class InteractiveSigns extends JavaPlugin {
     public void onReload() {
         long time = System.currentTimeMillis();
 
-        isLoaded = Messages.enable()
-                && Configuration.enable();
+        isLoaded = Messages.load()
+                && Configuration.load();
 
         unregisterListeners();
         registerListeners();

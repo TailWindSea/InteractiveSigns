@@ -49,7 +49,7 @@ public enum Messages {
     }
 
 
-    public static boolean enable(){
+    public static boolean load(){
         try { new Loader(); return true; }
         catch(Exception e){ Console.error("The error when loading messages: %s".formatted(e.getMessage())); return false; }
     }
