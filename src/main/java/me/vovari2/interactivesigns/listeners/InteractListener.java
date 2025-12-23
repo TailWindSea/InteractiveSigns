@@ -87,11 +87,6 @@ public class InteractListener implements Listener {
                 if (player.isSneaking())
                     return;
 
-                // Проверка на необходимость разрешения и имеет ли игрок разрешение
-                if (Configuration.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS)
-                    if (!player.hasPermission(Configuration.PERMISSION_CAN_USE_SIGNS))
-                        return;
-
                 ItemStack item = getItemInHand(event.getHand(), player);
                 Location center = VersionUtils.getBlockCenter(signBlock.getLocation());
 
@@ -122,7 +117,12 @@ public class InteractListener implements Listener {
                         event.setCancelled(true);
                     return;
                 }
-                
+
+                // Проверка на необходимость разрешения и имеет ли игрок разрешение
+                if (Configuration.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS)
+                    if (!player.hasPermission(Configuration.PERMISSION_CAN_USE_SIGNS))
+                        return;
+
                 if (item == null)
                     return;
 
