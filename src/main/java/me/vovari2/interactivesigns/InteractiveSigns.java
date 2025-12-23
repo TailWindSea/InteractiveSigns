@@ -7,6 +7,7 @@ import me.vovari2.interactivesigns.messages.Messages;
 import me.vovari2.interactivesigns.sign.SignTypes;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
+import org.bukkit.Server;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 

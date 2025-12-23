@@ -19,8 +19,10 @@ import me.vovari2.interactivesigns.utils.NamespacedKeyUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.sign.Side;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -43,10 +45,27 @@ public class WorldEditListener {
             super(extent);
             this.world = world;
         }
-        public void removeItemDisplayFromSign(@NotNull Location location) {
-            Collection<ItemDisplay> list = location.getWorld().getNearbyEntitiesByType(
+        public void removeItemDisplayFromSign(@NotNull Location min, @NotNull Location max) {
+            Collection<Entity> list = world.getNearbyEntities(new BoundingBox(min.x(), min.y(), min.z(), max.x(), max.y(), max.z()), entity -> {
+                PersistentDataContainer container = entity.getPersistentDataContainer();
+                return container.has(NamespacedKeyUtils.forItemOnSignOld())
+                        || container.has(NamespacedKeyUtils.forItemOnSign(Side.FRONT.name()))
+                        || container.has(NamespacedKeyUtils.forItemOnSign(Side.BACK.name()));
+            });
+
+            if (list.isEmpty())
+                return;
+
+            for (Entity entity : list){
+                if (entity instanceof ItemDisplay display)
+                    world.dropItemNaturally(display.getLocation(), display.getItemStack());
+                entity.remove();
+            }
+        }
+        public void removeItemDisplayFromSign(@NotNull Location loc) {
+            Collection<ItemDisplay> list = world.getNearbyEntitiesByType(
                     ItemDisplay.class,
-                    location,
+                    loc,
                     0.1,
                     display -> {
                         PersistentDataContainer container = display.getPersistentDataContainer();
@@ -63,61 +82,36 @@ public class WorldEditListener {
         }
 
         public <T extends BlockStateHolder<T>> boolean setBlock(BlockVector3 pos, T block) throws WorldEditException {
-            final Location location = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-            Scheduler.waitInLocation(location, 0, () -> removeItemDisplayFromSign(location));
+            final Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
+            Scheduler.waitInLocation(loc, () -> removeItemDisplayFromSign(loc));
             return super.setBlock(pos, block);
         }
-
         public <T extends BlockStateHolder<T>> boolean setBlock(int x, int y, int z, T block) throws WorldEditException {
-            final Location location = new Location(world, x + 0.5, y + 0.5, z + 0.5);
-            Scheduler.waitInLocation(location, 0,()  -> removeItemDisplayFromSign(location));
+            final Location loc = new Location(world, x + 0.5, y + 0.5, z + 0.5);
+            Scheduler.waitInLocation(loc, ()  -> removeItemDisplayFromSign(loc));
             return super.setBlock(x, y, z, block);
         }
 
         public <B extends BlockStateHolder<B>> int setBlocks(final @NotNull Region region, final B block) throws MaxChangedBlocksException {
             region.forEach(pos -> {
-                final Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-                Scheduler.waitInLocation(loc, 0, () -> removeItemDisplayFromSign(loc));
+                final Location min = BukkitAdapter.adapt(world, region.getMinimumPoint()),
+                        max = BukkitAdapter.adapt(world, region.getMinimumPoint()).add(1,1,1);
+                Scheduler.waitInLocation(min, () -> removeItemDisplayFromSign(min, max));
             });
             return super.setBlocks(region, block);
         }
-
         public int setBlocks(final @NotNull Region region, final Pattern pattern) throws MaxChangedBlocksException {
             region.forEach(pos -> {
-                final Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-                Scheduler.waitInLocation(loc, 0, () -> removeItemDisplayFromSign(loc));
+                final Location min = BukkitAdapter.adapt(world, region.getMinimumPoint()),
+                        max = BukkitAdapter.adapt(world, region.getMinimumPoint()).add(1,1,1);
+                Scheduler.waitInLocation(min, () -> removeItemDisplayFromSign(min, max));
             });
             return super.setBlocks(region, pattern);
         }
-
-        public <B extends BlockStateHolder<B>> int replaceBlocks(final @NotNull Region region, final Set<BaseBlock> filter, final B replacement) throws MaxChangedBlocksException {
-            region.forEach(pos -> {
-                final Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-                Scheduler.waitInLocation( loc, 0,() -> removeItemDisplayFromSign(loc));
-            });
-            return super.replaceBlocks(region, filter, replacement);
-        }
-
-        public int replaceBlocks(final @NotNull Region region, final Set<BaseBlock> filter, final Pattern pattern) throws MaxChangedBlocksException {
-            region.forEach(pos -> {
-                Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-                Scheduler.waitInLocation(loc, 0, () -> removeItemDisplayFromSign(loc));
-            });
-            return super.replaceBlocks(region, filter, pattern);
-        }
-
-        public int replaceBlocks(final @NotNull Region region, final Mask mask, final Pattern pattern) throws MaxChangedBlocksException {
-            region.forEach(pos -> {
-                Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-                Scheduler.waitInLocation(loc, 0, () -> removeItemDisplayFromSign(loc));
-            });
-            return super.replaceBlocks(region, mask, pattern);
-        }
-
         public int setBlocks(final @NotNull Set<BlockVector3> vset, final Pattern pattern) {
             vset.forEach(pos -> {
-                Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-                Scheduler.waitInLocation(loc, 10, () -> removeItemDisplayFromSign(loc));
+                final Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
+                Scheduler.waitInLocation(loc, () -> removeItemDisplayFromSign(loc));
             });
             return super.setBlocks(vset, pattern);
         }
