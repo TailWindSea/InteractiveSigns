@@ -1,11 +1,12 @@
 package me.vovari2.interactivesigns;
 
 import com.tcoded.folialib.FoliaLib;
-import me.vovari2.interactivesigns.bstats.Metrics;
 import me.vovari2.interactivesigns.configuration.Configuration;
 import me.vovari2.interactivesigns.listeners.*;
 import me.vovari2.interactivesigns.messages.Messages;
 import me.vovari2.interactivesigns.sign.SignTypes;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.AdvancedPie;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -71,7 +72,7 @@ public final class InteractiveSigns extends JavaPlugin {
 
     private void registerMetrics(){
         Metrics metrics = new Metrics(this, 26326);
-        metrics.addCustomChart(new Metrics.AdvancedPie("protection_plugins_used", () -> {
+        metrics.addCustomChart(new AdvancedPie("protection_plugins_used", () -> {
             Map<String, Integer> valueMap = new HashMap<>();
             boolean hasAnyProtectionPlugin = false;
             for (ProtectionPlugins.ProtectionPlugin plugin : ProtectionPlugins.plugins()){
