@@ -19,7 +19,6 @@ import me.vovari2.interactivesigns.utils.NamespacedKeyUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.sign.Side;
-import org.bukkit.entity.Display;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
