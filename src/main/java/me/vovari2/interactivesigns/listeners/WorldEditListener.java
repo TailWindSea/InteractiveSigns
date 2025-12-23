@@ -15,7 +15,7 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.util.eventbus.Subscribe;
 import com.sk89q.worldedit.world.block.BaseBlock;
 import com.sk89q.worldedit.world.block.BlockStateHolder;
-import me.vovari2.interactivesigns.Timer;
+import me.vovari2.interactivesigns.Scheduler;
 import me.vovari2.interactivesigns.utils.NamespacedKeyUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -94,20 +94,20 @@ public class WorldEditListener {
 
         public <T extends BlockStateHolder<T>> boolean setBlock(BlockVector3 pos, T block) throws WorldEditException {
             final Location location = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-            Timer.wait(0, location, () -> removeItemDisplayFromSign(location));
+            Scheduler.waitInLocation(0, location, () -> removeItemDisplayFromSign(location));
             return super.setBlock(pos, block);
         }
 
         public <T extends BlockStateHolder<T>> boolean setBlock(int x, int y, int z, T block) throws WorldEditException {
             final Location location = new Location(world, x + 0.5, y + 0.5, z + 0.5);
-            Timer.wait(0, location, ()  -> removeItemDisplayFromSign(location));
+            Scheduler.waitInLocation(0, location, ()  -> removeItemDisplayFromSign(location));
             return super.setBlock(x, y, z, block);
         }
 
         public <B extends BlockStateHolder<B>> int setBlocks(final @NotNull Region region, final B block) throws MaxChangedBlocksException {
             region.forEach(pos -> {
                 final Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-                Timer.wait(0, loc, () -> removeItemDisplayFromSign(loc));
+                Scheduler.waitInLocation(0, loc, () -> removeItemDisplayFromSign(loc));
             });
             return super.setBlocks(region, block);
         }
@@ -115,7 +115,7 @@ public class WorldEditListener {
         public int setBlocks(final @NotNull Region region, final Pattern pattern) throws MaxChangedBlocksException {
             region.forEach(pos -> {
                 final Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-                Timer.wait(0, loc, () -> removeItemDisplayFromSign(loc));
+                Scheduler.waitInLocation(0, loc, () -> removeItemDisplayFromSign(loc));
             });
             return super.setBlocks(region, pattern);
         }
@@ -123,7 +123,7 @@ public class WorldEditListener {
         public <B extends BlockStateHolder<B>> int replaceBlocks(final @NotNull Region region, final Set<BaseBlock> filter, final B replacement) throws MaxChangedBlocksException {
             region.forEach(pos -> {
                 final Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-                Timer.wait(0, loc, () -> removeItemDisplayFromSign(loc));
+                Scheduler.waitInLocation(0, loc, () -> removeItemDisplayFromSign(loc));
             });
             return super.replaceBlocks(region, filter, replacement);
         }
@@ -131,7 +131,7 @@ public class WorldEditListener {
         public int replaceBlocks(final @NotNull Region region, final Set<BaseBlock> filter, final Pattern pattern) throws MaxChangedBlocksException {
             region.forEach(pos -> {
                 Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-                Timer.wait(0, loc, () -> removeItemDisplayFromSign(loc));
+                Scheduler.waitInLocation(0, loc, () -> removeItemDisplayFromSign(loc));
             });
             return super.replaceBlocks(region, filter, pattern);
         }
@@ -139,7 +139,7 @@ public class WorldEditListener {
         public int replaceBlocks(final @NotNull Region region, final Mask mask, final Pattern pattern) throws MaxChangedBlocksException {
             region.forEach(pos -> {
                 Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-                Timer.wait(0, loc, () -> removeItemDisplayFromSign(loc));
+                Scheduler.waitInLocation(0, loc, () -> removeItemDisplayFromSign(loc));
             });
             return super.replaceBlocks(region, mask, pattern);
         }
@@ -147,7 +147,7 @@ public class WorldEditListener {
         public int setBlocks(final @NotNull Set<BlockVector3> vset, final Pattern pattern) {
             vset.forEach(pos -> {
                 Location loc = BukkitAdapter.adapt(world, pos).add(0.5, 0.5, 0.5);
-                Timer.wait(10, loc, () -> removeItemDisplayFromSign(loc));
+                Scheduler.waitInLocation(10, loc, () -> removeItemDisplayFromSign(loc));
             });
             return super.setBlocks(vset, pattern);
         }
