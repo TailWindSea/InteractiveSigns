@@ -54,7 +54,9 @@ public class InteractListener implements Listener {
 
         Material signMaterial = signBlock.getType();
         Vector signDirection = SignRotations.get(SignTypes.getSignFace(signBlock.getBlockData()));
-        if (SignTypes.isWall(signMaterial)) // Если табличка настенная, отражаем дисплей
+
+        // Если табличка настенная, отражаем дисплей
+        if (SignTypes.isWall(signMaterial))
             signDirection = signDirection.clone().multiply(-1);
 
         Player player = event.getPlayer();
@@ -66,24 +68,34 @@ public class InteractListener implements Listener {
         Location displayLocation = signLocation.add(0.5F, 0.5F, 0.5F);
         displayLocation.setDirection(side.equals(Side.FRONT) ? signDirection.clone().multiply(-1) : signDirection);
 
-
         switch(event.getAction()) {
             case RIGHT_CLICK_BLOCK: {
+                // Конвертирует старый формат табличек в новый
                 ItemDisplayUtils.convertFromOldDisplay(ItemDisplayUtils.getItemDisplayOnSignOld(displayLocation));
                 ItemDisplayUtils.convertFromOldDisplay(ItemDisplayUtils.getItemDisplayOnSignOld(displayLocation));
 
+
                 boolean isDisplay = ItemDisplayUtils.getItemDisplayOnSign(displayLocation, side) != null;
+                // Проверка, может ли игрок взаимодействовать с табличкой с учётом защиты территории
                 if (!ProtectionPlugins.canInteractWithSign(player, signLocation) && !Executor.hasPermission(player)){
                     if (isDisplay)
                         Messages.WARNING_YOU_CANT_USE_THAT_HERE.send(player);
                     return;
                 }
 
+                // Отмена любого взаимодействия игрока с табличкой, если тот стоит на шифте
                 if (player.isSneaking())
                     return;
 
+                // Проверка на необходимость разрешения и имеет ли игрок разрешение
+                if (Configuration.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS)
+                    if (!player.hasPermission(Configuration.PERMISSION_CAN_USE_SIGNS))
+                        return;
+
                 ItemStack item = getItemInHand(event.getHand(), player);
                 Location center = VersionUtils.getBlockCenter(signBlock.getLocation());
+
+                // Снятие покрытия воска, если табличка покрыта воском
                 if (signBlock.isWaxed()){
                     if (item != null && MaterialTags.AXES.isTagged(item.getType())) {
                         addItemDamage(player, item);
@@ -96,6 +108,7 @@ public class InteractListener implements Listener {
                     return;
                 }
 
+                // Наложение покрытие воска, если табличка не покрыта воском
                 boolean isText = isOccupiedByText(signBlock.getSide(side).lines());
                 if (isText || isDisplay){
                     if (item != null && Material.HONEYCOMB.equals(item.getType())){
@@ -109,14 +122,11 @@ public class InteractListener implements Listener {
                         event.setCancelled(true);
                     return;
                 }
-
+                
                 if (item == null)
                     return;
 
-                if (Configuration.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS)
-                    if (!player.hasPermission(Configuration.PERMISSION_CAN_USE_SIGNS))
-                        return;
-
+                // Проверка чёрного списка предметов, которые нельзя вкладывать в табличку
                 if (Configuration.BLACKLIST_OF_ITEMS.contains(item.getType())){
                     Messages.WARNING_YOU_CANT_PUT_THAT_HERE.send(player);
                     return;
@@ -126,6 +136,7 @@ public class InteractListener implements Listener {
                 placedItem.setAmount(1);
                 player.getInventory().getItem(Objects.requireNonNullElse(event.getHand(), EquipmentSlot.HAND)).subtract();
 
+                // Проверка, если есть CoreProtect логируем изменения таблички
                 if (Plugins.CoreProtect.isEnabled())
                     CoreProtectUtils.logPuttingItemOnSign(player.getName(), signLocation, placedItem.getType());
 
@@ -143,14 +154,17 @@ public class InteractListener implements Listener {
                 if (display == null)
                     return;
 
+                // Отмена взаимодействий, если табличка покрыта воском
                 if (signBlock.isWaxed())
                     return;
 
+                // Проверка, может ли игрок взаимодействовать с табличкой с учётом защиты территории
                 if (!ProtectionPlugins.canInteractWithSign(player, signLocation) && !Executor.hasPermission(player)){
                     Messages.WARNING_YOU_CANT_USE_THAT_HERE.send(player);
                     return;
                 }
 
+                // Отмена взаимодействий, если игрок не имеет на это прав
                 if (Configuration.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS)
                     if (!player.hasPermission(Configuration.PERMISSION_CAN_USE_SIGNS)){
                         Messages.WARNING_YOU_CANT_USE_THAT_HERE.send(player);
@@ -161,6 +175,7 @@ public class InteractListener implements Listener {
                 display.remove();
                 ItemStack droppedItem = display.getItemStack();
 
+                // Проверка, если есть CoreProtect логируем изменения таблички
                 if (Plugins.CoreProtect.isEnabled())
                     CoreProtectUtils.logTakingItemOnSign(player.getName(), signLocation, droppedItem.getType());
 
