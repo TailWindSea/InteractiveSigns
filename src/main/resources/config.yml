@@ -16,6 +16,7 @@ player_need_to_have_permission_to_use_signs: false
 # Permission required to insert items into the signs
 permission_can_use_signs: "interactive_signs.use"
 
+
 ## Settings for plugins
 # WorldEdit (FAWE)
 worldedit:
@@ -25,11 +26,18 @@ worldedit:
 
 # HuskClaims
 huskclaims:
-  flag_id: "items_on_signs"
+  flag_id: "items_in_signs"
 
 # Lands
 lands:
-  flag_id: "items_on_signs"
-  flag_name: "Items on signs"
+  flag_id: "items_in_signs"
+  flag_name: "Items in signs"
   flag_material: "SPRUCE_HANGING_SIGN"
-  flag_description: "Flag that allows you to insert and take items from the tablets"
+  flag_description: "Flag that allows you to insert and take items from sings"
+
+# Dominion
+dominion:
+  flag_id: "items_in_signs"
+  flag_name: "Items in signs"
+  flag_material: "SPRUCE_HANGING_SIGN"
+  flag_description: "Whether can insert and take items from sings"

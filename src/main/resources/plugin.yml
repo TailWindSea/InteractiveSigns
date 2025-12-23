@@ -16,4 +16,5 @@ softdepend: [PlaceholderAPI,
              SuperiorSkyblock2,
              ChestProtect,
              GriefDefender,
+             Dominion,
              Minepacks]

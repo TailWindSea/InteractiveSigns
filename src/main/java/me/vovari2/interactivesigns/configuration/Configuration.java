@@ -28,6 +28,13 @@ public class Configuration {
         public static String FLAG_DESCRIPTION;
     }
 
+    public static class DOMINION {
+        public static String FLAG_ID;
+        public static String FLAG_NAME;
+        public static String FLAG_DESCRIPTION;
+        public static Material FLAG_MATERIAL;
+    }
+
     public static boolean load(){
         try { new Loader(); return true;}
         catch(Exception e){ Console.error("The error when loading configuration: %s".formatted(e.getMessage())); return false;}

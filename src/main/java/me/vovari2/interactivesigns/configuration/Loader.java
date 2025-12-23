@@ -23,17 +23,22 @@ public class Loader {
         Configuration.ENABLE_ITEMS_VOLUME = getBoolean("enable_items_volume");
         Configuration.BLACKLIST_OF_ITEMS = getMaterialList("blacklist_of_items");
 
-        Configuration.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS = getBoolean("player_need_to_have_permission_to_use_signs");
+        Configuration.PLAYER_NEED_TO_HAVE_PERMISSION_TO_USE_SIGNS = configuration.getBoolean("player_need_to_have_permission_to_use_signs", false);
         Configuration.PERMISSION_CAN_USE_SIGNS = getString("permission_can_use_signs");
 
-        Configuration.WORLDEDIT.AUTO_DROP_ITEMS = getBoolean("worldedit.auto_drop_items");
+        Configuration.WORLDEDIT.AUTO_DROP_ITEMS = configuration.getBoolean("worldedit.auto_drop_items", false);
 
-        Configuration.HUSKCLAIMS.FLAG_ID = getString("huskclaims.flag_id");
+        Configuration.HUSKCLAIMS.FLAG_ID = getString("huskclaims.flag_id", "items_in_signs");
 
-        Configuration.LANDS.FLAG_ID = configuration.getString("lands.flag_id");
-        Configuration.LANDS.FLAG_NAME = getString("lands.flag_name");
+        Configuration.LANDS.FLAG_ID = getString("lands.flag_id", "items_in_signs");
+        Configuration.LANDS.FLAG_NAME = getString("lands.flag_name", "Items in signs");
         Configuration.LANDS.FLAG_MATERIAL = getMaterial("lands.flag_material", Material.SPRUCE_HANGING_SIGN);
-        Configuration.LANDS.FLAG_DESCRIPTION = getString("lands.flag_description");
+        Configuration.LANDS.FLAG_DESCRIPTION = getString("lands.flag_description", "Flag that allows you to insert and take items from sings");
+
+        Configuration.DOMINION.FLAG_ID = getString("dominion.flag_id", "items_in_signs");
+        Configuration.DOMINION.FLAG_NAME = getString("dominion.flag_name", "Items in signs");
+        Configuration.DOMINION.FLAG_MATERIAL = getMaterial("dominion.flag_material", Material.SPRUCE_HANGING_SIGN);
+        Configuration.DOMINION.FLAG_DESCRIPTION = getString("dominion.flag_description", "Whether can insert and take items from sings");
     }
 
     private @NotNull Object getObject(@NotNull String path) throws Exception{
@@ -55,6 +60,13 @@ public class Loader {
             throw new Exception("Value '%s' in the '%s' must not be empty!".formatted(path, fileName));
         return value;
     }
+    private @NotNull String getString(@NotNull String path, @NotNull String def){
+        String value = configuration.getString(path);
+        if (value == null)
+            return def;
+        return value;
+    }
+
     protected @Nullable Material getMaterial(@NotNull String path, @Nullable Material def){
         String value = configuration.getString(path, null);
         if (value == null)

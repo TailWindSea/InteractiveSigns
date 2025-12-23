@@ -1,5 +1,7 @@
 package me.vovari2.interactivesigns;
 
+import cn.lunadeer.dominion.api.DominionAPI;
+import cn.lunadeer.dominion.api.dtos.flag.PriFlag;
 import com.bekvon.bukkit.residence.api.ResidenceApi;
 import com.bekvon.bukkit.residence.containers.Flags;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
@@ -37,6 +39,7 @@ import net.william278.huskclaims.libraries.cloplib.operation.OperationType;
 import net.william278.huskclaims.position.Position;
 import net.william278.huskclaims.user.User;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -58,6 +61,7 @@ public class ProtectionPlugins {
         addPlugin(ChestProtectProtectionPlugin.class, "ChestProtect");
     }
     public static void enable(){
+        addPlugin(DominionProtectionPlugin.class, "Dominion");
         addPlugin(HuskClaimsProtectionPlugin.class, "HuskClaims");
         addPlugin(GriefDefenderProtectionPlugin.class, "GriefDefender");
     }
@@ -247,6 +251,21 @@ public class ProtectionPlugins {
                 return true;
 
             return claim.isUserTrusted(player.getUniqueId(), TrustTypes.BUILDER);
+        }
+    }
+    private static class DominionProtectionPlugin extends ProtectionPlugin{
+        private final DominionAPI instance;
+        private final PriFlag flag;
+        DominionProtectionPlugin(@NotNull String name) throws Exception{
+            super(name);
+            instance = DominionAPI.getInstance();
+            flag = new PriFlag(Configuration.DOMINION.FLAG_ID, Configuration.DOMINION.FLAG_NAME, Configuration.DOMINION.FLAG_DESCRIPTION, false, true, Configuration.DOMINION.FLAG_MATERIAL);
+            cn.lunadeer.dominion.api.dtos.flag.Flags.registerPriFlag(InteractiveSigns.getInstance(), flag);
+            cn.lunadeer.dominion.api.dtos.flag.Flags.applyNewCustomFlags();
+        }
+        @Override
+        public boolean canInteractWithSign(Player player, Location location) {
+            return instance.checkPrivilegeFlag(location, flag, player);
         }
     }
 }
