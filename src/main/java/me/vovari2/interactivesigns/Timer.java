@@ -1,15 +1,30 @@
 package me.vovari2.interactivesigns;
 
 import com.tcoded.folialib.wrapper.task.WrappedTask;
+import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 public record Timer(@NotNull Runnable runnable, @NotNull WrappedTask task) {
+
     public static @NotNull Timer wait(int wait, @NotNull Timer.WaitOperation waitOperation){
         BukkitRunnable runnable = new BukkitRunnable() {
-            public void run() { waitOperation.run();}
+            public void run() {
+                waitOperation.run();
+            }
         };
         WrappedTask task = InteractiveSigns.getFoliaInstance().getScheduler().runLater(runnable, wait);
+        return new Timer(runnable, task);
+    }
+
+    public static @NotNull Timer wait(int wait, @NotNull Location loc, @NotNull Timer.WaitOperation waitOperation) {
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                waitOperation.run();
+            }
+        };
+        WrappedTask task = InteractiveSigns.getFoliaInstance().getScheduler().runAtLocationLater(loc, runnable, wait);
         return new Timer(runnable, task);
     }
 
