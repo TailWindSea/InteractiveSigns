@@ -29,7 +29,7 @@ dependencies {
 
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit")
-    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9-SNAPSHOT")
+    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.11")
     compileOnly("com.github.GriefPrevention:GriefPrevention:16.18.2")
     compileOnly("net.william278.huskclaims:huskclaims-bukkit:1.5")
     compileOnly("com.bgsoftware:SuperiorSkyblockAPI:2024.4")
@@ -39,7 +39,7 @@ dependencies {
     compileOnly("com.github.angeschossen:ChestProtectAPI:5.19.16")
     compileOnly files("./libs/Residence5.1.6.5.jar")
     compileOnly("com.griefdefender:api:2.1.0-SNAPSHOT")
-    compileOnly("me.clip:placeholderapi:2.11.6")
+    compileOnly("me.clip:placeholderapi:2.11.7")
     compileOnly("at.pcgamingfreaks:Minepacks-API:2.4.32.4")
 }
 
