@@ -58,7 +58,7 @@ public class Executor {
                     }
 
                     if (args.length > 2) {
-                        sender.sendMessage("<yellow>Too many arguments!");
+                        sender.sendMessage(TextUtils.toComponent("<yellow>Too many arguments!"));
                         return true;
                     }
 
