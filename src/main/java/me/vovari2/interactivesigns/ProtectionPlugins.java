@@ -39,7 +39,6 @@ import net.william278.huskclaims.libraries.cloplib.operation.OperationType;
 import net.william278.huskclaims.position.Position;
 import net.william278.huskclaims.user.User;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
