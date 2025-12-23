@@ -1,27 +1,18 @@
 package me.vovari2.interactivesigns.listeners;
 
 import com.destroystokyo.paper.MaterialSetTag;
-import me.vovari2.interactivesigns.Console;
 import me.vovari2.interactivesigns.utils.ItemDisplayUtils;
-import me.vovari2.interactivesigns.utils.NamespacedKeyUtils;
 import me.vovari2.interactivesigns.utils.VersionUtils;
-import org.bukkit.ExplosionResult;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.sign.Side;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.WindCharge;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.*;
-import org.bukkit.event.hanging.HangingBreakByEntityEvent;
-import org.bukkit.event.hanging.HangingBreakEvent;
-import org.bukkit.event.hanging.HangingEvent;
 
 public class ExplodeListener  implements Listener {
 
