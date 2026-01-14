@@ -139,8 +139,12 @@ public class ProtectionPlugins {
         LandsProtectionPlugin(@NotNull String name){
             super(name);
             instance = LandsIntegration.of(InteractiveSigns.getInstance());
-            flag = RoleFlag.of(instance, FlagTarget.PLAYER, RoleFlagCategory.ACTION, Configuration.LANDS.FLAG_ID);
-            flag.setDisplayName(Configuration.LANDS.FLAG_NAME).setIcon(new ItemStack(Configuration.LANDS.FLAG_MATERIAL)).setDescription(Configuration.LANDS.FLAG_DESCRIPTION);
+            flag = RoleFlag.of(instance, FlagTarget.PLAYER, RoleFlagCategory.ACTION, Configuration.LANDS.FLAG_ID)
+                    .setDisplayName(Configuration.LANDS.FLAG_NAME)
+                    .setIcon(new ItemStack(Configuration.LANDS.FLAG_MATERIAL))
+                    .setDescription(Configuration.LANDS.FLAG_DESCRIPTION)
+                    .setDisplay(true);
+            instance.onLoad(()-> instance.getFlagRegistry().register(flag));
         }
         @Override
         public boolean canInteractWithSign(Player player, Location location) {

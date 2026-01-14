@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.vovari2'
-version = '1.5.0'
+version = '1.5.1'
 
 repositories {
     mavenCentral()
@@ -36,7 +36,7 @@ dependencies {
     compileOnly("net.william278.huskclaims:huskclaims-bukkit:1.5")
     compileOnly("com.bgsoftware:SuperiorSkyblockAPI:2024.4")
 //    compileOnly("network.darkhelmet:Prism-Api:4.0.0-SNAPSHOT")
-    compileOnly("com.github.angeschossen:LandsAPI:7.11.10")
+    compileOnly("com.github.angeschossen:LandsAPI:7.23.1")
     compileOnly("com.github.angeschossen:ChestProtectAPI:5.19.16")
     compileOnly files("./libs/Residence5.1.6.5.jar")
     compileOnly("com.griefdefender:api:2.1.0-SNAPSHOT")
@@ -49,7 +49,7 @@ shadowJar {
     relocate("org.bstats", "me.vovari2.libs.bstats") // bStats
 
     // General
-    getDestinationDirectory().set(new File("D:\\Minecraft\\Servers\\Paper 1.21.11\\plugins\\"))
+    getDestinationDirectory().set(new File("D:\\Minecraft\\Servers\\Paper 1.21.8\\plugins\\"))
     archiveFileName = "${project.name}-${project.version}.jar"
 }
 
